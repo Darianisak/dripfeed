@@ -11,7 +11,7 @@
 
   "content_scripts": [
     {
-      "matches": ["*://*.mozilla.org/*", "*://*.instagram.com/*", "*://*.reddit.com/*", "*://*.facebook.com/*"],
+      "matches": ["*://*.mozilla.org/*", "*://*.instagram.com/*", "*://*.reddit.com/*", "*://*.facebook.com/*", "*://*.linkedin.com/*"],
       "js": ["borderify.js"]
     }
   ]
