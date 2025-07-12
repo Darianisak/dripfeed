@@ -9,15 +9,17 @@
 //
 function manageReddit(document, window) {
     if (isHomepage(window, window)) {
-        const searchInput = document.querySelector(".search-input").parentElement.parentElement ;
-        searchInput.remove();
-
         // Primary content nodes on the Reddit homepage.
         removeNode('.subgrid-container', document, true);
-        removeNode('.left-sidebar', document, true);
     }   else {
-        logMessage(" not homepage ");
+        var rightSideBar = document.querySelector('#right-sidebar-container');
+        if (rightSideBar !== null) { rightSideBar.remove(); }
     };
+
+    // Default removals
+    const searchInput = document.querySelector(".search-input").parentElement.parentElement ;
+    searchInput.remove();
+    removeNode('.left-sidebar', document, true);
 }
 
 // `manageInstagram
