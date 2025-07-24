@@ -8,16 +8,24 @@
 // Search are still usable.
 //
 function manageReddit(document, window) {
+    var pathname_fragments = window.location.pathname.split('/')
+
     if (isHomepage(window, window)) {
         // Primary content nodes on the Reddit homepage.
         removeNode('.subgrid-container', document, true);
-    }   else {
+    }   else if (pathname_fragments[1] === 'r'){
         var rightSideBar = document.querySelector('#right-sidebar-container');
         if (rightSideBar !== null) { rightSideBar.remove(); }
+        var highlights = document.querySelector(["community-highlight-carousel"])
+        if (highlights !== null) { highlights.remove(); }
+        if (pathname_fragments[3] === 'comments') {
+            var subRedditCredit = document.querySelector('#pdp-credit-bar');
+            if (subRedditCredit !== null) { subRedditCredit.remove(); }
+        }
     };
-
     // Default removals
     const searchInput = document.querySelector(".search-input").parentElement.parentElement ;
+    if (searchInput !== null) { searchInput.remove(); }
     searchInput.remove();
     removeNode('.left-sidebar', document, true);
 }
@@ -33,7 +41,6 @@ function manageInstagram(document, window) {
 
         var recommendedProfiles = document.querySelector("a[href='/explore/people/']").parentElement.parentElement;
         if (recommendedProfiles !== null) { recommendedProfiles.remove(); }
-
     }   else    {
         logMessage("Not Homepage");
     };
