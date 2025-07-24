@@ -94,6 +94,14 @@ function main(document, window) {
     }
 };
 
+// This is our 'hacky' way to intercept navigation events and reapply page customizations.
+//
+window.addEventListener('click', async (event) => {
+    console.log('hello!')
+    await new Promise(r => setTimeout(r, 3000));
+    main(document, window)
+});
+
 main(document, window);
 
 
