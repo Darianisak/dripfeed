@@ -30,43 +30,6 @@ function manageReddit(document, window) {
     removeNode('.left-sidebar', document, true);
 }
 
-// `manageInstagram
-//
-//  Instagram DOM management function.
-//
-function manageInstagram(document, window) {
-    if (isHomepage(window)) {
-        var stories = document.querySelector("[data-pagelet=story_tray]");
-        if (stories !== null) { stories.remove(); }
-
-        var recommendedProfiles = document.querySelector("a[href='/explore/people/']").parentElement.parentElement;
-        if (recommendedProfiles !== null) { recommendedProfiles.remove(); }
-    }   else    {
-        logMessage("Not Homepage");
-    };
-
-    // Default navigation to remove. These all can lead to infiniScroll.
-    //
-    const removeTabs = ["Reels", "Explore", "Search", "Notifications"];
-
-    removeTabs.forEach(element => {
-        var el = document.querySelector(`[aria-label=${element}]`);
-        if (el !== null)    {
-            var node = el.parentElement.parentElement.parentElement.parentElement;
-            if (node !== null) { node.remove(); };
-        }
-    });
-
-    // This finds the Meta "Messages" widget and removes it. It's visual noise.
-    //
-    var el = document.querySelector("[aria-label='Direct messages']")
-    if (el !== null) {
-        var recommendedProfiles = el.parentElement.parentElement.parentElement.parentElement.parentElement;
-        if (recommendedProfiles !== null) { recommendedProfiles.remove(); }
-    }
-};
-
-
 // `manageDefault`
 //
 // Default mutation function. This function applies DOM mutations in cases
@@ -91,10 +54,6 @@ function main(document, window) {
             manageReddit(document, window);
             break;
 
-        case "instagram":
-            manageInstagram(document, window);
-            break;
-
         default:
             manageDefault(document, window);
             break;
@@ -104,7 +63,6 @@ function main(document, window) {
 // This is our 'hacky' way to intercept navigation events and reapply page customizations.
 //
 window.addEventListener('click', async (event) => {
-    console.log('hello!')
     await new Promise(r => setTimeout(r, 3000));
     main(document, window)
 });

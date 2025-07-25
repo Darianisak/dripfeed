@@ -1,9 +1,9 @@
 {
-  "manifest_version": 2,
-  "name": "Borderify",
-  "version": "1.0",
+  "manifest_version": 1,
+  "name": "dripFeed",
+  "version": "0.1",
 
-  "description": "Adds a red border to all webpages matching mozilla.org.",
+  "description": "DripFeed ",
 
   "icons": {
     "48": "icons/border-48.png"
@@ -11,8 +11,8 @@
 
   "content_scripts": [
     {
-      "matches": ["*://*.mozilla.org/*", "*://*.instagram.com/*", "*://*.reddit.com/*", "*://*.facebook.com/*", "*://*.linkedin.com/*"],
-      "js": ["borderify.js"]
+      "matches": ["*://*.reddit.com/*"],
+      "js": ["dripfeed.js"]
     }
   ]
 }
