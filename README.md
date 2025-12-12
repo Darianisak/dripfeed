@@ -22,6 +22,7 @@ Once you've made changes, you can:
 
 - Ensure `prettier` formatting is applied with `npm run format`
 - Run `jest` tests with `npm run test`
+- Use `eslint` with `npm run lint`
 
 ### Technologies
 
