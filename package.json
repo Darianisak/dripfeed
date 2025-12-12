@@ -8,7 +8,9 @@
     "web-ext": "^9.2.0"
   },
   "scripts": {
-    "test": "jest",
-    "firefox": "web-ext run --source-dir ./ext/"
+    "test": "jest --color --config ./jest.config.js",
+    "firefox": "web-ext run --source-dir ./ext/",
+    "format": "prettier --check --config ./.prettierrc --write .",
+    "lint": "npx eslint --color --fix --config eslint.config.mjs ."
   }
 }
