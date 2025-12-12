@@ -9,6 +9,7 @@
   },
   "scripts": {
     "test": "jest",
-    "firefox": "web-ext run --source-dir ./ext/"
+    "firefox": "web-ext run --source-dir ./ext/",
+    "format": "prettier --check --config ./.prettierrc --write ."
   }
 }

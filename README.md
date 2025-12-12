@@ -18,6 +18,10 @@ cd dripfeed
 npm ci
 ```
 
+Once you've made changes, you can:
+
+- Ensure `prettier` formatting is applied with `npm run format`
+
 ### Technologies
 
 This project uses
