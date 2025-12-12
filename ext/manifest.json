@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "dripfeed",
+  "version": "0.1",
+
+  "description": "drip feed modifies social media websites to make that little bit less adictive",
+
+  "icons": {
+    "48": "icons/48x48.svg",
+    "96": "icons/96x96.svg"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.instagram.com/*"],
+      "js": ["instagram.js"]
+    }
+  ]
+}
