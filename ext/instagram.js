@@ -3,7 +3,7 @@ console.log("Hello world!");
 document.querySelector("[aria-label=Reels]").parentElement.parentElement.parentElement.parentElement
 
 
-function find_parent_by_children() {
+function find_common_ancestor() {
     // given two dom elements, traverse the elements parent nodes
     // and return the first parent of both elements
     // then, for Instagram, we could find the Reels div by finding the shared parent of the href
