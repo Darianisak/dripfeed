@@ -9,6 +9,14 @@ function find_common_ancestor() {
   // then, for Instagram, we could find the Reels div by finding the shared parent of the href
   // and the aria-label; probably.
   //
+  const are_required_arguments_found = () => {
+    return arguments.length >= 2 ? true : false;
+  };
+
+  if (!are_required_arguments_found()) {
+    return null;
+  }
+
   console.log("helloWorld");
   debugger;
 }
