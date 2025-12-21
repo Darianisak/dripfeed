@@ -1,17 +1,23 @@
+'use strict';
 const find_common_ancestor = require("../ext/instagram");
 
 describe(".find_common_ancestor", () => {
-  describe("#are_required");
+  // var 
+  
+  describe("#are_required_arguments_found", () => {
+    test("returns null if one argument is passed", () => {
+      expect(find_common_ancestor('argumentOne')).toBeNull();
+    });
 
-  describe("function arguments", () => {
-    test("ensures left_node is a valid element", () => {});
-    test("ensures function requires two arguments", () => {});
-    test("ensures mix-type arguments return null", () => {});
-  });
-  test("");
+    test("returns null if zero arguments are passed", () => {
+      expect(find_common_ancestor()).toBeNull();
+    });
 
-  test("ensures no match returns null", () => {
-    debugger;
-    find_common_ancestor(1, 2);
+    test("does not return null if two arguments are passed", () => {
+      debugger
+      expect(find_common_ancestor('arg', 'xargs')).not.toBeNull();
+    });
+
+    // TODO - add checks for type
   });
 });

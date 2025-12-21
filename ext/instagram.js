@@ -10,7 +10,10 @@ function find_common_ancestor() {
   // and the aria-label; probably.
   //
   const are_required_arguments_found = () => {
-    return arguments.length >= 2 ? true : false;
+    if (arguments.length != 2) { return false };
+    if (arguments.some((arg) => {! arg instanceof Element})) { return false }
+    
+    return true
   };
 
   if (!are_required_arguments_found()) {
