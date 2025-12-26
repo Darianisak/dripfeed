@@ -1,23 +1,23 @@
-'use strict';
+"use strict";
 
 const { builtinRules } = require("eslint/use-at-your-own-risk");
 const find_common_ancestor = require("../ext/instagram");
-const build_two_layer_dom = require('./factory.html.js');
+const build_two_layer_dom = require("./factory.html.js");
 
-describe(".find_common_ancestor", () => {  
+describe(".find_common_ancestor", () => {
   var parentNode;
   var firstChildNode;
   var secondChildNode;
 
-  beforeEach(() =>{
+  beforeEach(() => {
     build_two_layer_dom();
-    parentNode = document.getElementById("parent")
-    firstChildNode = document.getElementById("child-1")
-    secondChildNode = document.getElementById("child-2")
+    parentNode = document.getElementById("parent");
+    firstChildNode = document.getElementById("child-1");
+    secondChildNode = document.getElementById("child-2");
   });
 
   describe("#are_required_arguments_found", () => {
-    test("returns null if only one argument is passed", () => {      
+    test("returns null if only one argument is passed", () => {
       expect(find_common_ancestor(parentNode)).toBeNull();
     });
 
@@ -38,7 +38,9 @@ describe(".find_common_ancestor", () => {
     });
 
     test("does not return null if two Elements are passed", () => {
-      expect(find_common_ancestor(firstChildNode, secondChildNode)).not.toBeNull();
+      expect(
+        find_common_ancestor(firstChildNode, secondChildNode),
+      ).not.toBeNull();
     });
   });
 });
