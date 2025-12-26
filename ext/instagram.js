@@ -11,7 +11,7 @@ function find_common_ancestor() {
   //
   const are_required_arguments_found = () => {
     if (arguments.length != 2) { return false };
-    if (arguments.some((arg) => {! arg instanceof Element})) { return false }
+    if (Array.from(arguments).some((arg) => {! arg instanceof Element})) { return false }
     
     return true
   };
@@ -20,8 +20,6 @@ function find_common_ancestor() {
     return null;
   }
 
-  console.log("helloWorld");
-  debugger;
 }
 
 // <span
