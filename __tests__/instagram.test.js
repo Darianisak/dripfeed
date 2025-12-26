@@ -1,11 +1,14 @@
 'use strict';
-const find_common_ancestor = require("../ext/instagram");
 
-describe(".find_common_ancestor", () => {
-  // var 
-  
+const find_common_ancestor = require("../ext/instagram");
+const build_two_layer_dom = require('./factory.html.js');
+
+describe(".find_common_ancestor", () => {  
   describe("#are_required_arguments_found", () => {
     test("returns null if one argument is passed", () => {
+      
+      debugger
+      build_two_layer_dom()
       expect(find_common_ancestor('argumentOne')).toBeNull();
     });
 
@@ -14,7 +17,6 @@ describe(".find_common_ancestor", () => {
     });
 
     test("does not return null if two arguments are passed", () => {
-      debugger
       expect(find_common_ancestor('arg', 'xargs')).not.toBeNull();
     });
 
