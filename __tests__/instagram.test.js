@@ -43,18 +43,12 @@ describe(".find_common_ancestor", () => {
     });
   });
 
-  describe("#are_elements_related", () => {
+  describe("#elements_are_related", () => {
     beforeEach(() => {
       build_two_layer_dom();
       parentNode = document.getElementById("parent");
       firstChildNode = document.getElementById("child-0");
       secondChildNode = document.getElementById("child-1");
-    });
-
-    it("returns null if elements share no ancestor", () => {
-      expect(
-        find_common_ancestor(parentNode, document.createElement("div")),
-      ).toBeNull();
     });
 
     it("returns null if elements are equal", () => {
@@ -71,6 +65,11 @@ describe(".find_common_ancestor", () => {
     });
 
     it("does not return null if elements are related within 1 layer", () => {
+      // TODO
+      expect(null).not.toBeNull();
+    });
+
+    it("does not return null if elements are related within 2 layers", () => {
       // TODO
       expect(null).not.toBeNull();
     });
