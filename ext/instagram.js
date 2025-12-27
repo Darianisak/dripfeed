@@ -25,8 +25,9 @@ function find_common_ancestor() {
   }
 
   const are_elements_related = () => {
-    
+
   }
+
   return true;
 }
 

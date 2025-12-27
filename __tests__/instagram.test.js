@@ -1,6 +1,5 @@
 "use strict";
 
-const { builtinRules } = require("eslint/use-at-your-own-risk");
 const find_common_ancestor = require("../ext/instagram");
 const build_two_layer_dom = require("./factory.html.js");
 
@@ -47,22 +46,38 @@ describe(".find_common_ancestor", () => {
   });
 
   describe("#are_elements_related", () => {
+    beforeEach(() => {
+      build_two_layer_dom();
+      parentNode = document.getElementById("parent");
+      firstChildNode = document.getElementById("child-0");
+      secondChildNode = document.getElementById("child-1");
+    });
+
     it("returns null if elements share no ancestor", () => {
+      expect(find_common_ancestor(parentNode, document.createElement("div"))).toBeNull();
     });
 
     it("returns null if elements are equal", () => {
+      expect(find_common_ancestor(parentNode, parentNode)).toBeNull();
     });
 
     it("returns null if one element parents another", () => {
+      expect(find_common_ancestor(parentNode, firstChildNode)).toBeNull();
     });
 
     it("returns null if elements are not related within 3 layers", () => {
+      // TODO
+      expect(null).not.toBeNull();
     });
 
     it("does not return null if elements are related within 1 layer", () => {
+      // TODO
+      expect(null).not.toBeNull();
     });
 
     it("does not return null if elements are related within 3 layers", () => {
+      // TODO
+      expect(null).not.toBeNull();
     });
   });
 });
