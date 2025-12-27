@@ -41,8 +41,6 @@ describe(".find_common_ancestor", () => {
         find_common_ancestor(firstChildNode, secondChildNode),
       ).not.toBeNull();
     });
-
-    
   });
 
   describe("#are_elements_related", () => {
@@ -54,7 +52,9 @@ describe(".find_common_ancestor", () => {
     });
 
     it("returns null if elements share no ancestor", () => {
-      expect(find_common_ancestor(parentNode, document.createElement("div"))).toBeNull();
+      expect(
+        find_common_ancestor(parentNode, document.createElement("div")),
+      ).toBeNull();
     });
 
     it("returns null if elements are equal", () => {

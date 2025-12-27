@@ -14,21 +14,35 @@ function find_common_ancestor() {
       return false;
     }
 
-    const isElement = (element) => element instanceof Element
-    if (!(Array.from(arguments).every(isElement))) { return false; }
+    const isElement = (element) => element instanceof Element;
+    if (!Array.from(arguments).every(isElement)) {
+      return false;
+    }
 
     return true;
   };
+
+  const elements_are_related = (element_a, element_b) => {
+    if (element_a == element_b) {
+      return false;
+    }
+    return true;
+  };
+
+  const ancestor_node = (element_a, element_b) => {};
 
   if (!are_required_arguments_found()) {
     return null;
   }
 
-  const are_elements_related = () => {
+  var element_a = arguments[0];
+  var element_b = arguments[1];
 
+  if (elements_are_related(element_a, element_b)) {
+    return true;
   }
 
-  return true;
+  return null;
 }
 
 // <span
