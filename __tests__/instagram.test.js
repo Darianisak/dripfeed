@@ -12,8 +12,8 @@ describe(".find_common_ancestor", () => {
   beforeEach(() => {
     build_two_layer_dom();
     parentNode = document.getElementById("parent");
-    firstChildNode = document.getElementById("child-1");
-    secondChildNode = document.getElementById("child-2");
+    firstChildNode = document.getElementById("child-0");
+    secondChildNode = document.getElementById("child-1");
   });
 
   describe("#are_required_arguments_found", () => {
@@ -41,6 +41,28 @@ describe(".find_common_ancestor", () => {
       expect(
         find_common_ancestor(firstChildNode, secondChildNode),
       ).not.toBeNull();
+    });
+
+    
+  });
+
+  describe("#are_elements_related", () => {
+    it("returns null if elements share no ancestor", () => {
+    });
+
+    it("returns null if elements are equal", () => {
+    });
+
+    it("returns null if one element parents another", () => {
+    });
+
+    it("returns null if elements are not related within 3 layers", () => {
+    });
+
+    it("does not return null if elements are related within 1 layer", () => {
+    });
+
+    it("does not return null if elements are related within 3 layers", () => {
     });
   });
 });

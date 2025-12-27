@@ -13,17 +13,19 @@ function find_common_ancestor() {
     if (arguments.length != 2) {
       return false;
     }
-    for (const arg of arguments) {
-      if (!(arg instanceof Element)) {
-        return false;
-      }
-    }
+
+    const isElement = (element) => element instanceof Element
+    if (!(Array.from(arguments).every(isElement))) { return false; }
 
     return true;
   };
 
   if (!are_required_arguments_found()) {
     return null;
+  }
+
+  const are_elements_related = () => {
+    
   }
   return true;
 }
