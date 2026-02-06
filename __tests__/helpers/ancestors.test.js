@@ -32,6 +32,10 @@ describe("#constructor", () => {
 });
 
 describe("#ancestorNodes", () => {
+  afterEach(() => {
+    document.getElementsByTagName('html')[0].innerHTML = ''; 
+  });
+
   describe("when the class is improperly called", () => {
     let ancestorTree;
 
