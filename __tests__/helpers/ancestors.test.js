@@ -27,3 +27,10 @@ describe("#constructor", () => {
         });
     });
 });
+
+
+describe("#parentNodes", () => {
+    describe("nodes with no ancestors")
+    describe("nodes with some ancestors")
+    describe("nodes with lots of ancestors")
+});
