@@ -100,8 +100,33 @@ describe("#ancestorNodes", () => {
         document.getElementById("child-2"),
         document.getElementById("child-3"),
       ];
-      const returnedNodes = ancestorTree.nodeOneAncestors;
       expect(ancestorTree.nodeOneAncestors).toEqual(expectedElements);
+    });
+
+    test("ensures nodeTwo does not return ancestors", () => {
+      expect(ancestorTree.nodeTwoAncestors).toEqual([]);
+    });
+  });
+
+  describe("when both nodes have ancestors", () => {
+    var ancestorTree;
+
+    beforeEach(() => {
+      // Gives us a big enough DOM that we won't collide.
+      build_n_layer_dom(20);
+      ancestorTree = new Ancestors(
+        document.getElementById("child-2"),
+        document.getElementById("child-19"),
+      );
+    });
+
+    test("ensures nodeTwo returns a limited result", () => {
+      // FIXME
+      expect(ancestorTree.nodeTwoAncestors.length).toEqual(2);
+    });
+
+    test("ensures nodeOne and nodeTwo don't return the same elements", () => {
+      expect(ancestorTree.nodeOneAncestors).not.toEqual(ancestorTree.nodeTwoAncestors);
     });
   });
 });
