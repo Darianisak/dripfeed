@@ -2,7 +2,7 @@ module.exports = class Ancestors {
     #isElement = (element) => element instanceof Element;
     
     #nodeAncestors = (elem) => {
-        if (!elem instanceof Element) {
+        if (!(elem instanceof Element)) {
             throw new TypeError(`${elem} was not of type Element`);
         }
         
@@ -21,6 +21,7 @@ module.exports = class Ancestors {
             currentNode = parentNode;
             currentDepth++;
         }
+        return parentNodes
     }
 
     constructor(nodeOne, nodeTwo) {
