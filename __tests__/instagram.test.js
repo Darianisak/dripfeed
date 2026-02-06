@@ -3,14 +3,13 @@
 const find_common_ancestor = require("../ext/instagram");
 const build_n_layer_dom = require("./factory.html.js");
 
-
 describe(".find_common_ancestor", () => {
   var parentNode;
   var firstChildNode;
   var secondChildNode;
 
   beforeEach(() => {
-    build_n_layer_dom(depth = 2);
+    build_n_layer_dom((depth = 2));
     parentNode = document.getElementById("parent");
     firstChildNode = document.getElementById("child-0");
     secondChildNode = document.getElementById("child-1");
@@ -46,7 +45,7 @@ describe(".find_common_ancestor", () => {
 
   describe("#elements_are_related", () => {
     beforeEach(() => {
-      build_n_layer_dom(depth = 2);
+      build_n_layer_dom((depth = 2));
       parentNode = document.getElementById("parent");
       firstChildNode = document.getElementById("child-0");
       secondChildNode = document.getElementById("child-1");

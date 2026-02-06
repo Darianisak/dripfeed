@@ -27,18 +27,25 @@ function find_common_ancestor() {
       return false;
     }
 
-    if (element_a.parentElement == element_b || element_a == element_b.parentElement) { return false; }
+    if (
+      element_a.parentElement == element_b ||
+      element_a == element_b.parentElement
+    ) {
+      return false;
+    }
 
     var elem_a_layer_number = 0;
     var elem_b_layer_number = 0;
-    var current_a_node = element_a.parentElement
-    var current_b_node = element_b.parentElement
+    var current_a_node = element_a.parentElement;
+    var current_b_node = element_b.parentElement;
     // get three parents of elem_b
 
     // iterate thru elem_a and see if eqal
     while (elem_a_layer_number < 3) {
       while (elem_b_layer_number < 3) {
-        if (current_a_node == current_b_node) { return true; }
+        if (current_a_node == current_b_node) {
+          return true;
+        }
 
         current_b_node = current_b_node.parentElement;
         elem_b_layer_number++;
@@ -47,7 +54,6 @@ function find_common_ancestor() {
       elem_b_layer_number = 0;
       elem_a_layer_number++;
     }
-
 
     return false;
   };
