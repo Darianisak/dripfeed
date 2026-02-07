@@ -175,7 +175,9 @@ describe("#sharedAncestorsPresent", () => {
     
     test("ensures false returned with orphaned nodes (no ancestors)", () => {
       ancestorTree = new Ancestors(document.createElement("div"), document.createElement("div"));
-      expect(ancestorTree.)
+      // ancestorTree.nodeOneAncestors;
+      // ancestorTree.nodeTwoAncestors;
+      expect(ancestorTree.sharedAncestorsPresent()).toBeFalsy();
     });
   });
 

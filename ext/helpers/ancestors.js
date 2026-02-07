@@ -48,7 +48,7 @@ module.exports = class Ancestors {
   sharedAncestorsPresent() {
     const isEmpty = (nodes) => { nodes.length === 0 }
 
-    if (Array.from(this.ancestorsOne, this.ancestorsTwo).some(isEmpty)) {
+    if ([this.nodeOneAncestors, this.nodeTwoAncestors].some(isEmpty)) {
       return false;
     }
     return true;
