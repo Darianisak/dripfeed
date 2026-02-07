@@ -33,7 +33,7 @@ describe("#constructor", () => {
 
 describe("#ancestorNodes", () => {
   afterEach(() => {
-    document.getElementsByTagName('html')[0].innerHTML = ''; 
+    document.getElementsByTagName("html")[0].innerHTML = "";
   });
 
   describe("when the class is improperly called", () => {
@@ -115,8 +115,8 @@ describe("#ancestorNodes", () => {
       // Gives us a big enough DOM that we won't collide.
       build_n_layer_dom(20);
       ancestorTree = new Ancestors(
-        document.getElementById("child-2"),
         document.getElementById("child-19"),
+        document.getElementById("child-1"),
       );
     });
 
@@ -126,7 +126,17 @@ describe("#ancestorNodes", () => {
     });
 
     test("ensures nodeOne and nodeTwo don't return the same elements", () => {
-      expect(ancestorTree.nodeOneAncestors).not.toEqual(ancestorTree.nodeTwoAncestors);
+      expect(ancestorTree.nodeOneAncestors).not.toEqual(
+        ancestorTree.nodeTwoAncestors,
+      );
     });
   });
+});
+
+describe("#sharedAncestorsPresent", () => {
+  describe("with no ancestors", () => {
+    test("");
+  });
+
+  describe("with ancestors");
 });

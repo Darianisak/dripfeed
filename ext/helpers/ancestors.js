@@ -13,7 +13,8 @@ module.exports = class Ancestors {
     while (currentDepth < this.depth) {
       let parentNode = currentNode.parentNode;
 
-      if (!parentNode) {
+      // We don't want to be deleting body tags.
+      if (!parentNode || parentNode instanceof HTMLBodyElement) {
         break;
       }
 
@@ -31,6 +32,7 @@ module.exports = class Ancestors {
   }
 
   get nodeOneAncestors() {
+    // TODO - refactor opportunity to store as instance scope.
     return this.#nodeAncestors(this.nodeOne);
   }
 
@@ -38,8 +40,14 @@ module.exports = class Ancestors {
     return this.#nodeAncestors(this.nodeTwo);
   }
 
-  // TODO - func for returning all parents of nodeOne/Two
   sharedAncestorsPresent() {
-    // TODO
+    // TODO typeChecks
+    const nodeOneParents = this.nodeOneAncestors;
+    const nodeTwoParents = this.nodeTwoAncestors;
+    let nodeParentSet = Set(...nodeOneParents, ...nodeTwoParents);
+    if (nodeParentSet.size !== nodeOneParents.length + nodeTwoParents.length) {
+      return true;
+    }
+    return false;
   }
 };
