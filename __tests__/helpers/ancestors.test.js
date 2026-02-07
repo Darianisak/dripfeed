@@ -162,13 +162,20 @@ describe("#ancestorNodes", () => {
 });
 
 describe("#sharedAncestorsPresent", () => {
+  let ancestorTree;
+
+  afterEach(() => {
+    document.getElementsByTagName("html")[0].innerHTML = "";
+  });
+
   describe("with no ancestors", () => {
     test("ensures TypeError raised if no nodes", () => {
 
     });
     
-    test("ensures false returned with orphaned nodes", () => {
-
+    test("ensures false returned with orphaned nodes (no ancestors)", () => {
+      ancestorTree = new Ancestors(document.createElement("div"), document.createElement("div"));
+      expect(ancestorTree.)
     });
   });
 

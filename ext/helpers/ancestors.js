@@ -46,6 +46,13 @@ module.exports = class Ancestors {
   }
 
   sharedAncestorsPresent() {
+    const isEmpty = (nodes) => { nodes.length === 0 }
+
+    if (Array.from(this.ancestorsOne, this.ancestorsTwo).some(isEmpty)) {
+      return false;
+    }
+    return true;
+
     // TODO typeChecks
     const nodeOneParents = this.nodeOneAncestors;
     const nodeTwoParents = this.nodeTwoAncestors;
