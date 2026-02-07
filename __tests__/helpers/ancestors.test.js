@@ -135,8 +135,28 @@ describe("#ancestorNodes", () => {
 
 describe("#sharedAncestorsPresent", () => {
   describe("with no ancestors", () => {
-    test("");
+    test("ensures TypeError raised if no nodes", () => {
+
+    });
+    
+    test("ensures false returned with orphaned nodes", () => {
+
+    });
   });
 
-  describe("with ancestors");
+  describe("with no shared ancestors", () => {
+    test("ensures false is returned", () => {
+
+    });
+  });
+
+  describe("with shared ancestors", () => {
+    test("ensures false is returned if ancestors out of range", () => {
+
+    });
+
+    test("ensures true is returned when common ancestor found", () => {
+
+    });
+  });
 });
