@@ -1,4 +1,9 @@
 module.exports = class Ancestors {
+
+  depth = 3;
+  ancestorsOne;
+  ancestorsTwo;
+  
   #isElement = (element) => element instanceof Element;
 
   #nodeAncestors = (elem) => {
@@ -28,16 +33,16 @@ module.exports = class Ancestors {
   constructor(nodeOne, nodeTwo) {
     this.nodeOne = this.#isElement(nodeOne) ? nodeOne : null;
     this.nodeTwo = this.#isElement(nodeTwo) ? nodeTwo : null;
-    this.depth = 3;
   }
 
   get nodeOneAncestors() {
-    // TODO - refactor opportunity to store as instance scope.
-    return this.#nodeAncestors(this.nodeOne);
+    this.ancestorsOne ??= this.#nodeAncestors(this.nodeOne);
+    return this.ancestorsOne
   }
 
   get nodeTwoAncestors() {
-    return this.#nodeAncestors(this.nodeTwo);
+    this.ancestorsTwo ??= this.#nodeAncestors(this.nodeTwo);
+    return this.ancestorsTwo
   }
 
   sharedAncestorsPresent() {

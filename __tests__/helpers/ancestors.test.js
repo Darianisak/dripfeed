@@ -36,6 +36,34 @@ describe("#ancestorNodes", () => {
     document.getElementsByTagName("html")[0].innerHTML = "";
   });
 
+  describe("when mutation is attempted after creation", () => {
+    // Context block to ensure that ancestors ARE NOT re-derived on changes
+    // to the underlying target nodes, i.e., updating the instances nodeOne from
+    // id='root' to id='child-4' won't update the ancestors to be those of 'child-4'.
+    //
+    let ancestorTree;
+
+    beforeEach(() => {
+      build_n_layer_dom(10);
+      ancestorTree = new Ancestors(document.getElementById("child-1"), document.getElementById("child-8"));
+    });
+
+    test("ensures nodeOne's ancestors are immutable", () => {
+      let currentAncestors = ancestorTree.nodeOneAncestors;
+      ancestorTree.nodeOne = document.createElement("div");
+      expect(ancestorTree.nodeOne).toEqual(document.createElement("div"));
+      expect(ancestorTree.nodeOneAncestors).toEqual(currentAncestors);
+
+    });
+
+    test("ensures nodeTwo's ancestors are immutable", () => {
+      let currentAncestors = ancestorTree.nodeTwoAncestors;
+      ancestorTree.nodeTwo = document.createElement("div");
+      expect(ancestorTree.nodeTwo).toEqual(document.createElement("div"));
+      expect(ancestorTree.nodeTwoAncestors).toEqual(currentAncestors);
+    });
+  });
+
   describe("when the class is improperly called", () => {
     let ancestorTree;
 
