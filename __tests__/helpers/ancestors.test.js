@@ -230,21 +230,24 @@ describe("#sharedAncestor", () => {
       build_n_layer_dom(20);
     });
     
+    test("ensures an element on the same layer returns an ancestor", () => {
+      ancestorTree = new Ancestors(document.getElementById('child-10'), document.getElementById('child-10'));
+      expect(ancestorTree.sharedAncestor()).toEqual(ancestorTree.nodeOneAncestors[0])
+    });
+
     test("ensures an element within 1 layer is returned", () => {
       ancestorTree = new Ancestors(document.getElementById('child-10'), document.getElementById('child-9'));
-      expect(ancestorTree.sharedAncestor()).toEqual(document.getElementById("child-8"))
+      expect(ancestorTree.sharedAncestor()).toEqual(ancestorTree.nodeOneAncestors[1])
     });
 
     test("ensures an element within 2 layers is returned", () => {
-
+      ancestorTree = new Ancestors(document.getElementById('child-10'), document.getElementById('child-8'));
+      expect(ancestorTree.sharedAncestor()).toEqual(ancestorTree.nodeOneAncestors[2])
     });
 
     test("ensures an element within 3 layers is returned", () => {
-
-    });
-
-    test("ensures null is returned for a 4th layer 'match' as at limit", () => {
-
+      ancestorTree = new Ancestors(document.getElementById('child-10'), document.getElementById('child-7'));
+      expect(ancestorTree.sharedAncestor()).toBeNull();
     });
   });
 });
