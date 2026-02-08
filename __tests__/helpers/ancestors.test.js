@@ -169,21 +169,17 @@ describe("#sharedAncestorsPresent", () => {
   });
 
   describe("with no ancestors", () => {
-    test("ensures TypeError raised if no nodes", () => {
-
-    });
-    
-    test("ensures false returned with orphaned nodes (no ancestors)", () => {
+    test("ensures false returned for nodes with no ancestors", () => {
       ancestorTree = new Ancestors(document.createElement("div"), document.createElement("div"));
-      // ancestorTree.nodeOneAncestors;
-      // ancestorTree.nodeTwoAncestors;
       expect(ancestorTree.sharedAncestorsPresent()).toBeFalsy();
     });
   });
 
-  describe("with no shared ancestors", () => {
+  describe("with no shared ancestors within depth", () => {
     test("ensures false is returned", () => {
-
+      build_n_layer_dom(20);
+      ancestorTree = new Ancestors(document.getElementById('child-1'), document.getElementById('child-15'));
+      expect(ancestorTree.sharedAncestorsPresent()).toBeFalsy();
     });
   });
 

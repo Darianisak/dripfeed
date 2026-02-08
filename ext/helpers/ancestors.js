@@ -46,20 +46,25 @@ module.exports = class Ancestors {
   }
 
   sharedAncestorsPresent() {
-    const isEmpty = (nodes) => { nodes.length === 0 }
+    const ancestorsAreInvalid = (nodes) => {
+      if (!(nodes instanceof Array) || nodes.length === 0 ) {
+        
+        return true;
+      }
+      return false
+    };
 
-    if ([this.nodeOneAncestors, this.nodeTwoAncestors].some(isEmpty)) {
+    if (ancestorsAreInvalid(this.nodeOneAncestors) || ancestorsAreInvalid(this.nodeTwoAncestors)) {
       return false;
     }
-    return true;
 
-    // TODO typeChecks
-    const nodeOneParents = this.nodeOneAncestors;
-    const nodeTwoParents = this.nodeTwoAncestors;
-    let nodeParentSet = Set(...nodeOneParents, ...nodeTwoParents);
-    if (nodeParentSet.size !== nodeOneParents.length + nodeTwoParents.length) {
+    let ancestorNodeCount = this.nodeOneAncestors.length + this.nodeTwoAncestors.length;
+    
+    if (new Set([...this.nodeOneAncestors, ...this.nodeTwoAncestors]).size !== ancestorNodeCount) {
+      // A difference in length here should indicate shared node ancestors.
       return true;
     }
+
     return false;
   }
 };
