@@ -45,7 +45,10 @@ describe("#ancestorNodes", () => {
 
     beforeEach(() => {
       build_n_layer_dom(10);
-      ancestorTree = new Ancestors(document.getElementById("child-1"), document.getElementById("child-8"));
+      ancestorTree = new Ancestors(
+        document.getElementById("child-1"),
+        document.getElementById("child-8"),
+      );
     });
 
     test("ensures nodeOne's ancestors are immutable", () => {
@@ -53,7 +56,6 @@ describe("#ancestorNodes", () => {
       ancestorTree.nodeOne = document.createElement("div");
       expect(ancestorTree.nodeOne).toEqual(document.createElement("div"));
       expect(ancestorTree.nodeOneAncestors).toEqual(currentAncestors);
-
     });
 
     test("ensures nodeTwo's ancestors are immutable", () => {
@@ -170,25 +172,77 @@ describe("#sharedAncestorsPresent", () => {
 
   describe("with no ancestors", () => {
     test("ensures false returned for nodes with no ancestors", () => {
-      ancestorTree = new Ancestors(document.createElement("div"), document.createElement("div"));
-      expect(ancestorTree.sharedAncestorsPresent()).toBeFalsy();
-    });
-  });
-
-  describe("with no shared ancestors within depth", () => {
-    test("ensures false is returned", () => {
-      build_n_layer_dom(20);
-      ancestorTree = new Ancestors(document.getElementById('child-1'), document.getElementById('child-15'));
+      ancestorTree = new Ancestors(
+        document.createElement("div"),
+        document.createElement("div"),
+      );
       expect(ancestorTree.sharedAncestorsPresent()).toBeFalsy();
     });
   });
 
   describe("with shared ancestors", () => {
+    beforeEach(() => {
+      build_n_layer_dom(20);
+    });
+
     test("ensures false is returned if ancestors out of range", () => {
+      ancestorTree = new Ancestors(
+        document.getElementById("child-1"),
+        document.getElementById("child-15"),
+      );
+      expect(ancestorTree.sharedAncestorsPresent()).toBeFalsy();
+    });
+
+    test("ensures true is returned for nodes 1 layer apart", () => {
+      ancestorTree = new Ancestors(
+        document.getElementById("child-1"),
+        document.getElementById("child-2"),
+      );
+      expect(ancestorTree.sharedAncestorsPresent()).toBeTruthy();
+    });
+
+    test("ensures true is returned for nodes 3 layers (max) apart", () => {
+      ancestorTree = new Ancestors(
+        document.getElementById("child-1"),
+        document.getElementById("child-3"),
+      );
+      expect(ancestorTree.sharedAncestorsPresent()).toBeTruthy();
+    });
+  });
+});
+
+describe("#sharedAncestor", () => {
+  let ancestorTree;
+
+  afterEach(() => {
+    document.getElementsByTagName("html")[0].innerHTML = "";
+  });
+
+  describe("without shared ancestors", () => {
+    test("ensures a null value is returned", () => {
+      ancestorTree = new Ancestors(document.createElement("div"), document.createElement("div"));
+      expect(ancestorTree.sharedAncestor()).toBeNull();
+    });
+  });
+
+  describe("with shared ancestors", () => {
+    beforeEach(() => {
+      build_n_layer_dom(20);
+    });
+    
+    test("ensures an element within 1 layer is returned", () => {
+      ancestorTree = new Ancestors(document.getElementById('child-10'), document.getElementById('child-9'));
+    });
+
+    test("ensures an element within 2 layers is returned", () => {
 
     });
 
-    test("ensures true is returned when common ancestor found", () => {
+    test("ensures an element within 3 layers is returned", () => {
+
+    });
+
+    test("ensures null is returned for a 4th layer 'match' as at limit", () => {
 
     });
   });

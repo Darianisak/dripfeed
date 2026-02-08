@@ -1,9 +1,8 @@
 module.exports = class Ancestors {
-
   depth = 3;
   ancestorsOne;
   ancestorsTwo;
-  
+
   #isElement = (element) => element instanceof Element;
 
   #nodeAncestors = (elem) => {
@@ -37,34 +36,61 @@ module.exports = class Ancestors {
 
   get nodeOneAncestors() {
     this.ancestorsOne ??= this.#nodeAncestors(this.nodeOne);
-    return this.ancestorsOne
+    return this.ancestorsOne;
   }
 
   get nodeTwoAncestors() {
     this.ancestorsTwo ??= this.#nodeAncestors(this.nodeTwo);
-    return this.ancestorsTwo
+    return this.ancestorsTwo;
   }
 
   sharedAncestorsPresent() {
     const ancestorsAreInvalid = (nodes) => {
-      if (!(nodes instanceof Array) || nodes.length === 0 ) {
-        
+      if (!(nodes instanceof Array) || nodes.length === 0) {
         return true;
       }
-      return false
+      return false;
     };
 
-    if (ancestorsAreInvalid(this.nodeOneAncestors) || ancestorsAreInvalid(this.nodeTwoAncestors)) {
+    if (
+      ancestorsAreInvalid(this.nodeOneAncestors) ||
+      ancestorsAreInvalid(this.nodeTwoAncestors)
+    ) {
       return false;
     }
 
-    let ancestorNodeCount = this.nodeOneAncestors.length + this.nodeTwoAncestors.length;
-    
-    if (new Set([...this.nodeOneAncestors, ...this.nodeTwoAncestors]).size !== ancestorNodeCount) {
+    let ancestorNodeCount =
+      this.nodeOneAncestors.length + this.nodeTwoAncestors.length;
+
+    if (
+      new Set([...this.nodeOneAncestors, ...this.nodeTwoAncestors]).size !==
+      ancestorNodeCount
+    ) {
       // A difference in length here should indicate shared node ancestors.
       return true;
     }
 
     return false;
+  }
+
+  sharedAncestor() {
+    if (!this.sharedAncestorsPresent()) {
+      return null;
+    }
+
+    const elementIsShared = (elem, nodeList) => {
+      nodeList.includes(elem);
+    }
+
+    const sharedElement = this.nodeOneAncestors.forEach((elem) => {
+      if (elementIsShared(elem, this.nodeTwoAncestors)) {
+        return elem;
+      }
+    });
+
+    if (sharedElement === null) {
+      throw new TypeError();
+    }
+    return sharedElement;
   }
 };
