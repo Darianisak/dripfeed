@@ -89,7 +89,7 @@ module.exports = class Ancestors {
     });
 
     if (!(sharedElement instanceof Element)) {
-      throw new TypeError(`ancestor element was not found, despite existing.`);
+      throw new TypeError(`sharedAncestor unexpectedly failed to find an element.`);
     }
     return sharedElement;
   }

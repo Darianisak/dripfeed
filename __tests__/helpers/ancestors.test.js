@@ -151,7 +151,7 @@ describe("#ancestorNodes", () => {
     });
 
     test("ensures nodeTwo returns a limited result", () => {
-      // FIXME
+      // This is the result of hitting the '<body>' tag.
       expect(ancestorTree.nodeTwoAncestors.length).toEqual(2);
     });
 
