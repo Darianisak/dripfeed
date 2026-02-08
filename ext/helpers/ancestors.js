@@ -22,7 +22,7 @@ module.exports = class Ancestors {
         break;
       }
 
-      parentNodes.unshift(parentNode);
+      parentNodes.push(parentNode);
       currentNode = parentNode;
       currentDepth++;
     }
@@ -79,17 +79,17 @@ module.exports = class Ancestors {
     }
 
     const elementIsShared = (elem, nodeList) => {
-      nodeList.includes(elem);
+      return nodeList.includes(elem);
     }
 
-    const sharedElement = this.nodeOneAncestors.forEach((elem) => {
+    const sharedElement = this.nodeOneAncestors.find((elem) => {
       if (elementIsShared(elem, this.nodeTwoAncestors)) {
         return elem;
       }
     });
 
-    if (sharedElement === null) {
-      throw new TypeError();
+    if (!(sharedElement instanceof Element)) {
+      throw new TypeError(`ancestor element was not found, despite existing.`);
     }
     return sharedElement;
   }

@@ -126,9 +126,9 @@ describe("#ancestorNodes", () => {
 
     test("ensures expected elements are returned", () => {
       const expectedElements = [
-        document.getElementById("child-1"),
-        document.getElementById("child-2"),
         document.getElementById("child-3"),
+        document.getElementById("child-2"),
+        document.getElementById("child-1"),
       ];
       expect(ancestorTree.nodeOneAncestors).toEqual(expectedElements);
     });
@@ -232,6 +232,7 @@ describe("#sharedAncestor", () => {
     
     test("ensures an element within 1 layer is returned", () => {
       ancestorTree = new Ancestors(document.getElementById('child-10'), document.getElementById('child-9'));
+      expect(ancestorTree.sharedAncestor()).toEqual(document.getElementById("child-8"))
     });
 
     test("ensures an element within 2 layers is returned", () => {
