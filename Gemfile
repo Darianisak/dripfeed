@@ -8,3 +8,5 @@ gem "capybara", "~> 3.40"
 gem "debug", "~> 1.11"
 gem "vcr", "~> 6.4"
 gem "stringio", "~> 3.2.0" 
+
+gem "selenium-webdriver", "~> 4.40"

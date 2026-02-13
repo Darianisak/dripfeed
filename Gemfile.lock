@@ -3,6 +3,7 @@ GEM
   specs:
     addressable (2.8.8)
       public_suffix (>= 2.0.2, < 8.0)
+    base64 (0.3.0)
     capybara (3.40.0)
       addressable
       matrix
@@ -23,6 +24,7 @@ GEM
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
+    logger (1.7.0)
     matrix (0.4.3)
     mini_mime (1.1.5)
     nokogiri (1.19.0-x86_64-darwin)
@@ -45,6 +47,7 @@ GEM
     regexp_parser (2.11.3)
     reline (0.6.3)
       io-console (~> 0.5)
+    rexml (3.4.4)
     rspec (3.13.2)
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
@@ -58,9 +61,17 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
     rspec-support (3.13.7)
+    rubyzip (3.2.2)
+    selenium-webdriver (4.40.0)
+      base64 (~> 0.2)
+      logger (~> 1.4)
+      rexml (~> 3.2, >= 3.2.5)
+      rubyzip (>= 1.2.2, < 4.0)
+      websocket (~> 1.0)
     stringio (3.2.0)
     tsort (0.2.0)
     vcr (6.4.0)
+    websocket (1.2.11)
     xpath (3.2.0)
       nokogiri (~> 1.8)
 
@@ -71,6 +82,7 @@ DEPENDENCIES
   capybara (~> 3.40)
   debug (~> 1.11)
   rspec (~> 3.13)
+  selenium-webdriver (~> 4.40)
   stringio (~> 3.2.0)
   vcr (~> 6.4)
 
