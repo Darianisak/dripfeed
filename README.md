@@ -18,15 +18,24 @@ cd dripfeed
 npm ci
 ```
 
+### Formatting and linting
+
 Once you've made changes, you can:
 
 - Ensure `prettier` formatting is applied with `npm run format`
-- Run `jest` tests with `npm run test`
 - Use `eslint` with `npm run lint`
+
+### Building
+
+The extension ZIP can be built with:
+
+```bash
+npm run build
+```
 
 ### Technologies
 
-This project uses
+This project uses:
 
 - [`eslint`][eslint] for JavaScript code quality enforcement.
 - [`jest`][jest] for unit testing.
