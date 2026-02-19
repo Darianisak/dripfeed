@@ -82,7 +82,7 @@ class Ancestors {
 
     const elementIsShared = (elem, nodeList) => {
       return nodeList.includes(elem);
-    }
+    };
 
     const sharedElement = this.nodeOneAncestors.find((elem) => {
       if (elementIsShared(elem, this.nodeTwoAncestors)) {
@@ -91,8 +91,10 @@ class Ancestors {
     });
 
     if (!(sharedElement instanceof Element)) {
-      throw new TypeError(`sharedAncestor unexpectedly failed to find an element.`);
+      throw new TypeError(
+        `sharedAncestor unexpectedly failed to find an element.`,
+      );
     }
     return sharedElement;
   }
-};
+}

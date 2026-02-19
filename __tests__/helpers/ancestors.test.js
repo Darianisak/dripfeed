@@ -1,5 +1,6 @@
 "use strict";
 
+import { describe, test, expect, afterEach, beforeEach } from "@jest/globals";
 import { Ancestors } from "../../ext/helpers/ancestors.js";
 import { build_n_layer_dom } from "../factory.html.js";
 
@@ -220,7 +221,10 @@ describe("#sharedAncestor", () => {
 
   describe("without shared ancestors", () => {
     test("ensures a null value is returned", () => {
-      ancestorTree = new Ancestors(document.createElement("div"), document.createElement("div"));
+      ancestorTree = new Ancestors(
+        document.createElement("div"),
+        document.createElement("div"),
+      );
       expect(ancestorTree.sharedAncestor()).toBeNull();
     });
   });
@@ -229,24 +233,42 @@ describe("#sharedAncestor", () => {
     beforeEach(() => {
       build_n_layer_dom(20);
     });
-    
+
     test("ensures an element on the same layer returns an ancestor", () => {
-      ancestorTree = new Ancestors(document.getElementById('child-10'), document.getElementById('child-10'));
-      expect(ancestorTree.sharedAncestor()).toEqual(ancestorTree.nodeOneAncestors[0])
+      ancestorTree = new Ancestors(
+        document.getElementById("child-10"),
+        document.getElementById("child-10"),
+      );
+      expect(ancestorTree.sharedAncestor()).toEqual(
+        ancestorTree.nodeOneAncestors[0],
+      );
     });
 
     test("ensures an element within 1 layer is returned", () => {
-      ancestorTree = new Ancestors(document.getElementById('child-10'), document.getElementById('child-9'));
-      expect(ancestorTree.sharedAncestor()).toEqual(ancestorTree.nodeOneAncestors[1])
+      ancestorTree = new Ancestors(
+        document.getElementById("child-10"),
+        document.getElementById("child-9"),
+      );
+      expect(ancestorTree.sharedAncestor()).toEqual(
+        ancestorTree.nodeOneAncestors[1],
+      );
     });
 
     test("ensures an element within 2 layers is returned", () => {
-      ancestorTree = new Ancestors(document.getElementById('child-10'), document.getElementById('child-8'));
-      expect(ancestorTree.sharedAncestor()).toEqual(ancestorTree.nodeOneAncestors[2])
+      ancestorTree = new Ancestors(
+        document.getElementById("child-10"),
+        document.getElementById("child-8"),
+      );
+      expect(ancestorTree.sharedAncestor()).toEqual(
+        ancestorTree.nodeOneAncestors[2],
+      );
     });
 
     test("ensures an element within 3 layers is returned", () => {
-      ancestorTree = new Ancestors(document.getElementById('child-10'), document.getElementById('child-7'));
+      ancestorTree = new Ancestors(
+        document.getElementById("child-10"),
+        document.getElementById("child-7"),
+      );
       expect(ancestorTree.sharedAncestor()).toBeNull();
     });
   });
