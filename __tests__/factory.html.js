@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = build_n_layer_dom;
+export { build_n_layer_dom };
 
 function build_n_layer_dom(depth = 5) {
   const rootNode = document.createElement("div");
