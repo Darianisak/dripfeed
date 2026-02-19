@@ -17,10 +17,7 @@ const config = {
   coverageDirectory: "coverage",
 
   // If the file path matches any of the patterns, coverage information will be skipped.
-  coveragePathIgnorePatterns: [
-    ".*/__tests__/factory..*.js",
-    ".*/node_modules",
-  ],
+  coveragePathIgnorePatterns: [".*/__tests__/factory..*.js", ".*/node_modules"],
 
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: "v8",
