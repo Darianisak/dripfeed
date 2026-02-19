@@ -1,7 +1,7 @@
 "use strict";
 
-const Ancestors = require("../../ext/helpers/ancestors.js");
-const build_n_layer_dom = require("../factory.html.js");
+import { Ancestors } from "../../ext/helpers/ancestors.js";
+import { build_n_layer_dom } from "../factory.html.js";
 
 describe("#constructor", () => {
   describe("type validations", () => {

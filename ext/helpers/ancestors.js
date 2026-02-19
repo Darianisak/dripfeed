@@ -1,4 +1,6 @@
-module.exports = class Ancestors {
+export { Ancestors };
+
+class Ancestors {
   depth = 3;
   ancestorsOne;
   ancestorsTwo;
