@@ -1,0 +1,26 @@
+---
+name: Test Workflow
+
+# yamllint disable-line rule:truthy
+on:
+  - pull_request
+  - push
+
+jobs:
+  jest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install NPM dependencies
+        run: npm ci
+
+      - name: Run Jest tests
+        run: npx jest --ci --json --coverage --testLocationInResults --outputFile=report.json
+
+      - name: Publish Jest coverage reports
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          coverage-file: report.json
+          base-coverage-file: report.json
+        if: github.event_name == 'pull_request'

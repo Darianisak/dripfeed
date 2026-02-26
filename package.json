@@ -14,6 +14,7 @@
     "firefox": "npx web-ext run --source-dir ./ext/",
     "build": "npx web-ext build --source-dir ./ext/ --artifacts-dir ./build",
     "format": "prettier --check --config ./.prettierrc --write .",
-    "lint": "npx eslint --color --fix --config eslint.config.mjs ."
+    "lint": "npx eslint --color --fix --config eslint.config.mjs .",
+    "yaml": "source pydeps/bin/activate && yamllint --config-file .yamllint --strict ."
   }
 }

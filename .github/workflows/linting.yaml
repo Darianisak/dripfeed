@@ -1,0 +1,30 @@
+---
+name: Linting Workflow
+
+# yamllint disable-line rule:truthy
+on:
+  - pull_request
+  - push
+
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install NPM dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npx eslint --color --config eslint.config.mjs .
+
+  yamllint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install Python dependencies
+        run: pip3 install --requirement requirements.txt
+
+      - name: Run YAMLLint
+        run: yamllint --config-file .yamllint --strict .
