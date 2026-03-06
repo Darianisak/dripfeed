@@ -62,3 +62,15 @@ This project uses:
 [eslint]: https://eslint.org/
 [yamllint]: https://yamllint.readthedocs.io/en/stable/configuration.html
 [venv]: https://docs.python.org/3/library/venv.html
+
+
+# sinatra notes
+
+todo! link to Gem, Bundle, Sinatra docs.
+
+```
+./bin/bundle install
+./bin/bundle exec ruby sinatra.rb
+
+open localhost:4567
+```
