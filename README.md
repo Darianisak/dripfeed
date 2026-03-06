@@ -70,7 +70,14 @@ todo! link to Gem, Bundle, Sinatra docs.
 
 ```
 ./bin/bundle install
+./bin/bundle binstubs --all
 ./bin/bundle exec ruby sinatra.rb
 
 open localhost:4567
 ```
+
+rspec
+```
+./bin/bundle exec rspec
+```
+
