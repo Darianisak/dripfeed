@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require 'sinatra'
-set :views, File.expand_path('views', __dir__)
-# set :public_folder, File.expand_path('ext', __dir__)
+require "sinatra"
+set :views, File.expand_path("views", __dir__)
+set :public_folder, File.expand_path("ext", __dir__)
 
-get '/' do
-  'Hello world!'
+get "/" do
+  "Hello world!"
 end
 
-get '/test' do
+get "/test" do
   erb :test
 end
 

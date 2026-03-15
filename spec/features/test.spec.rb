@@ -16,8 +16,9 @@ RSpec.describe "Fixture Concept", type: :feature do
 
   context "has_text" do
     it "ensures that expected welcome message is present" do
+      expect(page).to have_text "Hello from the Test View!"
     end
   end
 
-  context "removeNode test"
+  context "removeNode"
 end
