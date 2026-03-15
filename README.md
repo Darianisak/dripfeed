@@ -79,6 +79,18 @@ Or, if you'd like to run these tests with a debugger directive, use:
 ./bin/bundle exec rdbg -- ./bin/bundle exec rspec
 ```
 
+If you'd like to run the Sinatra server so that you can view your fixtures:
+
+``` bash
+./bin/bundle exec ruby sinatra.rb
+```
+
+And then:
+
+``` bash
+open http://localhost:4567/
+```
+
 ### Building
 
 The extension ZIP can be built with:

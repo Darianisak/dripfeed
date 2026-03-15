@@ -21,3 +21,7 @@ plugins:
   - rubocop-rspec
   - rubocop-capybara
   - rubocop-performance
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
