@@ -51,6 +51,7 @@ Once you've made changes, you can:
 - Ensure `prettier` formatting is applied with `npm run format`.
 - Use `eslint` with `npm run lint`.
 - Use `yamllint` with `npm run yaml`.
+- Use `rubocop` with `npm run rubocop` to format and lint Ruby test code.
 
 ### Testing
 
@@ -64,6 +65,31 @@ npm run test
 
 Tests are most easily debugged with VSCode's "JavaScript Debug Terminal".
 
+#### Ruby
+
+Ruby browser integration tests can be run with:
+
+```bash
+npm run rspec
+```
+
+Or, if you'd like to run these tests with a debugger directive, use:
+
+```bash
+./bin/bundle exec rdbg -- ./bin/bundle exec rspec
+```
+
+If you'd like to run the Sinatra server so that you can view your fixtures:
+
+```bash
+./bin/bundle exec ruby sinatra.rb
+```
+
+And then:
+
+```bash
+open http://localhost:4567/
+```
 
 ### Building
 
@@ -83,6 +109,9 @@ This project uses:
 - [`web-ext`][web-ext] for extension testing.
 - [`yamllint`][yamllint] for YAML linting.
 - [`mise`][mise] to manage Ruby installations.
+- [`rubocop`][rubocop] to enforce Ruby best-practice.
+- [`sinatra`][sinatra] for serving test fixtures.
+- [`rspec`][rspec] and [`capybara`][capybara] for atomic integration tests.
 
 <!-- Links -->
 
@@ -94,3 +123,7 @@ This project uses:
 [yamllint]: https://yamllint.readthedocs.io/en/stable/configuration.html
 [venv]: https://docs.python.org/3/library/venv.html
 [mise]: https://mise.jdx.dev/getting-started.html
+[rubocop]: https://rubocop.org/
+[sinatra]: https://sinatrarb.com/
+[rspec]: https://rspec.info/
+[capybara]: https://github.com/teamcapybara/capybara?tab=readme-ov-file#capybara
