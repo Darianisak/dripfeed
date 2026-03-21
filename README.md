@@ -1,7 +1,7 @@
 # dripfeed
 
-`dripfeed` is a Firefox browser extension which manipulates DOM elements of
-social media websites, helping stem the tide of content that we're exposed to.
+`dripfeed` is a browser extension which manipulates DOM elements of social
+media websites, helping stem the tide of content that we're exposed to.
 
 ## Development
 
@@ -48,9 +48,22 @@ Check out the installation docs, [here][mise].
 
 Once you've made changes, you can:
 
-- Ensure `prettier` formatting is applied with `npm run format`
-- Use `eslint` with `npm run lint`
-- Use `yamllint` with `npm run yaml`
+- Ensure `prettier` formatting is applied with `npm run format`.
+- Use `eslint` with `npm run lint`.
+- Use `yamllint` with `npm run yaml`.
+
+### Testing
+
+#### JavaScript
+
+JavaScript unit tests can be run with:
+
+```bash
+npm run test
+```
+
+Tests are most easily debugged with VSCode's "JavaScript Debug Terminal".
+
 
 ### Building
 
