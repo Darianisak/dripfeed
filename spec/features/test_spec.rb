@@ -23,8 +23,8 @@ RSpec.describe "Fixture Concept", type: :feature do
     end
 
     context "with RemoveNode.operate() called." do
-      let(:element_one) { "document.getElementById('span-content')" }
-      let(:element_two) { "document.getElementById('paragraph-content')" }
+      let(:element_one) { "'span-content'" }
+      let(:element_two) { "'paragraph-content'" }
 
       before do
         # Here's the PoC call - using our tooling to programmaticaly remove chunks of the DOM tree.
