@@ -8,8 +8,8 @@ import {
   afterEach,
   beforeEach,
 } from "@jest/globals";
-import { RemoveNode } from "../../ext/helpers/removeNode";
-import { Ancestors } from "../../ext/helpers/ancestors";
+import { RemoveNode } from "../../ext/helpers/removeNode.js";
+import { Ancestors } from "../../ext/helpers/ancestors.js";
 import { build_tree_dom } from "../factory.html";
 
 describe("#constructor", () => {

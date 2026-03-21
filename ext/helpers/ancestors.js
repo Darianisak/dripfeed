@@ -1,5 +1,3 @@
-export { Ancestors };
-
 class Ancestors {
   depth = 3;
   ancestorsOne;
@@ -98,3 +96,6 @@ class Ancestors {
     return sharedElement;
   }
 }
+
+export { Ancestors };
+window.Ancestors = Ancestors;
