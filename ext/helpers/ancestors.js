@@ -1,7 +1,12 @@
+// Ancestor instances may be provided with either Element Ids, or
+// literal Element.
+//
 class Ancestors {
   depth = 3;
   ancestorsOne;
   ancestorsTwo;
+
+  #isElementId = (selector) => document.getElementById(selector);
 
   #isElement = (element) => element instanceof Element;
 
@@ -32,6 +37,16 @@ class Ancestors {
   constructor(nodeOne, nodeTwo) {
     this.nodeOne = this.#isElement(nodeOne) ? nodeOne : null;
     this.nodeTwo = this.#isElement(nodeTwo) ? nodeTwo : null;
+
+    if (!this.nodeOne) {
+      const elementById = this.#isElementId(nodeOne);
+      this.nodeOne = elementById ? elementById : null;
+    }
+
+    if (!this.nodeTwo) {
+      const elementById = this.#isElementId(nodeTwo);
+      this.nodeTwo = elementById ? elementById : null;
+    }
   }
 
   get nodeOneAncestors() {

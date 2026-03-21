@@ -6,28 +6,56 @@ import { build_n_layer_dom } from "../factory.html.js";
 
 describe("#constructor", () => {
   describe("type validations", () => {
-    test("ensures nodeOne will be nulled if not passed an Element", () => {
-      expect(
-        new Ancestors("", document.createElement("div")).nodeOne,
-      ).toBeNull();
+    describe("element arguments rather than element ids", () => {
+      test("ensures nodeOne contains the original element", () => {
+        build_n_layer_dom(2);
+        const node = document.getElementById("child-0");
+        expect(new Ancestors(node, "").nodeOne).toEqual(node);
+      });
+
+      test("ensures nodeTwo contains the original element", () => {
+        build_n_layer_dom(2);
+        const node = document.getElementById("child-1");
+        expect(new Ancestors("", node).nodeTwo).toEqual(node);
+      });
+
+      test("ensures nodeOne will be nulled if not passed an Element", () => {
+        expect(
+          new Ancestors("", document.createElement("div")).nodeOne,
+        ).toBeNull();
+      });
+
+      test("ensures nodeTwo will be nulled if not passed an Element", () => {
+        expect(
+          new Ancestors(document.createElement("div"), "").nodeTwo,
+        ).toBeNull();
+      });
     });
 
-    test("ensures nodeTwo will be nulled if not passed an Element", () => {
-      expect(
-        new Ancestors(document.createElement("div"), "").nodeTwo,
-      ).toBeNull();
-    });
+    describe("element id arguments rather than elements", () => {
+      beforeEach(() => {
+        build_n_layer_dom(3);
+      });
 
-    test("ensures nodeOne contains the original element", () => {
-      build_n_layer_dom(2);
-      const node = document.getElementById("child-0");
-      expect(new Ancestors(node, "").nodeOne).toEqual(node);
-    });
+      test("ensures nodeOne will have the correct Element if provided a valid ID", () => {
+        expect(new Ancestors("child-1", "").nodeOne).toEqual(
+          document.getElementById("child-1"),
+        );
+      });
 
-    test("ensures nodeTwo contains the original element", () => {
-      build_n_layer_dom(2);
-      const node = document.getElementById("child-1");
-      expect(new Ancestors("", node).nodeTwo).toEqual(node);
+      test("ensures nodeTwo will have the correct Element if provided a valid ID", () => {
+        expect(new Ancestors("", "child-2").nodeTwo).toEqual(
+          document.getElementById("child-2"),
+        );
+      });
+
+      test("ensures nodeOne will be nulled if the ID is invalid", () => {
+        expect(new Ancestors("an-invalid-id", "child-1").nodeOne).toBeNull();
+      });
+
+      test("ensures nodeTwo will be nulled if the ID is invalid", () => {
+        expect(new Ancestors("child-1", "an-invalid-id").nodeTwo).toBeNull();
+      });
     });
   });
 });
