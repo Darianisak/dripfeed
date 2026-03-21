@@ -1,5 +1,4 @@
-import { Ancestors } from "./ancestors";
-export { RemoveNode };
+import { Ancestors } from "./ancestors.js";
 
 class RemoveNode {
   nodeTree;
@@ -30,3 +29,6 @@ class RemoveNode {
     ancestor.remove();
   }
 }
+
+export { RemoveNode };
+window.RemoveNode = RemoveNode;
