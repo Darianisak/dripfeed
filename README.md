@@ -27,6 +27,23 @@ source pydeps/bin/activate
 pip3 install --requirement requirements.txt
 ```
 
+And finally, to ensure that you can run the full test suite, you'll need to
+install our Ruby dependencies:
+
+<details>
+<summary>But what if Ruby isn't installed?</summary>
+
+This project assumes that Ruby will be installed and managed via `mise`.
+
+Check out the installation docs, [here][mise].
+
+</details>
+
+```bash
+./bin/bundle install
+
+```
+
 ### Formatting and linting
 
 Once you've made changes, you can:
@@ -52,6 +69,7 @@ This project uses:
 - [`prettier`][prettier] for JavaScript formatting.
 - [`web-ext`][web-ext] for extension testing.
 - [`yamllint`][yamllint] for YAML linting.
+- [`mise`][mise] to manage Ruby installations.
 
 <!-- Links -->
 
@@ -62,3 +80,4 @@ This project uses:
 [eslint]: https://eslint.org/
 [yamllint]: https://yamllint.readthedocs.io/en/stable/configuration.html
 [venv]: https://docs.python.org/3/library/venv.html
+[mise]: https://mise.jdx.dev/getting-started.html
