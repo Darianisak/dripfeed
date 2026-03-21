@@ -28,3 +28,18 @@ jobs:
 
       - name: Run YAMLLint
         run: yamllint --config-file .yamllint --strict .
+
+  rubocop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Show affected files
+        run: bundle exec rubocop --config ./.rubocop.yml --list-target-files .
+
+      - name: Run RuboCop
+        run: bundle exec rubocop --raise-cop-error --extra-details --config ./.rubocop.yml .
