@@ -23,12 +23,9 @@ RSpec.describe "Fixture Concept", type: :feature do
     end
 
     context "with RemoveNode.operate() called." do
-      let(:element_one) { "'span-content'" }
-      let(:element_two) { "'paragraph-content'" }
-
       before do
         # Here's the PoC call - using our tooling to programmaticaly remove chunks of the DOM tree.
-        page.evaluate_script("new RemoveNode(new Ancestors(#{element_one}, #{element_two})).operate()")
+        page.evaluate_script("new RemoveNode('span-content', 'paragraph-content').operate()")
       end
 
       it "ensures the welcome message is not removed" do
