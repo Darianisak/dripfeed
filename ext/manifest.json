@@ -12,8 +12,8 @@
 
   "content_scripts": [
     {
-      "matches": ["*://*.instagram.com/*"],
-      "js": ["instagram.js"]
+      "matches": ["*://*.instagram.com/*", "*://reddit.com/*"],
+      "js": ["instagram.js", "reddit.js"]
     }
   ]
 }

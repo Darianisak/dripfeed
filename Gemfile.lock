@@ -38,6 +38,7 @@ GEM
     mcp (0.8.0)
       json-schema (>= 4.1)
     mini_mime (1.1.5)
+    multi_json (1.19.1)
     mustermann (3.0.4)
       ruby2_keywords (~> 0.0.1)
     nio4r (2.7.5)
@@ -137,6 +138,12 @@ GEM
       rack-protection (= 4.2.1)
       rack-session (>= 2.0.0, < 3)
       tilt (~> 2.0)
+    sinatra-contrib (4.2.1)
+      multi_json (>= 0.0.2)
+      mustermann (~> 3.0)
+      rack-protection (= 4.2.1)
+      sinatra (= 4.2.1)
+      tilt (~> 2.0)
     stringio (3.2.0)
     tilt (2.7.0)
     tsort (0.2.0)
@@ -165,6 +172,7 @@ DEPENDENCIES
   rubocop-rspec (~> 3.9)
   selenium-webdriver (~> 4.41)
   sinatra (~> 4.2)
+  sinatra-contrib (~> 4.2)
   stringio (~> 3.2)
 
 BUNDLED WITH

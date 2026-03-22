@@ -29,3 +29,5 @@ gem "rubocop-capybara", "~> 2.22"
 gem "rubocop-rspec", "~> 3.9"
 
 gem "rubocop-performance", "~> 1.26"
+
+gem "sinatra-contrib", "~> 4.2"
