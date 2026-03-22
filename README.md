@@ -82,14 +82,28 @@ Or, if you'd like to run these tests with a debugger directive, use:
 If you'd like to run the Sinatra server so that you can view your fixtures:
 
 ```bash
-./bin/bundle exec ruby sinatra.rb
+npm run sinatra
 ```
 
 And then:
 
 ```bash
-open http://localhost:4567/
+open http://localhost:4567/${ROUTE_NAME}
 ```
+
+#### Creating New Site Mocks
+
+If you'd like to create atomic removal tests for a new page or website:
+
+- Head to the page.
+- Download the pages HTML content. This could be done with `curl`, too.
+- Save the content in a meaningful location within `view/`.
+- Change the file extension from `.html` to `.erb`.
+- Add a route in `sinatra.rb`.
+- Add a script tag to the HTML document's `<head>` to load the desired JavaScript
+  module. I.e., `<script type="module" src="/helpers/removeNode.js"></script>`.
+
+With the HTML fixture set up, go ahead and add new tests under `spec/features/*`.
 
 ### Building
 
