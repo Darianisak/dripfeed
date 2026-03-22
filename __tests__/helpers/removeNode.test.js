@@ -159,14 +159,10 @@ describe("#operate", () => {
 
   describe("node removal dom mutations, given a valid ancestor", () => {
     var removeNode;
-    var nodeOne;
-    var nodeTwo;
 
     beforeEach(() => {
       build_tree_dom();
-      nodeOne = document.getElementById("layer-2_index-1");
-      nodeTwo = document.getElementById("layer-2_index-2");
-      removeNode = new RemoveNode(new Ancestors(nodeOne, nodeTwo));
+      removeNode = new RemoveNode("layer-2_index-1", "layer-2_index-2");
     });
 
     afterEach(() => {
