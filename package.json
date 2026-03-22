@@ -17,6 +17,7 @@
     "lint": "npx eslint --color --fix --config eslint.config.mjs .",
     "yaml": "source pydeps/bin/activate && yamllint --config-file .yamllint --strict .",
     "rubocop": "./bin/bundle exec rubocop --autocorrect --raise-cop-error --extra-details --config ./.rubocop.yml .",
-    "rspec": "./bin/bundle exec rspec"
+    "rspec": "./bin/bundle exec rspec",
+    "sinatra": "./bin/bundle exec ruby sinatra.rb"
   }
 }
