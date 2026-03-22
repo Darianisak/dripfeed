@@ -10,18 +10,65 @@ import {
 } from "@jest/globals";
 import { RemoveNode } from "../../ext/helpers/removeNode.js";
 import { Ancestors } from "../../ext/helpers/ancestors.js";
-import { build_tree_dom } from "../factory.html";
+import { build_n_layer_dom, build_tree_dom } from "../factory.html";
 
 describe("#constructor", () => {
   describe("type validations", () => {
-    test("ensures nodeTree is nulled, given an invalid tree", () => {
-      expect(new RemoveNode("helloWorld").nodeTree).toBeNull();
+    describe("when arguments are Ancestor trees", () => {
+      test("ensures nodeTree is nulled, given an invalid tree", () => {
+        expect(new RemoveNode("helloWorld").nodeTree).toBeNull();
+      });
+
+      test("ensures nodeTree is an Ancestors tree, given a valid tree", () => {
+        expect(new RemoveNode(new Ancestors()).nodeTree).toBeInstanceOf(
+          Ancestors,
+        );
+      });
     });
 
-    test("ensures nodeTree is an Ancestors tree, given a valid tree", () => {
-      expect(new RemoveNode(new Ancestors()).nodeTree).toBeInstanceOf(
-        Ancestors,
-      );
+    describe("when arguments are selectors and elements", () => {
+      beforeEach(() => {
+        build_n_layer_dom(3);
+      });
+
+      afterEach(() => {
+        document.getElementsByTagName("html")[0].innerHTML = "";
+      });
+
+      test("ensures nodeTrees are constructed from IDs", () => {
+        expect(new RemoveNode("child-1", "child-2").nodeTree).toBeInstanceOf(
+          Ancestors,
+        );
+      });
+
+      test("ensures nodeTrees are constructed from DOM Elements", () => {
+        const elementOne = document.getElementById("child-1");
+        const elementTwo = document.getElementById("child-2");
+        expect(new RemoveNode(elementOne, elementTwo).nodeTree).toBeInstanceOf(
+          Ancestors,
+        );
+      });
+
+      test("ensures nodeTrees are constructed from mixed IDs and Elements", () => {
+        const elementTwo = document.getElementById("child-2");
+        expect(new RemoveNode("child-1", elementTwo).nodeTree).toBeInstanceOf(
+          Ancestors,
+        );
+      });
+    });
+
+    describe("when provided arguments are invalid", () => {
+      test("ensures nodeTree is nulled if three args are passed", () => {
+        expect(new RemoveNode("one", "two", "three").nodeTree).toBeNull();
+      });
+
+      test("ensures a SyntaxError is raised if no args are passed", () => {
+        expect(() => new RemoveNode()).toThrow(SyntaxError);
+      });
+
+      test("ensures nodeTree is nulled if one - non-tree - arg is passed", () => {
+        expect(new RemoveNode("one").nodeTree).toBeNull();
+      });
     });
   });
 });
