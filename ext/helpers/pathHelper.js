@@ -3,7 +3,9 @@
 //
 function getDomain(document) {
   if (!(document instanceof HTMLDocument)) {
-    throw new TypeError("getDomain expected argument of type HTMLDocument");
+    throw new TypeError(
+      `getDomain expected argument of type HTMLDocument. Found ${typeof document}`,
+    );
   }
 
   return document.location.hostname;
@@ -14,7 +16,9 @@ function getDomain(document) {
 //
 function getPathname(document) {
   if (!(document instanceof HTMLDocument)) {
-    throw new TypeError("getDomain expected argument of type HTMLDocument");
+    throw new TypeError(
+      `getPathname expected argument of type HTMLDocument. Found ${typeof document}`,
+    );
   }
 
   return document.location.pathname;

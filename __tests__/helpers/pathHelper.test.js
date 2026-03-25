@@ -8,6 +8,12 @@ describe(".getPathname", () => {
     test("ensures that invalid args raise TypeError", () => {
       expect(() => getPathname("helloWorld")).toThrow(TypeError);
     });
+
+    test("ensures that invalid args raise TypeError message", () => {
+      expect(() => getPathname("helloWorld")).toThrow(
+        "getPathname expected argument of type HTMLDocument. Found string",
+      );
+    });
   });
 
   describe("return data", () => {
@@ -21,6 +27,12 @@ describe(".getDomain", () => {
   describe("argument validation", () => {
     test("ensures that invalid args raise TypeError", () => {
       expect(() => getDomain("helloWorld")).toThrow(TypeError);
+    });
+
+    test("ensures that invalid args raise TypeError message", () => {
+      expect(() => getDomain("helloWorld")).toThrow(
+        "getDomain expected argument of type HTMLDocument. Found string",
+      );
     });
   });
 
