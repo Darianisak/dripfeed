@@ -13,7 +13,8 @@
   "content_scripts": [
     {
       "matches": ["*://*.instagram.com/*", "*://reddit.com/*"],
-      "js": ["instagram.js", "reddit.js"]
+      "js": ["instagram.js", "reddit.js"],
+      "run_at": "document_start"
     }
   ]
 }
