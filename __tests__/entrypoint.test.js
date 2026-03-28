@@ -1,0 +1,89 @@
+"use strict";
+
+import {
+  describe,
+  test,
+  expect,
+  jest,
+  afterEach,
+  beforeEach,
+} from "@jest/globals";
+
+import { extensionRouting } from "../ext/entrypoint.js";
+import * as helpers from "../ext/helpers/pathHelper.js";
+
+describe("dripfeed initialisation lifecycle", () => {
+  let consoleSpy;
+
+  beforeEach(() => {
+    consoleSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleSpy.mockRestore();
+  });
+
+  describe("Listener registrations", () => {
+    let documentSpy;
+
+    afterEach(() => {
+      documentSpy.mockRestore();
+    });
+
+    test("ensures registration on 'DOMContentLoaded'", () => {
+      documentSpy = jest.spyOn(document, "addEventListener");
+
+      jest.isolateModules(() => {
+        require("../ext/entrypoint.js");
+      });
+
+      expect(documentSpy).toHaveBeenCalledWith(
+        "DOMContentLoaded",
+        expect.any(Function),
+      );
+    });
+
+    test("ensures routing function executed post registration", () => {
+      documentSpy = jest.spyOn(document, "addEventListener");
+
+      // Because our eventListener callback is an anonymous function, it's
+      // tricky to determine if the 'real' callback - `extensionRouting`
+      // is actually called.
+      //
+      // However, we know that `extensionRouting` calls the
+      // pathHelper.getDomain() function immediately on execution, so we
+      // can exploit this to see if `extensionRouting` gets fired post
+      // "DOMContentLoaded" events firing (via dispatch).
+
+      const domainSpy = jest.spyOn(helpers, "getDomain");
+
+      jest.isolateModules(() => {
+        require("../ext/entrypoint.js");
+      });
+
+      document.dispatchEvent(new Event("DOMContentLoaded"));
+
+      // This is our proxy `expect` for checking that `extensionRouting`
+      // was executed.
+      expect(domainSpy).toHaveBeenCalledTimes(1);
+
+      domainSpy.mockRestore();
+    });
+  });
+
+  describe("Domain routing", () => {
+    let domainSpy;
+
+    afterEach(() => {
+      domainSpy.mockRestore();
+    });
+
+    test("ensures non supported domains are correctly routed", () => {
+      domainSpy = jest.spyOn(helpers, "getDomain").mockImplementation(() => {
+        "localhost";
+      });
+
+      expect(extensionRouting(document)).toEqual(127);
+    });
+  });
+});
