@@ -113,4 +113,3 @@ class Ancestors {
 }
 
 export { Ancestors };
-window.Ancestors = Ancestors;

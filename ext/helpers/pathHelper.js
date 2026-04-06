@@ -47,7 +47,3 @@ function getPathnameFragments(document, pathname = getPathname) {
 }
 
 export { getPathname, getDomain, getPathnameFragments };
-
-window.getDomain = getDomain;
-window.getPathname = getPathname;
-window.getPathnameFragments = getPathnameFragments;
