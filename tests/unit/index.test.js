@@ -9,7 +9,7 @@ import {
   beforeEach,
 } from "@jest/globals";
 
-import { extensionRouting } from "../../src/entrypoint.js";
+import { extensionRouting } from "../../src/index.js";
 import * as helpers from "../../src/helpers/pathHelper.js";
 
 describe("dripfeed initialisation lifecycle", () => {
@@ -34,7 +34,7 @@ describe("dripfeed initialisation lifecycle", () => {
       documentSpy = jest.spyOn(document, "addEventListener");
 
       jest.isolateModules(() => {
-        require("../../src/entrypoint.js");
+        require("../../src/index.js");
       });
 
       expect(documentSpy).toHaveBeenCalledWith(
@@ -58,7 +58,7 @@ describe("dripfeed initialisation lifecycle", () => {
       const domainSpy = jest.spyOn(helpers, "getDomain");
 
       jest.isolateModules(() => {
-        require("../../src/entrypoint.js");
+        require("../../src/index.js");
       });
 
       document.dispatchEvent(new Event("DOMContentLoaded"));
