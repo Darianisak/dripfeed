@@ -18,4 +18,16 @@ namespace "/reddit" do
   get "/subreddit" do
     erb :"reddit/subreddit"
   end
+
+  get "/popular" do
+    erb :"reddit/popular"
+  end
+
+  get "/user" do
+    erb :"reddit/user"
+  end
+
+  get "/search" do
+    erb :"reddit/search"
+  end
 end
