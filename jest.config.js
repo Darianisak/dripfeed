@@ -26,13 +26,16 @@ const config = {
   coverageDirectory: "coverage",
 
   // If the file path matches any of the patterns, coverage information will be skipped.
-  coveragePathIgnorePatterns: [".*/__tests__/factory..*.js", ".*/node_modules"],
+  coveragePathIgnorePatterns: [
+    ".*/tests/unit/factory..*.js",
+    ".*/node_modules",
+  ],
 
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: "v8",
 
   // The glob patterns Jest uses to detect test files.
-  testMatch: ["**/__tests__/**.test.js", "**/__tests__/helpers/**.test.js"],
+  testMatch: ["**/tests/unit/**.test.js", "**/tests/unit/**/**.test.js"],
 };
 
 export default config;
