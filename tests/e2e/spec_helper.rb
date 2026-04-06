@@ -2,7 +2,7 @@
 
 require "capybara/rspec"
 require "selenium-webdriver"
-require_relative "../sinatra"
+require_relative "../../sinatra"
 require "debug"
 
 Capybara.app = Sinatra::Application

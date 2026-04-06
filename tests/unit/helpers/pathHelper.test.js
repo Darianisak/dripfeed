@@ -5,7 +5,7 @@ import {
   getDomain,
   getPathname,
   getPathnameFragments,
-} from "../../src/helpers/pathHelper.js";
+} from "../../../src/helpers/pathHelper.js";
 
 describe(".getPathname", () => {
   describe("argument validation", () => {
