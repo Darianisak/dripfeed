@@ -11,8 +11,8 @@
   },
   "scripts": {
     "test": "jest --color --config ./jest.config.js --passWithNoTests",
-    "firefox": "npx web-ext run --source-dir ./ext/",
-    "build": "npx web-ext build --source-dir ./ext/ --artifacts-dir ./build",
+    "firefox": "npx web-ext run --source-dir ./src/",
+    "build": "npx web-ext build --source-dir ./src/ --artifacts-dir ./build",
     "format": "prettier --check --config ./.prettierrc --write .",
     "lint": "npx eslint --color --fix --config eslint.config.mjs .",
     "yaml": "source pydeps/bin/activate && yamllint --config-file .yamllint --strict .",
