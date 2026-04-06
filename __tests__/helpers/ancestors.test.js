@@ -1,7 +1,7 @@
 "use strict";
 
 import { describe, test, expect, afterEach, beforeEach } from "@jest/globals";
-import { Ancestors } from "../../ext/helpers/ancestors.js";
+import { Ancestors } from "../../src/helpers/ancestors.js";
 import { build_n_layer_dom } from "../factory.html.js";
 
 describe("#constructor", () => {
