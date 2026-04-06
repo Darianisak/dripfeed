@@ -31,7 +31,7 @@ RSpec.describe "reddit/subreddit", type: :feature do
     before do
       # Remove the Subreddit information bar
       #
-      page.evaluate_script("new RemoveNode('right-sidebar-contents', 'subreddit-right-rail__partial').operate()")
+      page.evaluate_script("new RemoveNode('right-sidebar-contents', 'right-rail-experience-root').operate()")
 
       # Remove the recommended content (left sidebar)
       #
