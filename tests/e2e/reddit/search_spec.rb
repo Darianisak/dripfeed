@@ -2,15 +2,15 @@
 
 require "spec_helper"
 
-RSpec.describe "reddit/subreddit", type: :feature do
+RSpec.describe "r/search", type: :feature do
   before do
-    visit "/reddit/subreddit"
+    visit "/reddit/search"
   end
 
   describe "Pre DOM Mutation" do
-    context "with an unmodified subreddit view" do
+    context "with an unmodified post view" do
       it "maintains the search box" do
-        expect(page).to have_css("#search-input-chip", visible: :all)
+        expect(page).to have_css(".search-input", visible: :all)
       end
 
       it "has main content container" do
@@ -38,16 +38,16 @@ RSpec.describe "reddit/subreddit", type: :feature do
       page.evaluate_script("new RemoveNode('flex-left-nav-container', 'flex-nav-buttons').operate()")
     end
 
-    context "with a modified subreddit view" do
+    context "with a modified post view" do
       it "has a search box" do
-        expect(page).to have_css("#search-input-chip", visible: :all)
+        expect(page).to have_css(".search-input", visible: :all)
       end
 
       it "has a main content container" do
         expect(page).to have_css("#main-content")
       end
 
-      it "does not have a subreddit information box" do
+      it "does not have a right-sidebar content" do
         expect(page).to have_no_css("#right-sidebar-contents")
       end
 
