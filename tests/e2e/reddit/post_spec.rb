@@ -36,7 +36,7 @@ RSpec.describe "reddit/post", type: :feature do
 
     context "with a modified post view" do
       it "has a search box" do
-        expect(page).to have_css("#search-input-chip")
+        expect(page).to have_css("#search-input-chip", visible: :all)
       end
 
       it "has a main content container" do

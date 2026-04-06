@@ -10,7 +10,7 @@ RSpec.describe "reddit/subreddit", type: :feature do
   describe "Pre DOM Mutation" do
     context "with an unmodified subreddit view" do
       it "maintains the search box" do
-        expect(page).to have_css("#search-input-chip")
+        expect(page).to have_css("#search-input-chip", visible: :all)
       end
 
       it "has main content container" do
@@ -40,7 +40,7 @@ RSpec.describe "reddit/subreddit", type: :feature do
 
     context "with a modified subreddit view" do
       it "has a search box" do
-        expect(page).to have_css("#search-input-chip")
+        expect(page).to have_css("#search-input-chip", visible: :all)
       end
 
       it "has a main content container" do
