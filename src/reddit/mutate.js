@@ -6,6 +6,15 @@ export const Targets = {
   MAIN_CONTENT: 2,
 };
 
+export const Pages = {
+  HOME: [Targets.MAIN_CONTENT],
+  POST: [Targets.LEFT_SIDEBAR, Targets.RIGHT_SIDEBAR],
+  SUBREDDIT: [Targets.LEFT_SIDEBAR, Targets.RIGHT_SIDEBAR],
+  USER: [Targets.LEFT_SIDEBAR],
+  SEARCH: [Targets.LEFT_SIDEBAR, Targets.RIGHT_SIDEBAR],
+  POPULAR: [Targets.MAIN_CONTENT],
+};
+
 export function nodeRemovalProxy(targetOne, targetTwo) {
   [targetOne, targetTwo].forEach((element) => {
     if (typeof element === "string" || element instanceof Element) {
@@ -21,16 +30,16 @@ export function nodeRemovalProxy(targetOne, targetTwo) {
 
 export function operate(
   document,
-  targetArray,
+  pageTargets,
   removeCallback = nodeRemovalProxy,
 ) {
-  if (!(targetArray instanceof Array)) {
+  if (!(pageTargets instanceof Array)) {
     throw new TypeError(
-      `operate expected targetArray to be Array, was '${typeof targetArray}'`,
+      `operate expected pageTargets to be Array, was '${typeof pageTargets}'`,
     );
   }
 
-  targetArray.forEach((target) => {
+  pageTargets.forEach((target) => {
     switch (target) {
       case Targets.LEFT_SIDEBAR:
         removeCallback("flex-left-nav-container", "flex-nav-buttons");
@@ -48,40 +57,4 @@ export function operate(
         throw new TypeError(`Unexpected target, '${target}', received.`);
     }
   });
-}
-
-export function home(document, mutationFunc = operate) {
-  const targets = [Targets.MAIN_CONTENT];
-
-  mutationFunc(document, targets);
-}
-
-export function post(document, mutationFunc = operate) {
-  const targets = [Targets.LEFT_SIDEBAR, Targets.RIGHT_SIDEBAR];
-
-  mutationFunc(document, targets);
-}
-
-export function subreddit(document, mutationFunc = operate) {
-  const targets = [Targets.LEFT_SIDEBAR, Targets.RIGHT_SIDEBAR];
-
-  mutationFunc(document, targets);
-}
-
-export function user(document, mutationFunc = operate) {
-  const targets = [Targets.LEFT_SIDEBAR];
-
-  mutationFunc(document, targets);
-}
-
-export function search(document, mutationFunc = operate) {
-  const targets = [Targets.LEFT_SIDEBAR, Targets.RIGHT_SIDEBAR];
-
-  mutationFunc(document, targets);
-}
-
-export function popular(document, mutationFunc = operate) {
-  const targets = [Targets.MAIN_CONTENT];
-
-  mutationFunc(document, targets);
 }

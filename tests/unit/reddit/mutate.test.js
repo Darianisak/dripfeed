@@ -11,257 +11,55 @@ import * as mutate from "../../../src/reddit/mutate.js";
 
 const normalizeDOMStrings = (str) => str.replace(/\s+/g, "").trim();
 
-describe(".home", () => {
-  let operateSpy;
-
-  afterEach(() => {
-    operateSpy.mockRestore();
-  });
-
-  describe("with an overridden callback", () => {
-    test("ensures the mutation function is called", () => {
-      operateSpy = jest.fn().mockReturnValue(() => {});
-      mutate.home(document, operateSpy);
-      expect(operateSpy).toHaveBeenCalled();
+describe("_Pages", () => {
+  describe("enum values", () => {
+    test("ensures LEFT_SIDEBAR has the expected representation", () => {
+      expect(mutate.Targets.LEFT_SIDEBAR).toEqual(0);
     });
 
-    test("ensures mutation function is passed the expected arguments", () => {
-      operateSpy = jest.fn().mockReturnValue(() => {});
-      mutate.home(document, operateSpy);
-      expect(operateSpy).toHaveBeenCalledWith(document, [
-        mutate.Targets.MAIN_CONTENT,
-      ]);
+    test("ensures RIGHT_SIDEBAR has the expected representation", () => {
+      expect(mutate.Targets.RIGHT_SIDEBAR).toEqual(1);
     });
-  });
 
-  describe("with the default callback", () => {
-    test("ensures .home calls RemoveNode the expected number of times", () => {
-      const operateSpy = jest.fn();
-
-      const mockInstance = {
-        operate: operateSpy,
-      };
-
-      const nodeSpy = jest
-        .spyOn(removeNode, "RemoveNode")
-        .mockImplementation(() => mockInstance);
-
-      mutate.home(document);
-      expect(operateSpy).toHaveBeenCalledTimes(1);
-      nodeSpy.mockRestore();
+    test("ensures MAIN_CONTENT has the expected representation", () => {
+      expect(mutate.Targets.MAIN_CONTENT).toEqual(2);
     });
   });
 });
 
-describe(".post", () => {
-  let operateSpy;
-
-  afterEach(() => {
-    operateSpy.mockRestore();
-  });
-
-  describe("with an overridden callback", () => {
-    test("ensures the mutation function is called", () => {
-      operateSpy = jest.fn().mockReturnValue(() => {});
-      mutate.post(document, operateSpy);
-      expect(operateSpy).toHaveBeenCalled();
+describe("_Targets", () => {
+  describe("page target arrays", () => {
+    test("ensures HOME has the expected target array", () => {
+      expect(mutate.Pages.HOME).toEqual([mutate.Targets.MAIN_CONTENT]);
     });
 
-    test("ensures mutation function is passed the expected arguments", () => {
-      operateSpy = jest.fn().mockReturnValue(() => {});
-      mutate.post(document, operateSpy);
-      expect(operateSpy).toHaveBeenCalledWith(document, [
+    test("ensures POST has the expected target array", () => {
+      expect(mutate.Pages.POST).toEqual([
         mutate.Targets.LEFT_SIDEBAR,
         mutate.Targets.RIGHT_SIDEBAR,
       ]);
     });
-  });
 
-  describe("with the default callback", () => {
-    test("ensures .home calls RemoveNode the expected number of times", () => {
-      const operateSpy = jest.fn();
-
-      const mockInstance = {
-        operate: operateSpy,
-      };
-
-      const nodeSpy = jest
-        .spyOn(removeNode, "RemoveNode")
-        .mockImplementation(() => mockInstance);
-
-      mutate.post(document);
-      expect(operateSpy).toHaveBeenCalledTimes(2);
-      nodeSpy.mockRestore();
-    });
-  });
-});
-
-describe(".popular", () => {
-  let operateSpy;
-
-  afterEach(() => {
-    operateSpy.mockRestore();
-  });
-
-  describe("with an overridden callback", () => {
-    test("ensures the mutation function is called", () => {
-      operateSpy = jest.fn().mockReturnValue(() => {});
-      mutate.popular(document, operateSpy);
-      expect(operateSpy).toHaveBeenCalled();
-    });
-
-    test("ensures mutation function is passed the expected arguments", () => {
-      operateSpy = jest.fn().mockReturnValue(() => {});
-      mutate.popular(document, operateSpy);
-      expect(operateSpy).toHaveBeenCalledWith(document, [
-        mutate.Targets.MAIN_CONTENT,
-      ]);
-    });
-  });
-
-  describe("with the default callback", () => {
-    test("ensures .popular calls RemoveNode the expected number of times", () => {
-      const operateSpy = jest.fn();
-
-      const mockInstance = {
-        operate: operateSpy,
-      };
-
-      const nodeSpy = jest
-        .spyOn(removeNode, "RemoveNode")
-        .mockImplementation(() => mockInstance);
-
-      mutate.popular(document);
-      expect(operateSpy).toHaveBeenCalledTimes(1);
-      nodeSpy.mockRestore();
-    });
-  });
-});
-
-describe(".subreddit", () => {
-  let operateSpy;
-
-  afterEach(() => {
-    operateSpy.mockRestore();
-  });
-
-  describe("with an overridden callback", () => {
-    test("ensures the mutation function is called", () => {
-      operateSpy = jest.fn().mockReturnValue(() => {});
-      mutate.subreddit(document, operateSpy);
-      expect(operateSpy).toHaveBeenCalled();
-    });
-
-    test("ensures mutation function is passed the expected arguments", () => {
-      operateSpy = jest.fn().mockReturnValue(() => {});
-      mutate.subreddit(document, operateSpy);
-      expect(operateSpy).toHaveBeenCalledWith(document, [
+    test("ensures SUBREDDIT has the expected target array", () => {
+      expect(mutate.Pages.SUBREDDIT).toEqual([
         mutate.Targets.LEFT_SIDEBAR,
         mutate.Targets.RIGHT_SIDEBAR,
       ]);
     });
-  });
 
-  describe("with the default callback", () => {
-    test("ensures .home calls RemoveNode the expected number of times", () => {
-      const operateSpy = jest.fn();
-
-      const mockInstance = {
-        operate: operateSpy,
-      };
-
-      const nodeSpy = jest
-        .spyOn(removeNode, "RemoveNode")
-        .mockImplementation(() => mockInstance);
-
-      mutate.subreddit(document);
-      expect(operateSpy).toHaveBeenCalledTimes(2);
-      nodeSpy.mockRestore();
-    });
-  });
-});
-
-describe(".user", () => {
-  let operateSpy;
-
-  afterEach(() => {
-    operateSpy.mockRestore();
-  });
-
-  describe("with an overridden callback", () => {
-    test("ensures the mutation function is called", () => {
-      operateSpy = jest.fn().mockReturnValue(() => {});
-      mutate.user(document, operateSpy);
-      expect(operateSpy).toHaveBeenCalled();
+    test("ensures USER has the expected target array", () => {
+      expect(mutate.Pages.USER).toEqual([mutate.Targets.LEFT_SIDEBAR]);
     });
 
-    test("ensures mutation function is passed the expected arguments", () => {
-      operateSpy = jest.fn().mockReturnValue(() => {});
-      mutate.user(document, operateSpy);
-      expect(operateSpy).toHaveBeenCalledWith(document, [
-        mutate.Targets.LEFT_SIDEBAR,
-      ]);
-    });
-  });
-
-  describe("with the default callback", () => {
-    test("ensures .home calls RemoveNode the expected number of times", () => {
-      const operateSpy = jest.fn();
-
-      const mockInstance = {
-        operate: operateSpy,
-      };
-
-      const nodeSpy = jest
-        .spyOn(removeNode, "RemoveNode")
-        .mockImplementation(() => mockInstance);
-
-      mutate.user(document);
-      expect(operateSpy).toHaveBeenCalledTimes(1);
-      nodeSpy.mockRestore();
-    });
-  });
-});
-
-describe(".search", () => {
-  let operateSpy;
-
-  afterEach(() => {
-    operateSpy.mockRestore();
-  });
-
-  describe("with an overridden callback", () => {
-    test("ensures the mutation function is called", () => {
-      operateSpy = jest.fn().mockReturnValue(() => {});
-      mutate.search(document, operateSpy);
-      expect(operateSpy).toHaveBeenCalled();
-    });
-
-    test("ensures mutation function is passed the expected arguments", () => {
-      operateSpy = jest.fn().mockReturnValue(() => {});
-      mutate.search(document, operateSpy);
-      expect(operateSpy).toHaveBeenCalledWith(document, [
+    test("ensures SEARCH has the expected target array", () => {
+      expect(mutate.Pages.SEARCH).toEqual([
         mutate.Targets.LEFT_SIDEBAR,
         mutate.Targets.RIGHT_SIDEBAR,
       ]);
     });
-  });
 
-  describe("with the default callback", () => {
-    test("ensures .home calls RemoveNode the expected number of times", () => {
-      const operateSpy = jest.fn();
-
-      const mockInstance = {
-        operate: operateSpy,
-      };
-
-      const nodeSpy = jest
-        .spyOn(removeNode, "RemoveNode")
-        .mockImplementation(() => mockInstance);
-
-      mutate.search(document);
-      expect(operateSpy).toHaveBeenCalledTimes(2);
-      nodeSpy.mockRestore();
+    test("ensures POPULAR has the expected target array", () => {
+      expect(mutate.Pages.POPULAR).toEqual([mutate.Targets.MAIN_CONTENT]);
     });
   });
 });
@@ -274,7 +72,7 @@ describe(".operate", () => {
 
     test("ensures TypeError message raised as expected", () => {
       expect(() => mutate.operate(document, "")).toThrow(
-        "operate expected targetArray to be Array, was 'string'",
+        "operate expected pageTargets to be Array, was 'string'",
       );
     });
 
