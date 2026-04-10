@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe "reddit/post", type: :feature do
   before do
-    visit "/reddit/post"
+    visit "/r/subreddit/comments"
   end
 
   describe "Pre DOM Mutation" do
