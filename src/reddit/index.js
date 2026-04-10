@@ -74,3 +74,4 @@ function routing(getType = getSubPathType) {
 }
 
 export { routing, getSubPathType, Subpath };
+window.Routing = routing;

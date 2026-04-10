@@ -50,4 +50,3 @@ class RemoveNode {
 }
 
 export { RemoveNode };
-window.RemoveNode = RemoveNode;

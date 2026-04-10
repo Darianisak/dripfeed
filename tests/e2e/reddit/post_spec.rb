@@ -29,9 +29,7 @@ RSpec.describe "reddit/post", type: :feature do
 
   describe "Post DOM Mutation" do
     before do
-      page.evaluate_script("new RemoveNode('right-sidebar-contents', 'answers-suggested-queries-m3').operate()")
-
-      page.evaluate_script("new RemoveNode('flex-left-nav-container', 'flex-left-nav-contents').operate()")
+      page.evaluate_script("Routing()")
     end
 
     context "with a modified post view" do

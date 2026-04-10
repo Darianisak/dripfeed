@@ -29,7 +29,7 @@ RSpec.describe "r/popular", type: :feature do
 
   describe "Post DOM Mutation" do
     before do
-      page.evaluate_script("new RemoveNode('subgrid-container', 'left-sidebar-container').operate()")
+      page.evaluate_script("Routing()")
     end
 
     context "with a modified homepage view" do

@@ -29,9 +29,7 @@ RSpec.describe "r/user", type: :feature do
 
   describe "Post DOM Mutation" do
     before do
-      # Remove the recommended content (left sidebar)
-      #
-      page.evaluate_script("new RemoveNode('flex-left-nav-container', 'flex-nav-buttons').operate()")
+      page.evaluate_script("Routing()")
     end
 
     context "with a modified post view" do
