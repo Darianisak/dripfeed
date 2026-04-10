@@ -186,10 +186,23 @@ describe(".routing", () => {
   let mutatorSpy;
 
   afterEach(() => {
-    if (typeSpy) {
-      typeSpy.mockRestore();
-    }
-    mutatorSpy.mockRestore();
+    [typeSpy, mutatorSpy].forEach((spy) => {
+      if (spy) {
+        spy.mockRestore();
+      }
+    });
+  });
+
+  describe("typeValidations", () => {
+    test("ensures .routing#getType raises a TypeError when not a function", () => {
+      expect(() => routing("helloWorld")).toThrow(TypeError);
+    });
+
+    test("ensures .routing#getType raises a TypeError with a specific message", () => {
+      expect(() => routing("helloWorld")).toThrow(
+        "routing received unexpected argument, 'string', expected 'function'",
+      );
+    });
   });
 
   describe("with the default type callback", () => {

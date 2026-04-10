@@ -6,7 +6,7 @@ function extensionRouting(document) {
 
   switch (currentDomain) {
     case "www.reddit.com":
-      reddit.routing(document);
+      reddit.routing();
       break;
 
     default:

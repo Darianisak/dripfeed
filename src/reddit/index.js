@@ -35,6 +35,12 @@ function getSubPathType(document, pathname = getPathnameFragments) {
 }
 
 function routing(getType = getSubPathType) {
+  if (typeof getType !== "function") {
+    throw new TypeError(
+      `routing received unexpected argument, '${typeof getType}', expected 'function'`,
+    );
+  }
+
   const subpathType = getType(document);
 
   switch (subpathType) {
