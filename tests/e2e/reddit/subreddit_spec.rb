@@ -34,6 +34,8 @@ RSpec.describe "reddit/subreddit", type: :feature do
 
     context "with a modified subreddit view" do
       it "has a search box" do
+        # Note that there's something funky happening with in-line JS post
+        # mutation, which is why we have the `visible: :all`.
         expect(page).to have_css("#search-input-chip", visible: :all)
       end
 
