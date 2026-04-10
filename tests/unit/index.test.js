@@ -10,6 +10,7 @@ import {
 } from "@jest/globals";
 
 import { extensionRouting } from "../../src/index.js";
+import * as reddit from "../../src/reddit/index.js";
 import * as helpers from "../../src/helpers/pathHelper.js";
 
 describe("dripfeed initialisation lifecycle", () => {
@@ -76,6 +77,19 @@ describe("dripfeed initialisation lifecycle", () => {
 
     afterEach(() => {
       domainSpy.mockRestore();
+    });
+
+    test("ensures that 'www.reddit.com' is correctly routed", () => {
+      domainSpy = jest
+        .spyOn(helpers, "getDomain")
+        .mockImplementation(() => "www.reddit.com");
+
+      const redditSpy = jest
+        .spyOn(reddit, "routing")
+        .mockImplementation(() => {});
+      extensionRouting(document);
+
+      expect(redditSpy).toHaveBeenCalledTimes(1);
     });
 
     test("ensures non supported domains are correctly routed", () => {

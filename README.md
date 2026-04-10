@@ -101,7 +101,7 @@ If you'd like to create atomic removal tests for a new page or website:
 - Change the file extension from `.html` to `.erb`.
 - Add a route in `sinatra.rb`.
 - Add a script tag to the HTML document's `<head>` to load the desired JavaScript
-  module. I.e., `<script type="module" src="/helpers/removeNode.js"></script>`.
+  module. I.e., `<script type="module" src="/reddit/index.js"></script>`.
 
 With the HTML fixture set up, go ahead and add new tests under `spec/features/*`.
 

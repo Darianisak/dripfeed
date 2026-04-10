@@ -3,7 +3,7 @@
   "name": "dripfeed",
   "version": "0.1",
 
-  "description": "drip feed modifies social media websites to make that little bit less adictive",
+  "description": "drip feed modifies social media websites to make them that little bit less adictive",
 
   "icons": {
     "48": "icons/48x48.svg",
@@ -12,7 +12,7 @@
 
   "content_scripts": [
     {
-      "matches": ["*://*.instagram.com/*", "*://reddit.com/*"],
+      "matches": ["*://www.reddit.com/*"],
       "js": ["main.js"],
       "run_at": "document_start"
     }
