@@ -34,7 +34,7 @@ function getSubPathType(document, pathname = getPathnameFragments) {
   }
 }
 
-function routing(document, getType = getSubPathType) {
+function routing(getType = getSubPathType) {
   const subpathType = getType(document);
 
   switch (subpathType) {

@@ -67,27 +67,27 @@ describe("_Targets", () => {
 describe(".operate", () => {
   describe("targetArray#validation", () => {
     test("ensures TypeError raised as expected", () => {
-      expect(() => mutate.operate(document, "")).toThrow(TypeError);
+      expect(() => mutate.operate("")).toThrow(TypeError);
     });
 
     test("ensures TypeError message raised as expected", () => {
-      expect(() => mutate.operate(document, "")).toThrow(
+      expect(() => mutate.operate("")).toThrow(
         "operate expected pageTargets to be Array, was 'string'",
       );
     });
 
     test("ensures empty targetArray does not raise error", () => {
-      expect(() => mutate.operate(document, [])).not.toThrow(TypeError);
+      expect(() => mutate.operate([])).not.toThrow(TypeError);
     });
   });
 
   describe("with an invalid Target.ENUM", () => {
     test("ensures a TypeError is thrown", () => {
-      expect(() => mutate.operate(document, ["HelloWorld"])).toThrow(TypeError);
+      expect(() => mutate.operate(["HelloWorld"])).toThrow(TypeError);
     });
 
     test("ensures the correct error message is returned", () => {
-      expect(() => mutate.operate(document, ["HelloWorld"])).toThrow(
+      expect(() => mutate.operate(["HelloWorld"])).toThrow(
         "Unexpected target, 'HelloWorld', received.",
       );
     });
@@ -106,7 +106,7 @@ describe(".operate", () => {
       test("ensures 'RIGHT_SIDEBAR' calls as expected", () => {
         removeProxySpy = jest.fn();
         targets = [mutate.Targets.RIGHT_SIDEBAR];
-        mutate.operate(document, targets, removeProxySpy);
+        mutate.operate(targets, removeProxySpy);
         expect(removeProxySpy).toHaveBeenCalledWith(
           "right-sidebar-contents",
           "right-rail-experience-root",
@@ -116,7 +116,7 @@ describe(".operate", () => {
       test("ensures 'LEFT_SIDEBAR' calls as expected", () => {
         removeProxySpy = jest.fn();
         targets = [mutate.Targets.LEFT_SIDEBAR];
-        mutate.operate(document, targets, removeProxySpy);
+        mutate.operate(targets, removeProxySpy);
         expect(removeProxySpy).toHaveBeenCalledWith(
           "flex-left-nav-container",
           "flex-nav-buttons",
@@ -126,7 +126,7 @@ describe(".operate", () => {
       test("ensures 'MAIN_CONTENT' calls as expected", () => {
         removeProxySpy = jest.fn();
         targets = [mutate.Targets.MAIN_CONTENT];
-        mutate.operate(document, targets, removeProxySpy);
+        mutate.operate(targets, removeProxySpy);
         expect(removeProxySpy).toHaveBeenCalledWith(
           "subgrid-container",
           "left-sidebar-container",
@@ -142,7 +142,7 @@ describe(".operate", () => {
           mutate.Targets.LEFT_SIDEBAR,
           mutate.Targets.MAIN_CONTENT,
         ];
-        mutate.operate(document, targets, removeProxySpy);
+        mutate.operate(targets, removeProxySpy);
         expect(removeProxySpy).toHaveBeenCalledTimes(3);
       });
     });
@@ -168,7 +168,7 @@ describe(".operate", () => {
         .spyOn(removeNode, "RemoveNode")
         .mockImplementation(() => mockInstance);
 
-      mutate.operate(document, [mutate.Targets.MAIN_CONTENT]);
+      mutate.operate([mutate.Targets.MAIN_CONTENT]);
       expect(operateSpy).toHaveBeenCalledTimes(1);
     });
 
@@ -183,7 +183,7 @@ describe(".operate", () => {
         .spyOn(removeNode, "RemoveNode")
         .mockImplementation(() => mockInstance);
 
-      mutate.operate(document, [
+      mutate.operate([
         mutate.Targets.LEFT_SIDEBAR,
         mutate.Targets.RIGHT_SIDEBAR,
       ]);
@@ -295,7 +295,7 @@ describe(".nodeRemovalProxy", () => {
             "</div>",
         );
 
-        mutate.operate(document, [mutate.Targets.LEFT_SIDEBAR]);
+        mutate.operate([mutate.Targets.LEFT_SIDEBAR]);
 
         receivedDOM = normalizeDOMStrings(document.body.innerHTML);
         expect(receivedDOM).toEqual(expectedDOM);
@@ -314,7 +314,7 @@ describe(".nodeRemovalProxy", () => {
             "</div>",
         );
 
-        mutate.operate(document, [mutate.Targets.RIGHT_SIDEBAR]);
+        mutate.operate([mutate.Targets.RIGHT_SIDEBAR]);
 
         receivedDOM = normalizeDOMStrings(document.body.innerHTML);
         expect(receivedDOM).toEqual(expectedDOM);
@@ -323,7 +323,7 @@ describe(".nodeRemovalProxy", () => {
       test("ensures that MAIN_CONTENT removes as expected", () => {
         expectedDOM = normalizeDOMStrings("<div>" + "</div>");
 
-        mutate.operate(document, [mutate.Targets.MAIN_CONTENT]);
+        mutate.operate([mutate.Targets.MAIN_CONTENT]);
 
         receivedDOM = normalizeDOMStrings(document.body.innerHTML);
         expect(receivedDOM).toEqual(expectedDOM);
@@ -340,7 +340,7 @@ describe(".nodeRemovalProxy", () => {
             "</div>",
         );
 
-        mutate.operate(document, [
+        mutate.operate([
           mutate.Targets.LEFT_SIDEBAR,
           mutate.Targets.RIGHT_SIDEBAR,
         ]);

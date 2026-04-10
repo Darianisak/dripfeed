@@ -28,11 +28,7 @@ export function nodeRemovalProxy(targetOne, targetTwo) {
   new RemoveNode(targetOne, targetTwo).operate();
 }
 
-export function operate(
-  document,
-  pageTargets,
-  removeCallback = nodeRemovalProxy,
-) {
+export function operate(pageTargets, removeCallback = nodeRemovalProxy) {
   if (!(pageTargets instanceof Array)) {
     throw new TypeError(
       `operate expected pageTargets to be Array, was '${typeof pageTargets}'`,
