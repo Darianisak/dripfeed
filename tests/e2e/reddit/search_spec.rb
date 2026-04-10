@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe "r/search", type: :feature do
   before do
-    visit "/reddit/search"
+    visit "/search"
   end
 
   describe "Pre DOM Mutation" do
@@ -29,13 +29,7 @@ RSpec.describe "r/search", type: :feature do
 
   describe "Post DOM Mutation" do
     before do
-      # Remove the Subreddit information bar
-      #
-      page.evaluate_script("new RemoveNode('right-sidebar-contents', 'right-rail-experience-root').operate()")
-
-      # Remove the recommended content (left sidebar)
-      #
-      page.evaluate_script("new RemoveNode('flex-left-nav-container', 'flex-nav-buttons').operate()")
+      page.evaluate_script("Routing()")
     end
 
     context "with a modified post view" do

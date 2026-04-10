@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe "r/user", type: :feature do
   before do
-    visit "/reddit/user"
+    visit "/user"
   end
 
   describe "Pre DOM Mutation" do
@@ -29,9 +29,7 @@ RSpec.describe "r/user", type: :feature do
 
   describe "Post DOM Mutation" do
     before do
-      # Remove the recommended content (left sidebar)
-      #
-      page.evaluate_script("new RemoveNode('flex-left-nav-container', 'flex-nav-buttons').operate()")
+      page.evaluate_script("Routing()")
     end
 
     context "with a modified post view" do

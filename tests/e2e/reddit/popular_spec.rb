@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe "r/popular", type: :feature do
   before do
-    visit "/reddit/popular"
+    visit "/r/popular"
   end
 
   describe "Pre DOM Mutation" do
@@ -29,7 +29,7 @@ RSpec.describe "r/popular", type: :feature do
 
   describe "Post DOM Mutation" do
     before do
-      page.evaluate_script("new RemoveNode('subgrid-container', 'left-sidebar-container').operate()")
+      page.evaluate_script("Routing()")
     end
 
     context "with a modified homepage view" do

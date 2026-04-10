@@ -198,7 +198,7 @@ describe(".routing", () => {
         .spyOn(helpers, "getPathnameFragments")
         .mockImplementation(() => []);
       mutatorSpy = jest.spyOn(mutate, "operate").mockImplementation(() => {});
-      routing(document);
+      routing();
       expect(mutatorSpy).toHaveBeenCalledTimes(1);
       pathnameSpy.mockRestore();
     });
@@ -208,42 +208,42 @@ describe(".routing", () => {
     test("ensures HOME subpath calls operate with expected args", () => {
       mutatorSpy = jest.spyOn(mutate, "operate").mockImplementation(() => {});
       typeSpy = jest.fn().mockReturnValue(Subpath.HOME);
-      routing(document, typeSpy);
+      routing(typeSpy);
       expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.HOME);
     });
 
     test("ensures SUBREDDIT subpath calls operate with expected args", () => {
       mutatorSpy = jest.spyOn(mutate, "operate").mockImplementation(() => {});
       typeSpy = jest.fn().mockReturnValue(Subpath.SUBREDDIT);
-      routing(document, typeSpy);
+      routing(typeSpy);
       expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.SUBREDDIT);
     });
 
     test("ensures POST subpath calls operate with expected args", () => {
       mutatorSpy = jest.spyOn(mutate, "operate").mockImplementation(() => {});
       typeSpy = jest.fn().mockReturnValue(Subpath.POST);
-      routing(document, typeSpy);
+      routing(typeSpy);
       expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.POST);
     });
 
     test("ensures USER subpath calls operate with expected args", () => {
       mutatorSpy = jest.spyOn(mutate, "operate").mockImplementation(() => {});
       typeSpy = jest.fn().mockReturnValue(Subpath.USER);
-      routing(document, typeSpy);
+      routing(typeSpy);
       expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.USER);
     });
 
     test("ensures SEARCH subpath calls operate with expected args", () => {
       mutatorSpy = jest.spyOn(mutate, "operate").mockImplementation(() => {});
       typeSpy = jest.fn().mockReturnValue(Subpath.SEARCH);
-      routing(document, typeSpy);
+      routing(typeSpy);
       expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.SEARCH);
     });
 
     test("ensures POPULAR subpath calls operate with expected args", () => {
       mutatorSpy = jest.spyOn(mutate, "operate").mockImplementation(() => {});
       typeSpy = jest.fn().mockReturnValue(Subpath.POPULAR);
-      routing(document, typeSpy);
+      routing(typeSpy);
       expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.POPULAR);
     });
   });
@@ -254,18 +254,18 @@ describe(".routing", () => {
       const consoleSpy = jest
         .spyOn(console, "warn")
         .mockImplementation(() => {});
-      expect(routing(document, typeSpy)).toBe(127);
+      expect(routing(typeSpy)).toBe(127);
       consoleSpy.mockRestore();
     });
 
     test("ensures unexpected SubPathTypes raise TypeError", () => {
       const typeSpy = jest.fn().mockReturnValue("helloWorld");
-      expect(() => routing(document, typeSpy)).toThrow(TypeError);
+      expect(() => routing(typeSpy)).toThrow(TypeError);
     });
 
     test("ensures unexpected SubPathTypes raise correct error message", () => {
       const typeSpy = jest.fn().mockReturnValue("helloWorld");
-      expect(() => routing(document, typeSpy)).toThrow(
+      expect(() => routing(typeSpy)).toThrow(
         "Unexpected subpathType encountered, 'helloWorld'",
       );
     });
