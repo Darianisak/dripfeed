@@ -4,3 +4,4 @@ coverage
 build/
 pydeps/
 extension/main.js
+capybara-**
