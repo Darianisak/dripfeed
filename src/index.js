@@ -1,8 +1,8 @@
 import { getDomain } from "./helpers/pathHelper.js";
 import * as reddit from "./reddit/index.js";
 
-function extensionRouting(document) {
-  const currentDomain = getDomain(document);
+function extensionRouting() {
+  const currentDomain = getDomain();
 
   switch (currentDomain) {
     case "www.reddit.com":
@@ -16,6 +16,6 @@ function extensionRouting(document) {
 }
 
 // Handles initial page load
-document.addEventListener("DOMContentLoaded", () => extensionRouting(document));
+document.addEventListener("DOMContentLoaded", () => extensionRouting());
 
 export { extensionRouting };

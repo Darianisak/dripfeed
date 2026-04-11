@@ -1,26 +1,12 @@
 // Wrapper function for return a URL's `domain` portion.
-// This function must be passed an HTMLDocument object.
 //
-function getDomain(document) {
-  if (!(document instanceof HTMLDocument)) {
-    throw new TypeError(
-      `getDomain expected argument of type HTMLDocument. Found ${typeof document}`,
-    );
-  }
-
+function getDomain() {
   return document.location.hostname;
 }
 
 // Wrapper function for return a URL's `pathname` portion.
-// This function must be passed an HTMLDocument object.
 //
-function getPathname(document) {
-  if (!(document instanceof HTMLDocument)) {
-    throw new TypeError(
-      `getPathname expected argument of type HTMLDocument. Found ${typeof document}`,
-    );
-  }
-
+function getPathname() {
   return document.location.pathname;
 }
 
@@ -28,18 +14,14 @@ function getPathname(document) {
 // String array. This let's us determine which subpage we're on, though the
 // index to check to determine that will be condtional on the domain.
 //
-function getPathnameFragments(document, pathname = getPathname) {
-  if (!(document instanceof HTMLDocument)) {
-    throw new TypeError(
-      `getPathnameFragments expected argument of type HTMLDocument. Found ${typeof document}`,
-    );
-  } else if (typeof pathname !== "function") {
+function getPathnameFragments(pathname = getPathname) {
+  if (typeof pathname !== "function") {
     throw new TypeError(
       `getPathnameFragments expected argument of type function. Found ${typeof pathname}`,
     );
   }
 
-  const path = pathname(document);
+  const path = pathname();
 
   return path.includes("/")
     ? path.split("/").filter((fragment) => fragment !== "")

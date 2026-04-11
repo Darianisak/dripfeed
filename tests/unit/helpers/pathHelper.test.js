@@ -8,65 +8,29 @@ import {
 } from "../../../src/helpers/pathHelper.js";
 
 describe(".getPathname", () => {
-  describe("argument validation", () => {
-    test("ensures that invalid args raise TypeError", () => {
-      expect(() => getPathname("helloWorld")).toThrow(TypeError);
-    });
-
-    test("ensures that invalid args raise TypeError message", () => {
-      expect(() => getPathname("helloWorld")).toThrow(
-        "getPathname expected argument of type HTMLDocument. Found string",
-      );
-    });
-  });
-
   describe("return data", () => {
     test("ensures that hostname is pathname is returned", () => {
-      expect(getPathname(document)).toEqual("/");
+      expect(getPathname()).toEqual("/");
     });
   });
 });
 
 describe(".getDomain", () => {
-  describe("argument validation", () => {
-    test("ensures that invalid args raise TypeError", () => {
-      expect(() => getDomain("helloWorld")).toThrow(TypeError);
-    });
-
-    test("ensures that invalid args raise TypeError message", () => {
-      expect(() => getDomain("helloWorld")).toThrow(
-        "getDomain expected argument of type HTMLDocument. Found string",
-      );
-    });
-  });
-
   describe("return data", () => {
     test("ensures that domain is returned", () => {
-      expect(getDomain(document)).toEqual("localhost");
+      expect(getDomain()).toEqual("localhost");
     });
   });
 });
 
 describe(".getPathnameFragments", () => {
   describe("argument validation", () => {
-    test("ensures that invalid document args raise TypeError", () => {
+    test("ensures that invalid pathname callback args raise TypeError", () => {
       expect(() => getPathnameFragments("helloWorld")).toThrow(TypeError);
     });
 
-    test("ensures that invalid document args raise TypeError message", () => {
-      expect(() => getPathnameFragments("helloWorld")).toThrow(
-        "getPathnameFragments expected argument of type HTMLDocument. Found string",
-      );
-    });
-
-    test("ensures that invalid pathname callback args raise TypeError", () => {
-      expect(() => getPathnameFragments(document, "helloWorld")).toThrow(
-        TypeError,
-      );
-    });
-
     test("ensures that invalid pathname args raise TypeError message", () => {
-      expect(() => getPathnameFragments(document, "helloWorld")).toThrow(
+      expect(() => getPathnameFragments("helloWorld")).toThrow(
         "getPathnameFragments expected argument of type function. Found string",
       );
     });
@@ -85,7 +49,7 @@ describe(".getPathnameFragments", () => {
     describe("when pathname uses the default callback", () => {
       test("ensures a default pathname returns an empty array", () => {
         // Default jest pathname is "/"
-        expect(getPathnameFragments(document)).toEqual([]);
+        expect(getPathnameFragments()).toEqual([]);
       });
     });
 
@@ -93,19 +57,19 @@ describe(".getPathnameFragments", () => {
       test("ensures a pathname of a single slash returns an empty array", () => {
         pathString = "/";
         getPathnameMock = jest.fn().mockReturnValue(pathString);
-        expect(getPathnameFragments(document, getPathnameMock)).toEqual([]);
+        expect(getPathnameFragments(getPathnameMock)).toEqual([]);
       });
 
       test("ensures a pathname with a leading and trailing slash returns an empty array", () => {
         pathString = "//";
         getPathnameMock = jest.fn().mockReturnValue(pathString);
-        expect(getPathnameFragments(document, getPathnameMock)).toEqual([]);
+        expect(getPathnameFragments(getPathnameMock)).toEqual([]);
       });
 
       test("ensures an internal slash still returns an empty array", () => {
         pathString = "///";
         getPathnameMock = jest.fn().mockReturnValue(pathString);
-        expect(getPathnameFragments(document, getPathnameMock)).toEqual([]);
+        expect(getPathnameFragments(getPathnameMock)).toEqual([]);
       });
     });
 
@@ -113,13 +77,13 @@ describe(".getPathnameFragments", () => {
       test("ensures a pathname with no slashes returns an empty array", () => {
         pathString = "helloWorld";
         getPathnameMock = jest.fn().mockReturnValue(pathString);
-        expect(getPathnameFragments(document, getPathnameMock)).toEqual([]);
+        expect(getPathnameFragments(getPathnameMock)).toEqual([]);
       });
 
       test("ensures an empty pathname returns an empty array", () => {
         pathString = "";
         getPathnameMock = jest.fn().mockReturnValue(pathString);
-        expect(getPathnameFragments(document, getPathnameMock)).toEqual([]);
+        expect(getPathnameFragments(getPathnameMock)).toEqual([]);
       });
     });
 
@@ -127,25 +91,19 @@ describe(".getPathnameFragments", () => {
       test("ensures a pathname with a trailing slash returns one element", () => {
         pathString = "helloWorld/";
         getPathnameMock = jest.fn().mockReturnValue(pathString);
-        expect(getPathnameFragments(document, getPathnameMock)).toEqual([
-          "helloWorld",
-        ]);
+        expect(getPathnameFragments(getPathnameMock)).toEqual(["helloWorld"]);
       });
 
       test("ensures a pathname with a leading slash returns one element", () => {
         pathString = "/helloWorld";
         getPathnameMock = jest.fn().mockReturnValue(pathString);
-        expect(getPathnameFragments(document, getPathnameMock)).toEqual([
-          "helloWorld",
-        ]);
+        expect(getPathnameFragments(getPathnameMock)).toEqual(["helloWorld"]);
       });
 
       test("ensures a pathname with a leading and trailing slash returns one element", () => {
         pathString = "/helloWorld/";
         getPathnameMock = jest.fn().mockReturnValue(pathString);
-        expect(getPathnameFragments(document, getPathnameMock)).toEqual([
-          "helloWorld",
-        ]);
+        expect(getPathnameFragments(getPathnameMock)).toEqual(["helloWorld"]);
       });
     });
 
@@ -153,7 +111,7 @@ describe(".getPathnameFragments", () => {
       test("ensures three slashes returns two elements", () => {
         pathString = "/r/subredditName/";
         getPathnameMock = jest.fn().mockReturnValue(pathString);
-        expect(getPathnameFragments(document, getPathnameMock)).toEqual([
+        expect(getPathnameFragments(getPathnameMock)).toEqual([
           "r",
           "subredditName",
         ]);
@@ -162,7 +120,7 @@ describe(".getPathnameFragments", () => {
       test("ensures redundant internal slashes are removed", () => {
         pathString = "/a/really//long/path//name/";
         getPathnameMock = jest.fn().mockReturnValue(pathString);
-        expect(getPathnameFragments(document, getPathnameMock)).toEqual([
+        expect(getPathnameFragments(getPathnameMock)).toEqual([
           "a",
           "really",
           "long",
