@@ -65,19 +65,33 @@ describe("_Targets", () => {
 });
 
 describe(".operate", () => {
-  describe("targetArray#validation", () => {
-    test("ensures TypeError raised as expected", () => {
-      expect(() => mutate.operate("")).toThrow(TypeError);
+  describe("typeValidations", () => {
+    describe("#targetArray", () => {
+      test("ensures TypeError raised as expected", () => {
+        expect(() => mutate.operate("")).toThrow(TypeError);
+      });
+
+      test("ensures TypeError message raised as expected", () => {
+        expect(() => mutate.operate("")).toThrow(
+          "operate expected pageTargets to be Array, was 'string'",
+        );
+      });
+
+      test("ensures empty targetArray does not raise error", () => {
+        expect(() => mutate.operate([])).not.toThrow(TypeError);
+      });
     });
 
-    test("ensures TypeError message raised as expected", () => {
-      expect(() => mutate.operate("")).toThrow(
-        "operate expected pageTargets to be Array, was 'string'",
-      );
-    });
+    describe("#removeCallback", () => {
+      test("ensures .mutate#operate raises a TypeError when not a function", () => {
+        expect(() => mutate.operate([], "helloWorld")).toThrow(TypeError);
+      });
 
-    test("ensures empty targetArray does not raise error", () => {
-      expect(() => mutate.operate([])).not.toThrow(TypeError);
+      test("ensures .mutate#operate raises a TypeError with a specific message", () => {
+        expect(() => mutate.operate([], "helloWorld")).toThrow(
+          "operate received unexpected argument, 'string', expected 'function'",
+        );
+      });
     });
   });
 

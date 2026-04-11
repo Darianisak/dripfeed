@@ -35,6 +35,12 @@ export function operate(pageTargets, removeCallback = nodeRemovalProxy) {
     );
   }
 
+  if (typeof removeCallback !== "function") {
+    throw new TypeError(
+      `operate received unexpected argument, '${typeof removeCallback}', expected 'function'`,
+    );
+  }
+
   pageTargets.forEach((target) => {
     switch (target) {
       case Targets.LEFT_SIDEBAR:
