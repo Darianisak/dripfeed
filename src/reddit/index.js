@@ -14,6 +14,12 @@ const Subpath = {
 };
 
 function getSubPathType(document, pathname = getPathnameFragments) {
+  if (typeof pathname !== "function") {
+    throw new TypeError(
+      `getSubPathType received unexpected argument, '${typeof pathname}', expected 'function'`,
+    );
+  }
+
   const subpathArray = pathname(document);
 
   if (subpathArray[0] === "r") {

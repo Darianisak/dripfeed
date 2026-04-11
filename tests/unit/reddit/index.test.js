@@ -9,7 +9,21 @@ describe(".getSubPathType", () => {
   let pathnameSpy;
 
   afterEach(() => {
-    pathnameSpy.mockRestore();
+    if (pathnameSpy) {
+      pathnameSpy.mockRestore();
+    }
+  });
+
+  describe("typeValidations", () => {
+    test("ensures .routing#getSubPathType raises a TypeError when not a function", () => {
+      expect(() => getSubPathType(document, "helloWorld")).toThrow(TypeError);
+    });
+
+    test("ensures .routing#getSubPathType raises a TypeError with a specific message", () => {
+      expect(() => getSubPathType(document, "helloWorld")).toThrow(
+        "getSubPathType received unexpected argument, 'string', expected 'function'",
+      );
+    });
   });
 
   describe("with the default fragments callback", () => {
