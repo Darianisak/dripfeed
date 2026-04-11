@@ -13,8 +13,14 @@ const Subpath = {
   POPULAR: 5,
 };
 
-function getSubPathType(document, pathname = getPathnameFragments) {
-  const subpathArray = pathname(document);
+function getSubPathType(pathname = getPathnameFragments) {
+  if (typeof pathname !== "function") {
+    throw new TypeError(
+      `getSubPathType received unexpected argument, '${typeof pathname}', expected 'function'`,
+    );
+  }
+
+  const subpathArray = pathname();
 
   if (subpathArray[0] === "r") {
     if (subpathArray[1] == "popular") {
@@ -35,7 +41,13 @@ function getSubPathType(document, pathname = getPathnameFragments) {
 }
 
 function routing(getType = getSubPathType) {
-  const subpathType = getType(document);
+  if (typeof getType !== "function") {
+    throw new TypeError(
+      `routing received unexpected argument, '${typeof getType}', expected 'function'`,
+    );
+  }
+
+  const subpathType = getType();
 
   switch (subpathType) {
     case Subpath.HOME:

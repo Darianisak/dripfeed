@@ -9,7 +9,21 @@ describe(".getSubPathType", () => {
   let pathnameSpy;
 
   afterEach(() => {
-    pathnameSpy.mockRestore();
+    if (pathnameSpy) {
+      pathnameSpy.mockRestore();
+    }
+  });
+
+  describe("typeValidations", () => {
+    test("ensures .routing#getSubPathType raises a TypeError when not a function", () => {
+      expect(() => getSubPathType("helloWorld")).toThrow(TypeError);
+    });
+
+    test("ensures .routing#getSubPathType raises a TypeError with a specific message", () => {
+      expect(() => getSubPathType("helloWorld")).toThrow(
+        "getSubPathType received unexpected argument, 'string', expected 'function'",
+      );
+    });
   });
 
   describe("with the default fragments callback", () => {
@@ -17,106 +31,98 @@ describe(".getSubPathType", () => {
       pathnameSpy = jest
         .spyOn(helpers, "getPathnameFragments")
         .mockImplementation(() => []);
-      expect(getSubPathType(document)).toEqual(Subpath.HOME);
+      expect(getSubPathType()).toEqual(Subpath.HOME);
     });
   });
 
   describe("with a homepage relevant pathname", () => {
     test("ensures the default pathname matches", () => {
       pathnameSpy = jest.fn().mockReturnValue([]);
-      expect(getSubPathType(document, pathnameSpy)).toEqual(Subpath.HOME);
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.HOME);
     });
 
     test("ensures queryStrings on the default match", () => {
       pathnameSpy = jest.fn().mockReturnValue(["?search='hello'"]);
-      expect(getSubPathType(document, pathnameSpy)).toEqual(Subpath.HOME);
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.HOME);
     });
   });
 
   describe("with a popular relevant pathname", () => {
     test("ensures the default pathname matches", () => {
       pathnameSpy = jest.fn().mockReturnValue(["r", "popular"]);
-      expect(getSubPathType(document, pathnameSpy)).toEqual(Subpath.POPULAR);
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.POPULAR);
     });
 
     test("ensures a pathname without an 'r' prefix won't match", () => {
       pathnameSpy = jest.fn().mockReturnValue(["b", "popular"]);
-      expect(getSubPathType(document, pathnameSpy)).toEqual(
-        Subpath.UNSUPPORTED,
-      );
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.UNSUPPORTED);
     });
 
     test("ensures that queryStrings still match", () => {
       pathnameSpy = jest
         .fn()
         .mockReturnValue(["r", "popular", "?search=hello"]);
-      expect(getSubPathType(document, pathnameSpy)).toEqual(Subpath.POPULAR);
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.POPULAR);
     });
 
     test("ensures 'popular' at an unexpected index will match default subreddit", () => {
       pathnameSpy = jest.fn().mockReturnValue(["r", "subreddit", "popular"]);
-      expect(getSubPathType(document, pathnameSpy)).toEqual(Subpath.SUBREDDIT);
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.SUBREDDIT);
     });
   });
 
   describe("with a subreddit relevant pathname", () => {
     test("ensures the default pathname matches", () => {
       pathnameSpy = jest.fn().mockReturnValue(["r", "subreddit"]);
-      expect(getSubPathType(document, pathnameSpy)).toEqual(Subpath.SUBREDDIT);
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.SUBREDDIT);
     });
 
     test("ensures a pathname without an 'r' prefix won't match", () => {
       pathnameSpy = jest.fn().mockReturnValue(["b", "subreddit"]);
-      expect(getSubPathType(document, pathnameSpy)).toEqual(
-        Subpath.UNSUPPORTED,
-      );
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.UNSUPPORTED);
     });
 
     test("ensures that queryStrings still match", () => {
       pathnameSpy = jest
         .fn()
         .mockReturnValue(["r", "subreddit", "?search=hello"]);
-      expect(getSubPathType(document, pathnameSpy)).toEqual(Subpath.SUBREDDIT);
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.SUBREDDIT);
     });
   });
 
   describe("with a search relevant pathname", () => {
     test("ensures the default pathname matches", () => {
       pathnameSpy = jest.fn().mockReturnValue(["search"]);
-      expect(getSubPathType(document, pathnameSpy)).toEqual(Subpath.SEARCH);
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.SEARCH);
     });
 
     test("ensures a pathname without a 'search' prefix won't match", () => {
       pathnameSpy = jest.fn().mockReturnValue(["queries", "CoolPerson"]);
-      expect(getSubPathType(document, pathnameSpy)).toEqual(
-        Subpath.UNSUPPORTED,
-      );
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.UNSUPPORTED);
     });
 
     test("ensures that queryStrings still match", () => {
       pathnameSpy = jest.fn().mockReturnValue(["search", "?q='hello'"]);
-      expect(getSubPathType(document, pathnameSpy)).toEqual(Subpath.SEARCH);
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.SEARCH);
     });
   });
 
   describe("with a user relevant pathname", () => {
     test("ensures the default pathname matches", () => {
       pathnameSpy = jest.fn().mockReturnValue(["user", "CoolPerson"]);
-      expect(getSubPathType(document, pathnameSpy)).toEqual(Subpath.USER);
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.USER);
     });
 
     test("ensures a pathname without a 'user' prefix won't match", () => {
       pathnameSpy = jest.fn().mockReturnValue(["users", "CoolPerson"]);
-      expect(getSubPathType(document, pathnameSpy)).toEqual(
-        Subpath.UNSUPPORTED,
-      );
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.UNSUPPORTED);
     });
 
     test("ensures that queryStrings still match", () => {
       pathnameSpy = jest
         .fn()
         .mockReturnValue(["user", "CoolPerson", "?test=hello"]);
-      expect(getSubPathType(document, pathnameSpy)).toEqual(Subpath.USER);
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.USER);
     });
   });
 
@@ -131,7 +137,7 @@ describe(".getSubPathType", () => {
           "1s5elrr",
           "hello-world",
         ]);
-      expect(getSubPathType(document, pathnameSpy)).toEqual(Subpath.POST);
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.POST);
     });
 
     test("ensures that queryStrings still match", () => {
@@ -145,7 +151,7 @@ describe(".getSubPathType", () => {
           "hello-world",
           "?helloWorld=true",
         ]);
-      expect(getSubPathType(document, pathnameSpy)).toEqual(Subpath.POST);
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.POST);
     });
 
     test("ensures a pathname without a 'r' prefix won't match", () => {
@@ -159,9 +165,7 @@ describe(".getSubPathType", () => {
           "hello-world",
           "?helloWorld=true",
         ]);
-      expect(getSubPathType(document, pathnameSpy)).toEqual(
-        Subpath.UNSUPPORTED,
-      );
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.UNSUPPORTED);
     });
 
     test("ensures a pathname without 'comments' prefix won't match", () => {
@@ -176,7 +180,7 @@ describe(".getSubPathType", () => {
           "?helloWorld=true",
         ]);
       // Eh, questionable if this is the behaviour we want.
-      expect(getSubPathType(document, pathnameSpy)).toEqual(Subpath.SUBREDDIT);
+      expect(getSubPathType(pathnameSpy)).toEqual(Subpath.SUBREDDIT);
     });
   });
 });
@@ -186,10 +190,23 @@ describe(".routing", () => {
   let mutatorSpy;
 
   afterEach(() => {
-    if (typeSpy) {
-      typeSpy.mockRestore();
-    }
-    mutatorSpy.mockRestore();
+    [typeSpy, mutatorSpy].forEach((spy) => {
+      if (spy) {
+        spy.mockRestore();
+      }
+    });
+  });
+
+  describe("typeValidations", () => {
+    test("ensures .routing#getType raises a TypeError when not a function", () => {
+      expect(() => routing("helloWorld")).toThrow(TypeError);
+    });
+
+    test("ensures .routing#getType raises a TypeError with a specific message", () => {
+      expect(() => routing("helloWorld")).toThrow(
+        "routing received unexpected argument, 'string', expected 'function'",
+      );
+    });
   });
 
   describe("with the default type callback", () => {
