@@ -28,6 +28,25 @@ describe("_Targets", () => {
   });
 });
 
+describe("_Pages", () => {
+  describe("enumArrays", () => {
+    test("ensures 'DEFAULT' has the expected array", () => {
+      expect(mutate.Pages.DEFAULT).toEqual([
+        mutate.Targets.DRAWER_EXPLORE,
+        mutate.Targets.DRAWER_REELS,
+      ]);
+    });
+
+    test("ensures 'HOME' has the expected array", () => {
+      expect(mutate.Pages.HOME).toEqual([
+        mutate.Targets.DRAWER_EXPLORE,
+        mutate.Targets.DRAWER_REELS,
+        mutate.Targets.PAGE_SUGGESTIONS,
+      ]);
+    });
+  });
+});
+
 describe(".nodeRemovalProxy", () => {
   describe("typeValidations", () => {
     let removeSpy;

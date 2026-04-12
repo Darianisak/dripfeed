@@ -8,7 +8,17 @@ export const Targets = {
   PAGE_SUGGESTIONS: 2,
 };
 
-export const Pages = {};
+// `HOME` probably should not contain the content of default - that should
+// be managed as part of Operate, I think?
+//
+export const Pages = {
+  DEFAULT: [Targets.DRAWER_EXPLORE, Targets.DRAWER_REELS],
+  HOME: [
+    Targets.DRAWER_EXPLORE,
+    Targets.DRAWER_REELS,
+    Targets.PAGE_SUGGESTIONS,
+  ],
+};
 
 export function nodeRemovalProxy(targetOne, targetTwo) {
   [targetOne, targetTwo].forEach((element) => {
