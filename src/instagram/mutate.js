@@ -3,6 +3,9 @@
 import { RemoveNode } from "../helpers/removeNode.js";
 
 export const Targets = {
+  DRAWER_REELS: 0,
+  DRAWER_EXPLORE: 1,
+  PAGE_SUGGESTIONS: 2,
 };
 
 export const Pages = {};
