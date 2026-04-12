@@ -28,37 +28,37 @@ describe("_Targets", () => {
 });
 
 describe("_Pages", () => {
-  describe("page target arrays", () => {
-    test("ensures HOME has the expected target array", () => {
+  describe("enumArrays", () => {
+    test("ensures 'HOME' has the expected array", () => {
       expect(mutate.Pages.HOME).toEqual([mutate.Targets.MAIN_CONTENT]);
     });
 
-    test("ensures POST has the expected target array", () => {
+    test("ensures 'POST' has the expected array", () => {
       expect(mutate.Pages.POST).toEqual([
         mutate.Targets.LEFT_SIDEBAR,
         mutate.Targets.RIGHT_SIDEBAR,
       ]);
     });
 
-    test("ensures SUBREDDIT has the expected target array", () => {
+    test("ensures 'SUBREDDIT' has the expected array", () => {
       expect(mutate.Pages.SUBREDDIT).toEqual([
         mutate.Targets.LEFT_SIDEBAR,
         mutate.Targets.RIGHT_SIDEBAR,
       ]);
     });
 
-    test("ensures USER has the expected target array", () => {
+    test("ensures 'USER' has the expected array", () => {
       expect(mutate.Pages.USER).toEqual([mutate.Targets.LEFT_SIDEBAR]);
     });
 
-    test("ensures SEARCH has the expected target array", () => {
+    test("ensures 'SEARCH' has the expected array", () => {
       expect(mutate.Pages.SEARCH).toEqual([
         mutate.Targets.LEFT_SIDEBAR,
         mutate.Targets.RIGHT_SIDEBAR,
       ]);
     });
 
-    test("ensures POPULAR has the expected target array", () => {
+    test("ensures 'POPULAR' has the expected array", () => {
       expect(mutate.Pages.POPULAR).toEqual([mutate.Targets.MAIN_CONTENT]);
     });
   });
