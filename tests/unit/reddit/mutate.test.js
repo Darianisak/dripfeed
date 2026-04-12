@@ -11,23 +11,23 @@ import * as mutate from "../../../src/reddit/mutate.js";
 
 const normalizeDOMStrings = (str) => str.replace(/\s+/g, "").trim();
 
-describe("_Pages", () => {
-  describe("enum values", () => {
-    test("ensures LEFT_SIDEBAR has the expected representation", () => {
-      expect(mutate.Targets.LEFT_SIDEBAR).toEqual(0);
+describe("_Targets", () => {
+  describe("enumValues", () => {
+    test("ensures 'LEFT_SIDEBAR' has the expected value", () => {
+      expect(mutate.Targets.LEFT_SIDEBAR).toBe(0);
     });
 
-    test("ensures RIGHT_SIDEBAR has the expected representation", () => {
-      expect(mutate.Targets.RIGHT_SIDEBAR).toEqual(1);
+    test("ensures 'RIGHT_SIDEBAR' has the expected value", () => {
+      expect(mutate.Targets.RIGHT_SIDEBAR).toBe(1);
     });
 
-    test("ensures MAIN_CONTENT has the expected representation", () => {
-      expect(mutate.Targets.MAIN_CONTENT).toEqual(2);
+    test("ensures 'MAIN_CONTENT' has the expected value", () => {
+      expect(mutate.Targets.MAIN_CONTENT).toBe(2);
     });
   });
 });
 
-describe("_Targets", () => {
+describe("_Pages", () => {
   describe("page target arrays", () => {
     test("ensures HOME has the expected target array", () => {
       expect(mutate.Pages.HOME).toEqual([mutate.Targets.MAIN_CONTENT]);
