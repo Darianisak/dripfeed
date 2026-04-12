@@ -21,7 +21,7 @@ export function nodeRemovalProxy(targetOne, targetTwo) {
       return;
     }
     throw new TypeError(
-      `Unexpected type, '${typeof element}', encountered in nodeRemovalProxy.`,
+      `nodeRemovalProxy received unexpected argument, '${typeof element}', expected 'string' or 'Element'`,
     );
   });
 

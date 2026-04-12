@@ -11,54 +11,54 @@ import * as mutate from "../../../src/reddit/mutate.js";
 
 const normalizeDOMStrings = (str) => str.replace(/\s+/g, "").trim();
 
-describe("_Pages", () => {
-  describe("enum values", () => {
-    test("ensures LEFT_SIDEBAR has the expected representation", () => {
-      expect(mutate.Targets.LEFT_SIDEBAR).toEqual(0);
+describe("_Targets", () => {
+  describe("enumValues", () => {
+    test("ensures 'LEFT_SIDEBAR' has the expected value", () => {
+      expect(mutate.Targets.LEFT_SIDEBAR).toBe(0);
     });
 
-    test("ensures RIGHT_SIDEBAR has the expected representation", () => {
-      expect(mutate.Targets.RIGHT_SIDEBAR).toEqual(1);
+    test("ensures 'RIGHT_SIDEBAR' has the expected value", () => {
+      expect(mutate.Targets.RIGHT_SIDEBAR).toBe(1);
     });
 
-    test("ensures MAIN_CONTENT has the expected representation", () => {
-      expect(mutate.Targets.MAIN_CONTENT).toEqual(2);
+    test("ensures 'MAIN_CONTENT' has the expected value", () => {
+      expect(mutate.Targets.MAIN_CONTENT).toBe(2);
     });
   });
 });
 
-describe("_Targets", () => {
-  describe("page target arrays", () => {
-    test("ensures HOME has the expected target array", () => {
+describe("_Pages", () => {
+  describe("enumArrays", () => {
+    test("ensures 'HOME' has the expected array", () => {
       expect(mutate.Pages.HOME).toEqual([mutate.Targets.MAIN_CONTENT]);
     });
 
-    test("ensures POST has the expected target array", () => {
+    test("ensures 'POST' has the expected array", () => {
       expect(mutate.Pages.POST).toEqual([
         mutate.Targets.LEFT_SIDEBAR,
         mutate.Targets.RIGHT_SIDEBAR,
       ]);
     });
 
-    test("ensures SUBREDDIT has the expected target array", () => {
+    test("ensures 'SUBREDDIT' has the expected array", () => {
       expect(mutate.Pages.SUBREDDIT).toEqual([
         mutate.Targets.LEFT_SIDEBAR,
         mutate.Targets.RIGHT_SIDEBAR,
       ]);
     });
 
-    test("ensures USER has the expected target array", () => {
+    test("ensures 'USER' has the expected array", () => {
       expect(mutate.Pages.USER).toEqual([mutate.Targets.LEFT_SIDEBAR]);
     });
 
-    test("ensures SEARCH has the expected target array", () => {
+    test("ensures 'SEARCH' has the expected array", () => {
       expect(mutate.Pages.SEARCH).toEqual([
         mutate.Targets.LEFT_SIDEBAR,
         mutate.Targets.RIGHT_SIDEBAR,
       ]);
     });
 
-    test("ensures POPULAR has the expected target array", () => {
+    test("ensures 'POPULAR' has the expected array", () => {
       expect(mutate.Pages.POPULAR).toEqual([mutate.Targets.MAIN_CONTENT]);
     });
   });
@@ -207,63 +207,114 @@ describe(".operate", () => {
 });
 
 describe(".nodeRemovalProxy", () => {
-  describe("type checks", () => {
-    let operateSpy;
-    let nodeSpy;
+  describe("typeValidations", () => {
+    let removeSpy;
+    let removeOperateSpy;
 
     beforeEach(() => {
-      // We'll do this to ensure we limit the testing scope.
-      operateSpy = jest.fn();
+      removeOperateSpy = jest.fn();
 
       const mockInstance = {
-        operate: operateSpy,
+        operate: removeOperateSpy,
       };
 
-      nodeSpy = jest
+      removeSpy = jest
         .spyOn(removeNode, "RemoveNode")
         .mockImplementation(() => mockInstance);
     });
 
     afterEach(() => {
-      operateSpy.mockRestore();
-      nodeSpy.mockRestore();
+      [removeSpy, removeOperateSpy].forEach((spy) => {
+        if (spy) {
+          spy.mockRestore();
+        }
+      });
+      document.getElementsByTagName("html")[0].innerHTML = "";
     });
 
-    describe("with valid arguments", () => {
-      test("ensures both args as Strings is fine", () => {
-        expect(() => mutate.nodeRemovalProxy("hello", "world")).not.toThrow(
+    describe("#targetOne", () => {
+      test("ensures specific TypeError message raised", () => {
+        expect(() => mutate.nodeRemovalProxy(100, "#valid-id")).toThrow(
+          "nodeRemovalProxy received unexpected argument, 'number', expected 'string' or 'Element'",
+        );
+      });
+
+      test("ensures TypeError raised given number input or element", () => {
+        expect(() => mutate.nodeRemovalProxy(100, "#valid-id")).toThrow(
           TypeError,
         );
       });
 
-      test("ensures both args as Elements is fine", () => {
-        expect(() =>
-          mutate.nodeRemovalProxy(
-            document.createElement("div"),
-            document.createElement("div"),
-          ),
-        ).not.toThrow(TypeError);
+      test("ensures TypeError raised given undefined input or element", () => {
+        expect(() => mutate.nodeRemovalProxy(undefined, "#valid-id")).toThrow(
+          TypeError,
+        );
       });
 
-      test("ensures a mix between Strings and Elements is fine", () => {
-        expect(() =>
-          mutate.nodeRemovalProxy(document.createElement("div"), "helloWorld"),
-        ).not.toThrow(TypeError);
+      test("ensures string allows RemoveNode call", () => {
+        mutate.nodeRemovalProxy("#valid-id", "#other-id");
+        expect(removeSpy).toHaveBeenCalledWith("#valid-id", "#other-id");
+      });
+
+      test("ensures Element allows RemoveNode call", () => {
+        const elementArgument = document.createElement("div");
+        mutate.nodeRemovalProxy(elementArgument, "#other-id");
+        expect(removeSpy).toHaveBeenCalledWith(elementArgument, "#other-id");
       });
     });
 
-    describe("with invalid arguments", () => {
-      test("ensures numeric values are invalid", () => {
-        expect(() => mutate.nodeRemovalProxy(1, 1)).toThrow(TypeError);
+    describe("#targetTwo", () => {
+      test("ensures specific TypeError message raised", () => {
+        expect(() => mutate.nodeRemovalProxy("#valid-id", 100)).toThrow(
+          "nodeRemovalProxy received unexpected argument, 'number', expected 'string' or 'Element'",
+        );
       });
 
-      test("ensures undefined values are invalid", () => {
-        expect(() => mutate.nodeRemovalProxy(null, null)).toThrow(TypeError);
+      test("ensures TypeError raised given number input or element", () => {
+        expect(() => mutate.nodeRemovalProxy("#valid-id", 100)).toThrow(
+          TypeError,
+        );
       });
 
-      test("ensures undefined values are invalid", () => {
-        expect(() => mutate.nodeRemovalProxy(null, null)).toThrow(
-          "Unexpected type, 'object', encountered in nodeRemovalProxy.",
+      test("ensures TypeError raised given undefined input or element", () => {
+        expect(() => mutate.nodeRemovalProxy("#valid-id", undefined)).toThrow(
+          TypeError,
+        );
+      });
+
+      test("ensures string allows RemoveNode call", () => {
+        mutate.nodeRemovalProxy("#other-id", "#valid-id");
+        expect(removeSpy).toHaveBeenCalledWith("#other-id", "#valid-id");
+      });
+
+      test("ensures Element allows RemoveNode call", () => {
+        const elementArgument = document.createElement("div");
+        mutate.nodeRemovalProxy("#other-id", elementArgument);
+        expect(removeSpy).toHaveBeenCalledWith("#other-id", elementArgument);
+      });
+    });
+
+    describe("#targetOne && #targetTwo", () => {
+      test("ensures both args as strings is valid", () => {
+        mutate.nodeRemovalProxy("#id-1", "#id-2");
+        expect(removeSpy).toHaveBeenCalledWith("#id-1", "#id-2");
+      });
+
+      test("ensures both args as Elements is valid", () => {
+        const elementOne = document.createElement("div");
+        const elementTwo = document.createElement("div");
+
+        mutate.nodeRemovalProxy(elementOne, elementTwo);
+        expect(removeSpy).toHaveBeenCalledWith(elementOne, elementTwo);
+      });
+
+      test("ensures both args as numbers raised TypeError", () => {
+        expect(() => mutate.nodeRemovalProxy(1, 2)).toThrow(TypeError);
+      });
+
+      test("ensures both args undefined raises TypeError", () => {
+        expect(() => mutate.nodeRemovalProxy(undefined, undefined)).toThrow(
+          TypeError,
         );
       });
     });
