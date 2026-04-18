@@ -1,21 +1,6 @@
-import { getDomain } from "./helpers/pathHelper.js";
-import * as reddit from "./reddit/index.js";
+"use strict";
 
-function extensionRouting() {
-  const currentDomain = getDomain();
-
-  switch (currentDomain) {
-    case "www.reddit.com":
-      reddit.routing();
-      break;
-
-    default:
-      console.warn(`'${currentDomain}' is not yet supported.`);
-      return 127;
-  }
-}
+import * as domain from "./helpers/domainRouting.js";
 
 // Handles initial page load
-document.addEventListener("DOMContentLoaded", () => extensionRouting());
-
-export { extensionRouting };
+document.addEventListener("DOMContentLoaded", () => domain.extensionRouting());
