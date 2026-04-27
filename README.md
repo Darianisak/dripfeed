@@ -113,6 +113,25 @@ The extension ZIP can be built with:
 npm run build
 ```
 
+### Updating
+
+We can update the project's NPM and RubyGems dependencies by:
+
+```bash
+# Update JavaScript dependencies
+npm audit fix
+
+# Update Ruby dependencies
+bundle update
+
+# Stage the updates and commit
+git add .
+git commit -m "chore: updates safe dependencies"
+```
+
+These steps don't account for cases whereby we need to perform an unsafe major
+version migration.
+
 ### Technologies
 
 This project uses:
