@@ -1,5 +1,7 @@
 ---
 name: Formatting Workflow
+permissions:
+  contents: "read"
 
 # yamllint disable-line rule:truthy
 on:
