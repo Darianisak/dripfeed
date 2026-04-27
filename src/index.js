@@ -1,6 +1,5 @@
 "use strict";
 
-import * as domain from "./helpers/domainRouting.js";
+import * as listener from "./helpers/listeners.js";
 
-// Handles initial page load
-document.addEventListener("DOMContentLoaded", () => domain.extensionRouting());
+listener.initialMutations();
