@@ -3,3 +3,4 @@
 import * as listener from "./helpers/listeners.js";
 
 listener.initialMutations();
+listener.responsiveMutations();
