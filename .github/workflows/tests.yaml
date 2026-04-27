@@ -1,5 +1,7 @@
 ---
 name: Test Workflow
+permissions:
+  contents: "read"
 
 # yamllint disable-line rule:truthy
 on:
@@ -9,6 +11,10 @@ on:
 jobs:
   jest:
     runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      pull-requests: "write"
+      checks: "write"
     steps:
       - uses: actions/checkout@v6
 
