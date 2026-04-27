@@ -145,6 +145,7 @@ This project uses:
 - [`rubocop`][rubocop] to enforce Ruby best-practice.
 - [`sinatra`][sinatra] for serving test fixtures.
 - [`rspec`][rspec] and [`capybara`][capybara] for atomic integration tests.
+- [`semgrep`][semgrep] for security scans.
 
 <!-- Links -->
 
@@ -160,3 +161,4 @@ This project uses:
 [sinatra]: https://sinatrarb.com/
 [rspec]: https://rspec.info/
 [capybara]: https://github.com/teamcapybara/capybara?tab=readme-ov-file#capybara
+[semgrep]: https://github.com/semgrep/semgrep

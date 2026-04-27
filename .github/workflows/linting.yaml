@@ -29,6 +29,17 @@ jobs:
       - name: Run YAMLLint
         run: yamllint --config-file .yamllint --strict .
 
+  semgrep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install Python dependencies
+        run: pip3 install --requirement requirements.txt
+
+      - name: Run Semgrep
+        run: semgrep scan --strict .
+
   rubocop:
     runs-on: ubuntu-latest
     steps:

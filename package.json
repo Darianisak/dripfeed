@@ -21,7 +21,8 @@
     "rspec": "./bin/bundle exec rspec",
     "sinatra": "./bin/bundle exec ruby sinatra.rb",
     "watch": "npx webpack --mode development --watch",
-    "webpack": "npx webpack --mode production"
+    "webpack": "npx webpack --mode production",
+    "semgrap": "source pydeps/bin/activate && semgrep scan ."
   },
   "dependencies": {
     "webpack": "^5.105.4",
