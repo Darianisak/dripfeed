@@ -1,64 +1,23 @@
 "use strict";
 
-import {
-  describe,
-  test,
-  expect,
-  jest,
-  afterEach,
-  beforeEach,
-} from "@jest/globals";
+import { describe, test, expect, jest, afterEach } from "@jest/globals";
 
-import * as domain from "../../src/helpers/domainRouting.js";
+import * as listener from "../../src/helpers/listeners.js";
 
-jest.mock("../../src/helpers/domainRouting.js", () => ({
-  extensionRouting: jest.fn(),
+jest.mock("../../src/helpers/listeners.js", () => ({
+  initialMutations: jest.fn(),
 }));
 
-describe("dripfeed initialisation lifecycle", () => {
-  let consoleSpy;
-
-  beforeEach(() => {
-    consoleSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
-  });
-
+describe("#global", () => {
   afterEach(() => {
-    consoleSpy.mockRestore();
+    listener.initialMutations.mockRestore();
   });
 
-  describe("Listener registrations", () => {
-    let documentSpy;
-
-    afterEach(() => {
-      documentSpy.mockRestore();
-      domain.extensionRouting.mockClear();
+  test("ensures that .initialMutations is called", () => {
+    jest.isolateModules(() => {
+      require("../../src/index.js");
     });
 
-    test("ensures registration on 'DOMContentLoaded'", () => {
-      documentSpy = jest.spyOn(document, "addEventListener");
-
-      jest.isolateModules(() => {
-        require("../../src/index.js");
-      });
-
-      expect(documentSpy).toHaveBeenCalledWith(
-        "DOMContentLoaded",
-        expect.any(Function),
-      );
-    });
-
-    test("ensures routing function executed post registration", () => {
-      // Without this, index.js runs twice, causing two listeners to be
-      // registered to the document.
-      jest.resetModules();
-
-      jest.isolateModules(() => {
-        require("../../src/index.js");
-      });
-
-      document.dispatchEvent(new Event("DOMContentLoaded"));
-
-      expect(domain.extensionRouting).toHaveBeenCalledTimes(1);
-    });
+    expect(listener.initialMutations).toHaveBeenCalledTimes(1);
   });
 });
