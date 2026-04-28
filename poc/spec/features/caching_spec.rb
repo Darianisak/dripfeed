@@ -7,12 +7,11 @@ RSpec.describe 'Client-side dependency caching', type: :feature, js: true do
   before do
     FileUtils.mkdir_p(File.dirname(har_path))
 
-    # The VCR Logic: Access the underlying Playwright Page object
     page.driver.with_playwright_page do |playwright_page|
       playwright_page.route_from_har(
         har_path,
-        url: '**/*', # Intercept all requests (or scope it to your 3rd-party domain)
-        update: !File.exist?(har_path) # True = Record network. False = Serve from cache.
+        url: 'https://httpbin.org/**', # Updated to match the new endpoint
+        update: !File.exist?(har_path)
       )
     end
   end

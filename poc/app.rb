@@ -6,10 +6,9 @@ get '/' do
     <html>
     <body>
       <div id="content-container">Loading dependency...</div>
-      
       <script>
-        // The browser hits an external API that returns a 403
-        fetch('https://httpstat.us/403')
+        // httpbin.org properly sends CORS headers with its 403
+        fetch('https://httpbin.org/status/403')
           .then(response => {
             document.getElementById('content-container').innerText = `Status: ${response.status}`;
           });
