@@ -31,3 +31,7 @@ gem "rubocop-rspec", "~> 3.9"
 gem "rubocop-performance", "~> 1.26"
 
 gem "sinatra-contrib", "~> 4.2"
+
+gem "puffing-billy", "~> 4.0"
+
+gem 'eventmachine', github: 'eventmachine/eventmachine', branch: 'master'
