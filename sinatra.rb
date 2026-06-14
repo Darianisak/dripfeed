@@ -5,6 +5,7 @@ require "sinatra/namespace"
 
 set :views, File.expand_path("views", __dir__)
 set :public_folder, File.expand_path("src", __dir__)
+set :logging, false
 
 namespace "/r" do
   get "/subreddit" do
