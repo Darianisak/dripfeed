@@ -1,12 +1,19 @@
 "use strict";
 
-import { describe, test, expect, afterEach, beforeEach } from "@jest/globals";
+import {
+  describe,
+  test,
+  expect,
+  afterEach,
+  beforeEach,
+  jest,
+} from "@jest/globals";
 import { Ancestors } from "../../../src/helpers/ancestors.js";
 import { build_n_layer_dom } from "../factory.html.js";
 
 describe("#constructor", () => {
   describe("type validations", () => {
-    describe("element arguments rather than element ids", () => {
+    describe("when providing elements", () => {
       test("ensures nodeOne contains the original element", () => {
         build_n_layer_dom(2);
         const node = document.getElementById("child-0");
@@ -32,7 +39,7 @@ describe("#constructor", () => {
       });
     });
 
-    describe("element id arguments rather than elements", () => {
+    describe("when providing element ids", () => {
       beforeEach(() => {
         build_n_layer_dom(3);
       });
@@ -55,6 +62,32 @@ describe("#constructor", () => {
 
       test("ensures nodeTwo will be nulled if the ID is invalid", () => {
         expect(new Ancestors("child-1", "an-invalid-id").nodeTwo).toBeNull();
+      });
+    });
+
+    describe("when providing class selectors", () => {
+      beforeEach(() => {
+        build_n_layer_dom(3);
+      });
+
+      test("ensures nodeOne will have the correct Element if provided a valid selector", () => {
+        expect(new Ancestors("class-child-1", "").nodeOne).toEqual(
+          document.getElementById("class-child-1"),
+        );
+      });
+
+      test("ensures nodeTwo will have the correct Element if provided a valid selector", () => {
+        expect(new Ancestors("", "class-child-2").nodeTwo).toEqual(
+          document.getElementById("class-child-2"),
+        );
+      });
+
+      test("ensures nodeOne will be nulled if not passed a valid selector", () => {
+        expect(new Ancestors("", "class-child-1").nodeOne).toBeNull();
+      });
+
+      test("ensures nodeTwo will be nulled if not passed a valid selector", () => {
+        expect(new Ancestors("class-child-2", "").nodeTwo).toBeNull();
       });
     });
   });
@@ -189,6 +222,31 @@ describe("#ancestorNodes", () => {
         ancestorTree.nodeTwoAncestors,
       );
     });
+  });
+});
+
+describe("#nodeIdentifiers", () => {
+  afterEach(() => {
+    document.getElementsByTagName("html")[0].innerHTML = "";
+  });
+
+  test("ensures Node IDs can be queried", () => {
+    build_n_layer_dom(5);
+
+    expect(new Ancestors("child-1", "child-2").nodeIndentifiers).toEqual([
+      "child-1",
+      "child-2",
+    ]);
+  });
+
+  test("ensures DOM Elements can be queried", () => {
+    const elemOne = document.createElement("div");
+    const elemTwo = document.createElement("div");
+
+    expect(new Ancestors(elemOne, elemTwo).nodeIndentifiers).toEqual([
+      elemOne,
+      elemTwo,
+    ]);
   });
 });
 

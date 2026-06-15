@@ -210,9 +210,13 @@ describe(".nodeRemovalProxy", () => {
   describe("typeValidations", () => {
     let removeSpy;
     let removeOperateSpy;
+    let consoleSpy;
 
     beforeEach(() => {
       removeOperateSpy = jest.fn();
+      consoleSpy = jest
+        .spyOn(console, "warn")
+        .mockImplementation(() => jest.fn());
 
       const mockInstance = {
         operate: removeOperateSpy,
@@ -224,12 +228,32 @@ describe(".nodeRemovalProxy", () => {
     });
 
     afterEach(() => {
-      [removeSpy, removeOperateSpy].forEach((spy) => {
+      [removeSpy, removeOperateSpy, consoleSpy].forEach((spy) => {
         if (spy) {
           spy.mockRestore();
         }
       });
       document.getElementsByTagName("html")[0].innerHTML = "";
+    });
+
+    describe("when elements are invalid", () => {
+      test("ensures console.warn is called on removal failure", () => {
+        const mockInstance = {
+          operate: jest.fn().mockImplementation(() => {
+            throw new TypeError();
+          }),
+        };
+
+        removeSpy = jest
+          .spyOn(removeNode, "RemoveNode")
+          .mockImplementation(() => mockInstance);
+
+        mutate.nodeRemovalProxy(
+          document.createElement("div"),
+          document.createElement("div"),
+        );
+        expect(consoleSpy).toHaveBeenCalledTimes(1);
+      });
     });
 
     describe("#targetOne", () => {

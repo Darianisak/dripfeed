@@ -10,6 +10,7 @@ function build_n_layer_dom(depth = 5) {
   for (let layer = 0; layer < depth; layer++) {
     let childNode = document.createElement("div");
     childNode.id = `child-${layer}`;
+    childNode.class = `class-child-${layer}`;
     currentNode.append(childNode);
     currentNode = childNode;
   }

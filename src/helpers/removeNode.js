@@ -38,7 +38,10 @@ class RemoveNode {
     try {
       var ancestor = this.nodeTree.sharedAncestor();
     } catch (TypeError) {
-      throw new Error(`removeNode raised TypeError: ${TypeError}`);
+      throw new Error(
+        `removeNode raised TypeError: ${TypeError}
+        targets: ${this.nodeTree.nodeIndentifiers}`,
+      );
     }
 
     if (ancestor === null) {
