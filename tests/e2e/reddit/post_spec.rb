@@ -9,21 +9,7 @@ RSpec.describe "reddit/post", type: :feature do
 
   describe "Pre DOM Mutation" do
     context "with an unmodified post view" do
-      it "maintains the search box" do
-        expect(page).to have_css("#search-input-chip", visible: :all)
-      end
-
-      it "has main content container" do
-        expect(page).to have_css("#main-content")
-      end
-
-      it "has recommended subreddits" do
-        expect(page).to have_css("#left-sidebar-container")
-      end
-
-      it "has popular subreddits sidebar" do
-        expect(page).to have_css("#right-sidebar-contents")
-      end
+      it_behaves_like "a page with the default elements visible", "Search in r/Wellington"
     end
   end
 
@@ -33,21 +19,9 @@ RSpec.describe "reddit/post", type: :feature do
     end
 
     context "with a modified post view" do
-      it "has a search box" do
-        expect(page).to have_css("#search-input-chip", visible: :all)
-      end
-
-      it "has a main content container" do
-        expect(page).to have_css("#main-content")
-      end
-
-      it "does not have a right-sidebar content" do
-        expect(page).to have_no_css("#right-sidebar-contents")
-      end
-
-      it "does not have a recommended subreddit box" do
-        expect(page).to have_no_css("#left-sidebar-container")
-      end
+      it_behaves_like "a page with a search bar", "Search in r/Wellington"
+      it_behaves_like "a page with main content"
+      it_behaves_like "a page with the sidebars removed"
     end
   end
 end
