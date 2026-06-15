@@ -5,6 +5,9 @@ require "selenium-webdriver"
 require_relative "../../sinatra"
 require "debug"
 
+# Includes our shared_example specs for Reddit
+require "reddit/helpers"
+
 Capybara.app = Sinatra::Application
 
 Capybara.server_host = "127.0.0.1"

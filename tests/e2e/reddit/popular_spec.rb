@@ -9,21 +9,7 @@ RSpec.describe "r/popular", type: :feature do
 
   describe "Pre DOM Mutation" do
     context "with unmodified homepage view" do
-      it "has a search box" do
-        expect(page).to have_css(".search-input", visible: :all)
-      end
-
-      it "has main content container" do
-        expect(page).to have_css("#main-content")
-      end
-
-      it "has recommended subreddits" do
-        expect(page).to have_css("#left-sidebar-container")
-      end
-
-      it "has popular subreddits sidebar" do
-        expect(page).to have_css("#right-sidebar-contents")
-      end
+      it_behaves_like "a page with the default elements visible"
     end
   end
 
@@ -33,21 +19,8 @@ RSpec.describe "r/popular", type: :feature do
     end
 
     context "with a modified homepage view" do
-      it "has a search box" do
-        expect(page).to have_css(".search-input", visible: :all)
-      end
-
-      it "has no main content" do
-        expect(page).to have_no_css("#main-content")
-      end
-
-      it "has no recommended subreddits sidebar" do
-        expect(page).to have_no_css("#left-sidebar-container")
-      end
-
-      it "has no popular subreddits sidebar" do
-        expect(page).to have_no_css("#right-sidebar-contents")
-      end
+      it_behaves_like "a page with a search bar"
+      it_behaves_like "a page with the body content removed"
     end
   end
 end
