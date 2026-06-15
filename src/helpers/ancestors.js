@@ -5,6 +5,15 @@ class Ancestors {
   depth = 3;
   ancestorsOne;
   ancestorsTwo;
+  nodeSelectors;
+
+  #isElementSelector = (selector) => {
+    try {
+      document.querySelectorAll(selector);
+    } catch {
+      return [];
+    }
+  };
 
   #isElementId = (selector) => document.getElementById(selector);
 
@@ -47,6 +56,22 @@ class Ancestors {
       const elementById = this.#isElementId(nodeTwo);
       this.nodeTwo = elementById ? elementById : null;
     }
+
+    if (!this.nodeOne) {
+      const elementBySelector = this.#isElementSelector(nodeOne);
+      this.nodeOne = elementBySelector > 0 ? elementBySelector[0] : null;
+    }
+
+    if (!this.nodeTwo) {
+      const elementBySelector = this.#isElementSelector(nodeTwo);
+      this.nodeTwo = elementBySelector > 0 ? elementBySelector[0] : null;
+    }
+
+    this.nodeSelectors = [nodeOne, nodeTwo];
+  }
+
+  get nodeIndentifiers() {
+    return this.nodeSelectors;
   }
 
   get nodeOneAncestors() {
