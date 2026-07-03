@@ -1,23 +1,8 @@
 "use strict";
 
-export { build_n_layer_dom, build_tree_dom };
+export { buildTreeDOM };
 
-function build_n_layer_dom(depth = 5): void {
-  const rootNode = document.createElement("div");
-  rootNode.id = "root";
-  let currentNode = rootNode;
-
-  for (let layer = 0; layer < depth; layer++) {
-    const childNode = document.createElement("div");
-    childNode.id = `child-${layer}`;
-    currentNode.append(childNode);
-    currentNode = childNode;
-  }
-
-  document.body.append(rootNode);
-}
-
-function build_tree_dom(depth = 5): void {
+function buildTreeDOM(depth = 5): void {
   const buildChildNode = (layer: number, childIndex: number) => {
     const node = document.createElement("div");
     node.id = `layer-${layer}_index-${childIndex}`;

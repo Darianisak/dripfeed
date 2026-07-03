@@ -2,302 +2,298 @@
 
 import { describe, test, expect, afterEach, beforeEach } from "@jest/globals";
 import { Ancestors } from "../../../src/helpers/ancestors.js";
-import { build_n_layer_dom } from "../factory.html.ts";
+import { buildTreeDOM } from "../factory.html.ts";
 
-describe("#constructor", () => {
-  describe("type validations", () => {
-    describe("element arguments rather than element ids", () => {
-      test("ensures nodeOne contains the original element", () => {
-        build_n_layer_dom(2);
-        const node = document.getElementById("child-0");
-        expect(new Ancestors(node, "").nodeOne).toEqual(node);
+describe("Ancestors", () => {
+  const baseLayerID = 1;
+  const maxLayerID = 9;
+  const layerSelector = (id) => `layer-${id}_index-0`;
+
+  let ancestorTree;
+
+  beforeEach(() => {
+    buildTreeDOM(maxLayerID + 10);
+  });
+
+  afterEach(() => {
+    document.getElementsByTagName("html")[0].innerHTML = "";
+  });
+
+  describe("#constructor", () => {
+    const invalidSelector = "an-invalid-id";
+
+    describe("with Elements", () => {
+      describe("when valid", () => {
+        test("ensures nodeOne returns the expected element", () => {
+          const node = document.getElementById(layerSelector(baseLayerID));
+          expect(new Ancestors(node, "").nodeOne).toEqual(
+            document.getElementById(layerSelector(baseLayerID)),
+          );
+        });
+
+        test("ensures nodeTwo returns the expected element", () => {
+          const node = document.getElementById(layerSelector(baseLayerID + 1));
+          expect(new Ancestors("", node).nodeTwo).toEqual(
+            document.getElementById(layerSelector(baseLayerID + 1)),
+          );
+        });
       });
 
-      test("ensures nodeTwo contains the original element", () => {
-        build_n_layer_dom(2);
-        const node = document.getElementById("child-1");
-        expect(new Ancestors("", node).nodeTwo).toEqual(node);
-      });
+      describe("when invalid", () => {
+        test("ensures nodeOne will be nulled", () => {
+          expect(
+            new Ancestors("", document.createElement("div")).nodeOne,
+          ).toBeNull();
+        });
 
-      test("ensures nodeOne will be nulled if not passed an Element", () => {
-        expect(
-          new Ancestors("", document.createElement("div")).nodeOne,
-        ).toBeNull();
-      });
-
-      test("ensures nodeTwo will be nulled if not passed an Element", () => {
-        expect(
-          new Ancestors(document.createElement("div"), "").nodeTwo,
-        ).toBeNull();
+        test("ensures nodeTwo will be nulled", () => {
+          expect(
+            new Ancestors(document.createElement("div"), "").nodeTwo,
+          ).toBeNull();
+        });
       });
     });
 
-    describe("element id arguments rather than elements", () => {
+    describe("with IDs", () => {
+      describe("when valid", () => {
+        test("ensures nodeOne returns the expected Element", () => {
+          expect(new Ancestors(layerSelector(baseLayerID), "").nodeOne).toEqual(
+            document.getElementById(layerSelector(baseLayerID)),
+          );
+        });
+
+        test("ensures nodeTwo returns the expeected Element", () => {
+          expect(
+            new Ancestors("", layerSelector(baseLayerID + 1)).nodeTwo,
+          ).toEqual(document.getElementById(layerSelector(baseLayerID + 1)));
+        });
+      });
+
+      describe("when invalid", () => {
+        test("ensures nodeOne is null", () => {
+          expect(
+            new Ancestors(invalidSelector, layerSelector(baseLayerID + 1))
+              .nodeOne,
+          ).toBeNull();
+        });
+
+        test("ensures nodeTwo is null", () => {
+          expect(
+            new Ancestors(layerSelector(baseLayerID), invalidSelector).nodeTwo,
+          ).toBeNull();
+        });
+      });
+    });
+  });
+
+  describe("#ancestorNodes", () => {
+    describe("when mutation is attempted after creation", () => {
+      let currentAncestors;
+
       beforeEach(() => {
-        build_n_layer_dom(3);
-      });
-
-      test("ensures nodeOne will have the correct Element if provided a valid ID", () => {
-        expect(new Ancestors("child-1", "").nodeOne).toEqual(
-          document.getElementById("child-1"),
+        ancestorTree = new Ancestors(
+          document.getElementById(layerSelector(baseLayerID)),
+          document.getElementById(layerSelector(maxLayerID - 1)),
         );
       });
 
-      test("ensures nodeTwo will have the correct Element if provided a valid ID", () => {
-        expect(new Ancestors("", "child-2").nodeTwo).toEqual(
-          document.getElementById("child-2"),
+      test("ensures nodeOne's ancestors are immutable", () => {
+        currentAncestors = ancestorTree.nodeOneAncestors;
+        ancestorTree.nodeOne = document.createElement("div");
+        expect(ancestorTree.nodeOne).toEqual(document.createElement("div"));
+        expect(ancestorTree.nodeOneAncestors).toEqual(currentAncestors);
+      });
+
+      test("ensures nodeTwo's ancestors are immutable", () => {
+        currentAncestors = ancestorTree.nodeTwoAncestors;
+        ancestorTree.nodeTwo = document.createElement("div");
+        expect(ancestorTree.nodeTwo).toEqual(document.createElement("div"));
+        expect(ancestorTree.nodeTwoAncestors).toEqual(currentAncestors);
+      });
+    });
+
+    describe("when the class is improperly called", () => {
+      beforeEach(() => {
+        ancestorTree = new Ancestors("", "");
+      });
+
+      test("throws a TypeError when nodeOne is null", () => {
+        expect(() => ancestorTree.nodeOneAncestors).toThrow(TypeError);
+      });
+
+      test("throws a TypeError when nodeTwo is null", () => {
+        expect(() => ancestorTree.nodeTwoAncestors).toThrow(TypeError);
+      });
+    });
+
+    describe("when neither node has ancestors", () => {
+      beforeEach(() => {
+        ancestorTree = new Ancestors(
+          document.createElement("div"),
+          document.createElement("div"),
         );
       });
 
-      test("ensures nodeOne will be nulled if the ID is invalid", () => {
-        expect(new Ancestors("an-invalid-id", "child-1").nodeOne).toBeNull();
+      test("ensures nodeOne does not return nodes", () => {
+        expect(ancestorTree.nodeOneAncestors).toEqual([]);
       });
 
-      test("ensures nodeTwo will be nulled if the ID is invalid", () => {
-        expect(new Ancestors("child-1", "an-invalid-id").nodeTwo).toBeNull();
+      test("ensures nodeOne does not return nodes", () => {
+        expect(ancestorTree.nodeTwoAncestors).toEqual([]);
+      });
+    });
+
+    describe("when only nodeOne has ancestors", () => {
+      beforeEach(() => {
+        ancestorTree = new Ancestors(
+          document.getElementById(layerSelector(baseLayerID + 3)),
+          document.createElement("div"),
+        );
+      });
+
+      test("ensures array is returned", () => {
+        expect(ancestorTree.nodeOneAncestors).toBeInstanceOf(Array);
+      });
+
+      test("ensures array items are elements", () => {
+        expect(ancestorTree.nodeOneAncestors[0]).toBeInstanceOf(Element);
+      });
+
+      test("ensures return is limited to Ancestors.depth", () => {
+        expect(ancestorTree.nodeOneAncestors.length).toBe(3);
+      });
+
+      test("ensures expected elements are returned", () => {
+        const expectedElements = [
+          document.getElementById(layerSelector(baseLayerID + 2)),
+          document.getElementById(layerSelector(baseLayerID + 1)),
+          document.getElementById(layerSelector(baseLayerID)),
+        ];
+        expect(ancestorTree.nodeOneAncestors).toEqual(expectedElements);
+      });
+
+      test("ensures nodeTwo does not return ancestors", () => {
+        expect(ancestorTree.nodeTwoAncestors).toEqual([]);
+      });
+    });
+
+    describe("when both nodes have ancestors", () => {
+      var ancestorTree;
+
+      beforeEach(() => {
+        ancestorTree = new Ancestors(
+          document.getElementById(layerSelector(baseLayerID)),
+          document.getElementById(layerSelector(maxLayerID - 2)),
+        );
+      });
+
+      test("ensures nodeOne and nodeTwo don't return the same elements", () => {
+        expect(ancestorTree.nodeOneAncestors).not.toEqual(
+          ancestorTree.nodeTwoAncestors,
+        );
       });
     });
   });
-});
 
-describe("#ancestorNodes", () => {
-  afterEach(() => {
-    document.getElementsByTagName("html")[0].innerHTML = "";
-  });
-
-  describe("when mutation is attempted after creation", () => {
-    // Context block to ensure that ancestors ARE NOT re-derived on changes
-    // to the underlying target nodes, i.e., updating the instances nodeOne from
-    // id='root' to id='child-4' won't update the ancestors to be those of 'child-4'.
-    //
-    let ancestorTree;
-
-    beforeEach(() => {
-      build_n_layer_dom(10);
-      ancestorTree = new Ancestors(
-        document.getElementById("child-1"),
-        document.getElementById("child-8"),
-      );
+  describe("#sharedAncestorsPresent", () => {
+    describe("with no ancestors", () => {
+      test("returns false", () => {
+        ancestorTree = new Ancestors(
+          document.createElement("div"),
+          document.createElement("div"),
+        );
+        expect(ancestorTree.sharedAncestorsPresent()).toBeFalsy();
+      });
     });
 
-    test("ensures nodeOne's ancestors are immutable", () => {
-      let currentAncestors = ancestorTree.nodeOneAncestors;
-      ancestorTree.nodeOne = document.createElement("div");
-      expect(ancestorTree.nodeOne).toEqual(document.createElement("div"));
-      expect(ancestorTree.nodeOneAncestors).toEqual(currentAncestors);
-    });
+    describe("with ancestors", () => {
+      describe("when in range", () => {
+        test("returns true when 1 layer apart", () => {
+          ancestorTree = new Ancestors(
+            document.getElementById(layerSelector(baseLayerID)),
+            document.getElementById(layerSelector(baseLayerID + 1)),
+          );
+          expect(ancestorTree.sharedAncestorsPresent()).toBeTruthy();
+        });
 
-    test("ensures nodeTwo's ancestors are immutable", () => {
-      let currentAncestors = ancestorTree.nodeTwoAncestors;
-      ancestorTree.nodeTwo = document.createElement("div");
-      expect(ancestorTree.nodeTwo).toEqual(document.createElement("div"));
-      expect(ancestorTree.nodeTwoAncestors).toEqual(currentAncestors);
-    });
-  });
+        test("returns true when 3 layers apart", () => {
+          ancestorTree = new Ancestors(
+            document.getElementById(layerSelector(baseLayerID)),
+            document.getElementById(layerSelector(baseLayerID + 2)),
+          );
+          expect(ancestorTree.sharedAncestorsPresent()).toBeTruthy();
+        });
+      });
 
-  describe("when the class is improperly called", () => {
-    let ancestorTree;
+      describe("when out of range", () => {
+        test("returns false when 4 layers apart", () => {
+          ancestorTree = new Ancestors(
+            document.getElementById(layerSelector(baseLayerID)),
+            document.getElementById(layerSelector(baseLayerID + 3)),
+          );
+          expect(ancestorTree.sharedAncestorsPresent()).toBeFalsy();
+        });
 
-    beforeEach(() => {
-      ancestorTree = new Ancestors("", "");
-    });
-
-    test("throws a TypeError when nodeOne is null", () => {
-      expect(() => ancestorTree.nodeOneAncestors).toThrow(TypeError);
-    });
-
-    test("throws a TypeError when nodeTwo is null", () => {
-      expect(() => ancestorTree.nodeTwoAncestors).toThrow(TypeError);
+        test("returns false when many layers apart", () => {
+          ancestorTree = new Ancestors(
+            document.getElementById(layerSelector(baseLayerID)),
+            document.getElementById(layerSelector(maxLayerID)),
+          );
+          expect(ancestorTree.sharedAncestorsPresent()).toBeFalsy();
+        });
+      });
     });
   });
 
-  describe("when neither node has ancestors", () => {
-    let ancestorTree;
-
-    beforeEach(() => {
-      ancestorTree = new Ancestors(
-        document.createElement("div"),
-        document.createElement("div"),
-      );
+  describe("#sharedAncestor", () => {
+    describe("without ancestors", () => {
+      test("returns null", () => {
+        ancestorTree = new Ancestors(
+          document.createElement("div"),
+          document.createElement("div"),
+        );
+        expect(ancestorTree.sharedAncestor()).toBeNull();
+      });
     });
 
-    test("ensures nodeOne does not return nodes", () => {
-      expect(ancestorTree.nodeOneAncestors).toEqual([]);
-    });
+    describe("with ancestors", () => {
+      test("ensures an element on the same layer returns an ancestor", () => {
+        ancestorTree = new Ancestors(
+          document.getElementById(layerSelector(baseLayerID)),
+          document.getElementById(layerSelector(baseLayerID)),
+        );
+        expect(ancestorTree.sharedAncestor()).toEqual(
+          ancestorTree.nodeOneAncestors[0],
+        );
+      });
 
-    test("ensures nodeOne does not return nodes", () => {
-      expect(ancestorTree.nodeTwoAncestors).toEqual([]);
-    });
-  });
+      test("ensures an element within 1 layer is returned", () => {
+        ancestorTree = new Ancestors(
+          document.getElementById(layerSelector(baseLayerID + 1)),
+          document.getElementById(layerSelector(baseLayerID)),
+        );
+        expect(ancestorTree.sharedAncestor()).toEqual(
+          ancestorTree.nodeOneAncestors[1],
+        );
+      });
 
-  describe("when only nodeOne has ancestors", () => {
-    let ancestorTree;
+      test("ensures an element within 2 layers is returned", () => {
+        ancestorTree = new Ancestors(
+          document.getElementById(layerSelector(baseLayerID + 2)),
+          document.getElementById(layerSelector(baseLayerID)),
+        );
+        expect(ancestorTree.sharedAncestor()).toEqual(
+          ancestorTree.nodeOneAncestors[2],
+        );
+      });
 
-    beforeEach(() => {
-      build_n_layer_dom(5);
-      ancestorTree = new Ancestors(
-        document.getElementById("child-4"),
-        document.createElement("div"),
-      );
-    });
-
-    test("ensures array is returned", () => {
-      expect(ancestorTree.nodeOneAncestors).toBeInstanceOf(Array);
-    });
-
-    test("ensures array items are elements", () => {
-      expect(ancestorTree.nodeOneAncestors[0]).toBeInstanceOf(Element);
-    });
-
-    test("ensures return is limited to Ancestors.depth", () => {
-      expect(ancestorTree.nodeOneAncestors.length).toBe(3);
-    });
-
-    test("ensures expected elements are returned", () => {
-      const expectedElements = [
-        document.getElementById("child-3"),
-        document.getElementById("child-2"),
-        document.getElementById("child-1"),
-      ];
-      expect(ancestorTree.nodeOneAncestors).toEqual(expectedElements);
-    });
-
-    test("ensures nodeTwo does not return ancestors", () => {
-      expect(ancestorTree.nodeTwoAncestors).toEqual([]);
-    });
-  });
-
-  describe("when both nodes have ancestors", () => {
-    var ancestorTree;
-
-    beforeEach(() => {
-      // Gives us a big enough DOM that we won't collide.
-      build_n_layer_dom(20);
-      ancestorTree = new Ancestors(
-        document.getElementById("child-19"),
-        document.getElementById("child-1"),
-      );
-    });
-
-    test("ensures nodeTwo returns a limited result", () => {
-      // This is the result of hitting the '<body>' tag.
-      expect(ancestorTree.nodeTwoAncestors.length).toEqual(2);
-    });
-
-    test("ensures nodeOne and nodeTwo don't return the same elements", () => {
-      expect(ancestorTree.nodeOneAncestors).not.toEqual(
-        ancestorTree.nodeTwoAncestors,
-      );
-    });
-  });
-});
-
-describe("#sharedAncestorsPresent", () => {
-  let ancestorTree;
-
-  afterEach(() => {
-    document.getElementsByTagName("html")[0].innerHTML = "";
-  });
-
-  describe("with no ancestors", () => {
-    test("ensures false returned for nodes with no ancestors", () => {
-      ancestorTree = new Ancestors(
-        document.createElement("div"),
-        document.createElement("div"),
-      );
-      expect(ancestorTree.sharedAncestorsPresent()).toBeFalsy();
-    });
-  });
-
-  describe("with shared ancestors", () => {
-    beforeEach(() => {
-      build_n_layer_dom(20);
-    });
-
-    test("ensures false is returned if ancestors out of range", () => {
-      ancestorTree = new Ancestors(
-        document.getElementById("child-1"),
-        document.getElementById("child-15"),
-      );
-      expect(ancestorTree.sharedAncestorsPresent()).toBeFalsy();
-    });
-
-    test("ensures true is returned for nodes 1 layer apart", () => {
-      ancestorTree = new Ancestors(
-        document.getElementById("child-1"),
-        document.getElementById("child-2"),
-      );
-      expect(ancestorTree.sharedAncestorsPresent()).toBeTruthy();
-    });
-
-    test("ensures true is returned for nodes 3 layers (max) apart", () => {
-      ancestorTree = new Ancestors(
-        document.getElementById("child-1"),
-        document.getElementById("child-3"),
-      );
-      expect(ancestorTree.sharedAncestorsPresent()).toBeTruthy();
-    });
-  });
-});
-
-describe("#sharedAncestor", () => {
-  let ancestorTree;
-
-  afterEach(() => {
-    document.getElementsByTagName("html")[0].innerHTML = "";
-  });
-
-  describe("without shared ancestors", () => {
-    test("ensures a null value is returned", () => {
-      ancestorTree = new Ancestors(
-        document.createElement("div"),
-        document.createElement("div"),
-      );
-      expect(ancestorTree.sharedAncestor()).toBeNull();
-    });
-  });
-
-  describe("with shared ancestors", () => {
-    beforeEach(() => {
-      build_n_layer_dom(20);
-    });
-
-    test("ensures an element on the same layer returns an ancestor", () => {
-      ancestorTree = new Ancestors(
-        document.getElementById("child-10"),
-        document.getElementById("child-10"),
-      );
-      expect(ancestorTree.sharedAncestor()).toEqual(
-        ancestorTree.nodeOneAncestors[0],
-      );
-    });
-
-    test("ensures an element within 1 layer is returned", () => {
-      ancestorTree = new Ancestors(
-        document.getElementById("child-10"),
-        document.getElementById("child-9"),
-      );
-      expect(ancestorTree.sharedAncestor()).toEqual(
-        ancestorTree.nodeOneAncestors[1],
-      );
-    });
-
-    test("ensures an element within 2 layers is returned", () => {
-      ancestorTree = new Ancestors(
-        document.getElementById("child-10"),
-        document.getElementById("child-8"),
-      );
-      expect(ancestorTree.sharedAncestor()).toEqual(
-        ancestorTree.nodeOneAncestors[2],
-      );
-    });
-
-    test("ensures an element within 3 layers is returned", () => {
-      ancestorTree = new Ancestors(
-        document.getElementById("child-10"),
-        document.getElementById("child-7"),
-      );
-      expect(ancestorTree.sharedAncestor()).toBeNull();
+      test("ensures an element within 3 layers is returned", () => {
+        ancestorTree = new Ancestors(
+          document.getElementById(layerSelector(baseLayerID + 3)),
+          document.getElementById(layerSelector(baseLayerID)),
+        );
+        expect(ancestorTree.sharedAncestor()).toBeNull();
+      });
     });
   });
 });
