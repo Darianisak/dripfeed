@@ -2,7 +2,7 @@
 
 import { describe, test, expect, afterEach, beforeEach } from "@jest/globals";
 import { Ancestors } from "../../../src/helpers/ancestors.js";
-import { build_n_layer_dom } from "../factory.html.js";
+import { build_n_layer_dom } from "../factory.html.ts";
 
 describe("#constructor", () => {
   describe("type validations", () => {
