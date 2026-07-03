@@ -35,7 +35,10 @@ const config = {
   coverageProvider: "v8",
 
   // The glob patterns Jest uses to detect test files.
-  testMatch: ["**/tests/unit/**.test.js", "**/tests/unit/**/**.test.js"],
+  testMatch: [
+    "**/tests/unit/**.test.{js,ts}",
+    "**/tests/unit/**/**.test.{js,ts}",
+  ],
 };
 
 export default config;

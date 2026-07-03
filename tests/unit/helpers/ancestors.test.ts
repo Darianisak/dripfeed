@@ -7,9 +7,9 @@ import { buildTreeDOM } from "../factory.html.ts";
 describe("Ancestors", () => {
   const baseLayerID = 1;
   const maxLayerID = 9;
-  const layerSelector = (id) => `layer-${id}_index-0`;
+  const layerSelector = (id: number) => `layer-${id}_index-0`;
 
-  let ancestorTree;
+  let ancestorTree: Ancestors;
 
   beforeEach(() => {
     buildTreeDOM(maxLayerID + 10);
@@ -178,8 +178,6 @@ describe("Ancestors", () => {
     });
 
     describe("when both nodes have ancestors", () => {
-      var ancestorTree;
-
       beforeEach(() => {
         ancestorTree = new Ancestors(
           document.getElementById(layerSelector(baseLayerID)),
