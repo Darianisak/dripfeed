@@ -17,6 +17,7 @@ describe("#global", () => {
 
   test("ensures that .initialMutations is called", () => {
     jest.isolateModules(() => {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       require("../../src/index.js");
     });
 
@@ -25,6 +26,7 @@ describe("#global", () => {
 
   test("ensures that .responsiveMutations is called", () => {
     jest.isolateModules(() => {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       require("../../src/index.js");
     });
 

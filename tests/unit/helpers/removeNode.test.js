@@ -10,7 +10,7 @@ import {
 } from "@jest/globals";
 import { RemoveNode } from "../../../src/helpers/removeNode.js";
 import { Ancestors } from "../../../src/helpers/ancestors.js";
-import { build_n_layer_dom, build_tree_dom } from "../factory.html";
+import { buildTreeDOM } from "../factory.html";
 
 describe("#constructor", () => {
   describe("type validations", () => {
@@ -27,8 +27,11 @@ describe("#constructor", () => {
     });
 
     describe("when arguments are selectors and elements", () => {
+      const selectorOne = "layer-0_index-0";
+      const selectorTwo = "layer-1_index-0";
+
       beforeEach(() => {
-        build_n_layer_dom(3);
+        buildTreeDOM();
       });
 
       afterEach(() => {
@@ -36,22 +39,22 @@ describe("#constructor", () => {
       });
 
       test("ensures nodeTrees are constructed from IDs", () => {
-        expect(new RemoveNode("child-1", "child-2").nodeTree).toBeInstanceOf(
-          Ancestors,
-        );
+        expect(
+          new RemoveNode(selectorOne, selectorTwo).nodeTree,
+        ).toBeInstanceOf(Ancestors);
       });
 
       test("ensures nodeTrees are constructed from DOM Elements", () => {
-        const elementOne = document.getElementById("child-1");
-        const elementTwo = document.getElementById("child-2");
+        const elementOne = document.getElementById(selectorOne);
+        const elementTwo = document.getElementById(selectorTwo);
         expect(new RemoveNode(elementOne, elementTwo).nodeTree).toBeInstanceOf(
           Ancestors,
         );
       });
 
       test("ensures nodeTrees are constructed from mixed IDs and Elements", () => {
-        const elementTwo = document.getElementById("child-2");
-        expect(new RemoveNode("child-1", elementTwo).nodeTree).toBeInstanceOf(
+        const elementTwo = document.getElementById(selectorTwo);
+        expect(new RemoveNode(selectorOne, elementTwo).nodeTree).toBeInstanceOf(
           Ancestors,
         );
       });
@@ -161,7 +164,7 @@ describe("#operate", () => {
     var removeNode;
 
     beforeEach(() => {
-      build_tree_dom();
+      buildTreeDOM();
       removeNode = new RemoveNode("layer-2_index-1", "layer-2_index-2");
     });
 
@@ -180,7 +183,7 @@ describe("#operate", () => {
     });
 
     test("ensure ancestor id is as expected", () => {
-      // More a test of the `build_tree_dom()` factory method.
+      // More a test of the `buildTreeDOM()` factory method.
       expect(removeNode.nodeTree.sharedAncestor().id).toBe("layer-1_index-0");
     });
 
