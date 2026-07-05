@@ -3,12 +3,18 @@
 //
 class Ancestors {
   depth = 3;
+  nodeOne;
+  nodeTwo;
+
   ancestorsOne;
   ancestorsTwo;
 
   #isElementId = (selector) => document.getElementById(selector);
 
   #isElement = (element) => element instanceof Element;
+
+  #isValid = () =>
+    [this.nodeOne, this.nodeTwo].every((node) => this.#isElement(node));
 
   #nodeAncestors = (elem) => {
     if (!(elem instanceof Element)) {
@@ -17,10 +23,10 @@ class Ancestors {
 
     let currentDepth = 0;
     let currentNode = elem;
-    let parentNodes = [];
+    const parentNodes = [];
 
     while (currentDepth < this.depth) {
-      let parentNode = currentNode.parentNode;
+      const parentNode = currentNode.parentNode;
 
       // We don't want to be deleting body tags.
       if (!parentNode || parentNode instanceof HTMLBodyElement) {
@@ -59,6 +65,10 @@ class Ancestors {
     return this.ancestorsTwo;
   }
 
+  valid() {
+    return this.#isValid();
+  }
+
   sharedAncestorsPresent() {
     const ancestorsAreInvalid = (nodes) => {
       if (!(nodes instanceof Array) || nodes.length === 0) {
@@ -74,7 +84,7 @@ class Ancestors {
       return false;
     }
 
-    let ancestorNodeCount =
+    const ancestorNodeCount =
       this.nodeOneAncestors.length + this.nodeTwoAncestors.length;
 
     if (
