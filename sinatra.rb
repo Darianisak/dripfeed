@@ -7,9 +7,14 @@ set :views, File.expand_path("views", __dir__)
 set :public_folder, File.expand_path("src", __dir__)
 set :logging, false
 
+def signed_in?
+  @params[:signed_in]
+end
+
 namespace "/r" do
   get "/subreddit" do
-    erb :"reddit/subreddit"
+    partial = signed_in? ? "reddit/signed_in/subreddit" : "reddit/subreddit"
+    erb :"#{partial}"
   end
 
   get "/subreddit/comments" do
