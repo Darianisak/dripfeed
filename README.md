@@ -91,6 +91,8 @@ And then:
 open http://localhost:4567/${ROUTE_NAME}
 ```
 
+Alternatively, you can also run Sinatra in debug mode with `npm run debug:sinatra`
+
 #### Creating New Site Mocks
 
 If you'd like to create atomic removal tests for a new page or website:
