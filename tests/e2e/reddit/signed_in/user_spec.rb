@@ -9,7 +9,7 @@ RSpec.describe "r/user?signed_in=true", type: :feature do
 
   describe "Pre DOM Mutation" do
     context "with an unmodified post view" do
-      it_behaves_like "a page with the default elements visible", "Search in u/Dear-Love143"
+      it_behaves_like "a page with the default elements visible", "Search in u/Dear-Love143", true
     end
   end
 

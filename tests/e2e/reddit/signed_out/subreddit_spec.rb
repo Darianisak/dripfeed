@@ -9,7 +9,7 @@ RSpec.describe "reddit/subreddit", type: :feature do
 
   describe "Pre DOM Mutation" do
     context "with an unmodified subreddit view" do
-      it_behaves_like "a page with the default elements visible", "Search in r/Wellington"
+      it_behaves_like "a page with the default elements visible", "Find anything"
     end
   end
 
@@ -19,7 +19,7 @@ RSpec.describe "reddit/subreddit", type: :feature do
     end
 
     context "with a modified subreddit view" do
-      it_behaves_like "a page with a search bar", "Search in r/Wellington"
+      it_behaves_like "a page with a search bar", "Find anything"
       it_behaves_like "a page with main content"
       it_behaves_like "a page with the sidebars removed"
     end

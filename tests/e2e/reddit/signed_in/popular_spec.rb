@@ -9,7 +9,7 @@ RSpec.describe "r/popular?signed_in=true", type: :feature do
 
   describe "Pre DOM Mutation" do
     context "with unmodified homepage view" do
-      it_behaves_like "a page with the default elements visible"
+      it_behaves_like "a page with the default elements visible", nil, true
     end
   end
 
