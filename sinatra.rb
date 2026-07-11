@@ -13,26 +13,26 @@ end
 
 namespace "/r" do
   get "/subreddit" do
-    erb :"#{signed_in? ? 'reddit/signed_in/subreddit' : 'reddit/subreddit'}"
+    erb :"#{signed_in? ? 'reddit/signed_in/subreddit' : 'reddit/signed_out/subreddit'}"
   end
 
   get "/subreddit/comments" do
-    erb :"#{signed_in? ? 'reddit/signed_in/post' : 'reddit/post'}"
+    erb :"#{signed_in? ? 'reddit/signed_in/post' : 'reddit/signed_out/post'}"
   end
 
   get "/popular" do
-    erb :"#{signed_in? ? 'reddit/signed_in/popular' : 'reddit/popular'}"
+    erb :"#{signed_in? ? 'reddit/signed_in/popular' : 'reddit/signed_out/popular'}"
   end
 end
 
 get "/" do
-  erb :"#{signed_in? ? 'reddit/signed_in/homepage' : 'reddit/homepage'}"
+  erb :"#{signed_in? ? 'reddit/signed_in/homepage' : 'reddit/signed_out/homepage'}"
 end
 
 get "/user" do
-  erb :"#{signed_in? ? 'reddit/signed_in/user' : 'reddit/user'}"
+  erb :"#{signed_in? ? 'reddit/signed_in/user' : 'reddit/signed_out/user'}"
 end
 
 get "/search" do
-  erb :"#{signed_in? ? 'reddit/signed_in/search' : 'reddit/search'}"
+  erb :"#{signed_in? ? 'reddit/signed_in/search' : 'reddit/signed_out/search'}"
 end
