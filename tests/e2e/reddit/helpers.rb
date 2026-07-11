@@ -39,6 +39,26 @@ RSpec.shared_examples "a page with the left sidebar removed" do
   end
 end
 
+RSpec.shared_examples "a page with the left sign up banner" do
+  it "has the 'left-sidebar-container' selector" do
+    expect(page).to have_css("#left-sidebar-container")
+  end
+
+  it "has the sign up tagline" do
+    expect(page).to have_text("Join the most real place on the internet")
+  end
+end
+
+RSpec.shared_examples "a page with the left sign up banner removed" do
+  it "does not have the 'left-sidebar-container' selector" do
+    expect(page).not_to have_css("#left-sidebar-container")
+  end
+
+  it "does not have the sign up tagline" do
+    expect(page).not_to have_text("Join the most real place on the internet")
+  end
+end
+
 RSpec.shared_examples "a page with a right sidebar" do
   it "has the 'right-sidebar-contents' selector" do
     expect(page).to have_css("#right-sidebar-contents")
@@ -71,15 +91,15 @@ RSpec.shared_examples "a page with a search bar" do |placeholder|
   end
 end
 
-RSpec.shared_examples "a page with the default elements visible" do |placeholder|
+RSpec.shared_examples "a page with the default elements visible" do |placeholder, signed_in|
   it_behaves_like "a page with a search bar", placeholder
-  it_behaves_like "a page with a left sidebar"
+  it_behaves_like signed_in ? "a page with a left sidebar" : "a page with the left sign up banner"
   it_behaves_like "a page with a right sidebar"
   it_behaves_like "a page with main content"
 end
 
-RSpec.shared_examples "a page with the sidebars removed" do
-  it_behaves_like "a page with the left sidebar removed"
+RSpec.shared_examples "a page with the sidebars removed" do |signed_in|
+  it_behaves_like signed_in ? "a page with the left sidebar removed" : "a page with the left sign up banner removed"
   it_behaves_like "a page with the right sidebar removed"
 end
 

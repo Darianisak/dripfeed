@@ -4,19 +4,24 @@ export const Targets = {
   LEFT_SIDEBAR: 0,
   RIGHT_SIDEBAR: 1,
   MAIN_CONTENT: 2,
+  SIGN_UP_BANNER: 3,
 };
 
 export const Pages = {
   HOME: [Targets.MAIN_CONTENT],
-  POST: [Targets.LEFT_SIDEBAR, Targets.RIGHT_SIDEBAR],
-  SUBREDDIT: [Targets.LEFT_SIDEBAR, Targets.RIGHT_SIDEBAR],
-  USER: [Targets.LEFT_SIDEBAR],
-  SEARCH: [Targets.LEFT_SIDEBAR, Targets.RIGHT_SIDEBAR],
+  POST: [Targets.LEFT_SIDEBAR, Targets.SIGN_UP_BANNER, Targets.RIGHT_SIDEBAR],
+  SUBREDDIT: [
+    Targets.LEFT_SIDEBAR,
+    Targets.SIGN_UP_BANNER,
+    Targets.RIGHT_SIDEBAR,
+  ],
+  USER: [Targets.LEFT_SIDEBAR, Targets.SIGN_UP_BANNER],
+  SEARCH: [Targets.LEFT_SIDEBAR, Targets.SIGN_UP_BANNER, Targets.RIGHT_SIDEBAR],
   POPULAR: [Targets.MAIN_CONTENT],
 };
 
-export function nodeRemovalProxy(targetOne, targetTwo) {
-  [targetOne, targetTwo].forEach((element) => {
+export function nodeRemovalProxy(...args) {
+  [...args].forEach((element) => {
     if (typeof element === "string" || element instanceof Element) {
       return;
     }
@@ -25,7 +30,7 @@ export function nodeRemovalProxy(targetOne, targetTwo) {
     );
   });
 
-  new RemoveNode(targetOne, targetTwo).operate();
+  new RemoveNode(...args).operate();
 }
 
 export function operate(pageTargets, removeCallback = nodeRemovalProxy) {
@@ -45,6 +50,10 @@ export function operate(pageTargets, removeCallback = nodeRemovalProxy) {
     switch (target) {
       case Targets.LEFT_SIDEBAR:
         removeCallback("flex-left-nav-container", "flex-nav-buttons");
+        break;
+
+      case Targets.SIGN_UP_BANNER:
+        removeCallback("left-sidebar-container");
         break;
 
       case Targets.RIGHT_SIDEBAR:

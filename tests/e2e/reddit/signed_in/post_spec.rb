@@ -9,7 +9,7 @@ RSpec.describe "reddit/post?signed_in=true", type: :feature do
 
   describe "Pre DOM Mutation" do
     context "with an unmodified post view" do
-      it_behaves_like "a page with the default elements visible", "Search in r/auckland"
+      it_behaves_like "a page with the default elements visible", "Search in r/auckland", true
     end
   end
 
@@ -21,7 +21,7 @@ RSpec.describe "reddit/post?signed_in=true", type: :feature do
     context "with a modified post view" do
       it_behaves_like "a page with a search bar", "Search in r/auckland"
       it_behaves_like "a page with main content"
-      it_behaves_like "a page with the sidebars removed"
+      it_behaves_like "a page with the sidebars removed", true
     end
   end
 end

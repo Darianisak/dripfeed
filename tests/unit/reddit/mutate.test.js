@@ -24,6 +24,10 @@ describe("_Targets", () => {
     test("ensures 'MAIN_CONTENT' has the expected value", () => {
       expect(mutate.Targets.MAIN_CONTENT).toBe(2);
     });
+
+    test("ensures 'SIGN_UP_BANNER' has the expected value", () => {
+      expect(mutate.Targets.SIGN_UP_BANNER).toBe(3);
+    });
   });
 });
 
@@ -36,6 +40,7 @@ describe("_Pages", () => {
     test("ensures 'POST' has the expected array", () => {
       expect(mutate.Pages.POST).toEqual([
         mutate.Targets.LEFT_SIDEBAR,
+        mutate.Targets.SIGN_UP_BANNER,
         mutate.Targets.RIGHT_SIDEBAR,
       ]);
     });
@@ -43,17 +48,22 @@ describe("_Pages", () => {
     test("ensures 'SUBREDDIT' has the expected array", () => {
       expect(mutate.Pages.SUBREDDIT).toEqual([
         mutate.Targets.LEFT_SIDEBAR,
+        mutate.Targets.SIGN_UP_BANNER,
         mutate.Targets.RIGHT_SIDEBAR,
       ]);
     });
 
     test("ensures 'USER' has the expected array", () => {
-      expect(mutate.Pages.USER).toEqual([mutate.Targets.LEFT_SIDEBAR]);
+      expect(mutate.Pages.USER).toEqual([
+        mutate.Targets.LEFT_SIDEBAR,
+        mutate.Targets.SIGN_UP_BANNER,
+      ]);
     });
 
     test("ensures 'SEARCH' has the expected array", () => {
       expect(mutate.Pages.SEARCH).toEqual([
         mutate.Targets.LEFT_SIDEBAR,
+        mutate.Targets.SIGN_UP_BANNER,
         mutate.Targets.RIGHT_SIDEBAR,
       ]);
     });
@@ -145,6 +155,13 @@ describe(".operate", () => {
           "subgrid-container",
           "left-sidebar-container",
         );
+      });
+
+      test("ensures 'SIGN_UP_BANNER' calls as expected", () => {
+        removeProxySpy = jest.fn();
+        targets = [mutate.Targets.SIGN_UP_BANNER];
+        mutate.operate(targets, removeProxySpy);
+        expect(removeProxySpy).toHaveBeenCalledWith("left-sidebar-container");
       });
     });
 
@@ -363,6 +380,26 @@ describe(".nodeRemovalProxy", () => {
         mutate.operate([mutate.Targets.LEFT_SIDEBAR]);
 
         receivedDOM = normalizeDOMStrings(document.body.innerHTML);
+        expect(receivedDOM).toEqual(expectedDOM);
+      });
+
+      test("ensures that SIGN_UP_BANNER removes as expected", () => {
+        expectedDOM = normalizeDOMStrings(
+          "<div>" +
+            '  <div id="main-content">' +
+            '    <div id="subgrid-container"></div>' +
+            '    <div id="right-sidebar">' +
+            '      <div id="right-sidebar-contents"></div>' +
+            '      <div id="right-rail-experience-root"></div>' +
+            "    </div>" +
+            "  </div>" +
+            "</div>",
+        );
+
+        mutate.operate([mutate.Targets.SIGN_UP_BANNER]);
+
+        receivedDOM = normalizeDOMStrings(document.body.innerHTML);
+
         expect(receivedDOM).toEqual(expectedDOM);
       });
 
