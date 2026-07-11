@@ -23,6 +23,7 @@
     "rubocop": "./bin/bundle exec rubocop --autocorrect --raise-cop-error --extra-details --config ./.rubocop.yml .",
     "rspec": "./bin/bundle exec rspec",
     "sinatra": "./bin/bundle exec ruby sinatra.rb",
+    "debug:sinatra": "./bin/bundle exec rdbg -- ./bin/bundle exec ruby sinatra.rb",
     "watch": "npx webpack --mode development --watch",
     "webpack": "npx webpack --mode production",
     "semgrap": "source pydeps/bin/activate && semgrep scan ."
