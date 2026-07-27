@@ -302,8 +302,8 @@ npm run update:all
 
 npm run style
 
-npm run unit
-npm run e2e
+npm run test:unit
+npm run test:e2e
 
 git add .
 git commit -m "chore: updates safe dependencies"
