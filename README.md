@@ -1,24 +1,101 @@
 # dripfeed
 
-`dripfeed` is a browser extension which manipulates DOM elements of social
-media websites, helping stem the tide of content that we're exposed to.
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
+[![Mozilla Add-on](https://img.shields.io/amo/v/dripfeed)](https://addons.mozilla.org/en-US/firefox/addon/dripfeed/)
+
+![Combined Reddit Slice](./docs/images/combined_slice.png)
+
+_Screenshots combined with Gemini Flash; July 2026_
+
+## Table of Contents
+
+| Section                                       | Subsections                                                                                                       |
+| :-------------------------------------------- | :---------------------------------------------------------------------------------------------------------------- |
+| **[About](#about)**                           | [How does it work?](#how-does-it-work)                                                                            |
+| **[Development](#development)**               | [Setting up your Environment](#setting-up-your-environment) <br> [Code Style](#code-style) <br> [Mobile](#mobile) |
+| **[Testing](#testing)**                       | [Unit testing](#unit-testing) <br> [End-to-end testing](#end-to-end-testing)                                      |
+| **[Dependency Updates](#dependency-updates)** |                                                                                                                   |
+| **[Releasing](#releasing)**                   |                                                                                                                   |
+
+---
+
+## About
+
+_dripfeed_ is a browser extension which modifies social media websites,
+with the aim of making them less addictive.
+
+It is available for [**Firefox** and **Firefox for Android**][amo].
+
+We aim to support other platforms in the future.
+
+### How does it work?
+
+_dripfeed_ works by selectively removing parts from certain social media
+websites, making it easier to get 'just' the information that you're after.
+
+Our belief is that social media websites _are_ useful tools, which prevents
+people from blocking them outright. _dripfeed_ is a way to take back some control.
+
+For Reddit, this looks like removing:
+
+- _All_ content from the Homepage, to prevent doom scrolling.
+- _Some_ content from posts and subreddits, supporting focus.
 
 ## Development
 
-### Getting Setup
+_dripfeed_ is an MPL-2.0 project - anyone is welcome to contribute!
 
-To get started with dripfeed extending or enhancing dripfeed, you'll need to set your environment up.
+### Setting up your Environment
 
-Assuming you have [`nodejs`][node] installed, this can be done like so:
+While the extension itself is written in **JavaScript** and **TypeScript**,
+you'll need a few other languages and tools, such as **Ruby** and **Python**,
+to work on the project.
+
+**Please note, this set up document was written with MacOSX in mind.**
+
+### Quick Start
+
+If you already have `nodejs`, `python`, and `ruby` (via `mise`) installed,
+you can bootstrap the entire environment with:
 
 ```bash
-git clone git@github.com:Darianisak/dripfeed.git
-cd dripfeed
+# Install JavaScript/TypeScript dependencies
+npm ci
+
+# Set up and install Python dependencies
+python3 -m venv pydeps
+source pydeps/bin/activate
+pip3 install -r requirements.txt
+
+# Install Ruby dependencies
+./bin/bundle install
+```
+
+Otherwise, read-on for the detailed set up instructions.
+
+#### Core dependencies
+
+Before setting up the project's specific requirements, ensure you have all of
+the core dependencies installed and setup:
+
+- [`nodejs`][node]
+- [`python`][venv]
+- `ruby`, managed with [`mise`][mise]
+
+#### JavaScript/TypeScript Setup
+
+This project uses `npm` to manage third party libraries. These can be
+installed with:
+
+```bash
 npm ci
 ```
 
-Then, to ensure you're able to run all the formatting tools, you'll need a
-[Python Virtual Environment][venv]:
+These libraries are mainly for testing.
+
+#### Python Setup
+
+Python is used for formatting, and can be set up with:
 
 ```bash
 python3 -m venv pydeps
@@ -27,132 +104,243 @@ source pydeps/bin/activate
 pip3 install --requirement requirements.txt
 ```
 
-And finally, to ensure that you can run the full test suite, you'll need to
-install our Ruby dependencies:
+#### Ruby Setup
 
-<details>
-<summary>But what if Ruby isn't installed?</summary>
+This project uses Ruby, and more specifically, the [Sinatra][sinatra] framework,
+as a backend for running end-to-end tests.
 
-This project assumes that Ruby will be installed and managed via `mise`.
+This project assumes that Ruby will be managed via [`mise`][mise].
 
-Check out the installation docs, [here][mise].
-
-</details>
+The project's Ruby dependencies can then be installed with:
 
 ```bash
 ./bin/bundle install
-
 ```
 
-### Formatting and linting
+### Code Style
 
-Once you've made changes, you can:
+This project uses a variety of formatters and linters to maintain
+style consistency:
 
-- Ensure `prettier` formatting is applied with `npm run format`.
-- Use `eslint` with `npm run lint`.
-- Use `yamllint` with `npm run yaml`.
-- Use `rubocop` with `npm run rubocop` to format and lint Ruby test code.
+- [`prettier`][prettier] for JavaScript, TypeScript, and Markdown formatting. (`npm run format`)
+- [`eslint`][eslint] for JavaScript and TypeScript linting. (`npm run lint`)
+- [`yamllint`][yamllint] for formatting and linting our CI/CD specs. (`npm run yaml`)
+- [`rubocop`][rubocop] for formatting and linting our Ruby code. (`npm run rubocop`)
+- [`semgrep`][semgrep] for basic security scans. (`npm run semgrep`)
 
-### Testing
-
-#### JavaScript
-
-JavaScript unit tests can be run with:
+You can trigger all of these with:
 
 ```bash
-npm run test
+npm run style
 ```
 
-Tests are most easily debugged with VSCode's "JavaScript Debug Terminal".
+These linters and formatters are enforced by CI/CD.
 
-#### Ruby
+### Mobile
 
-Ruby browser integration tests can be run with:
+As this extension ships to mobile, it's important that we test it
+during development.
+
+Mozilla provides some good documentation for getting set up [here][moz-mob].
+
+The main tool we need is `adb`.
+
+With the dependencies installed per Mozilla's docs, we can build and deploy
+our extension to a debugging enabled mobile device.
+
+#### Android
 
 ```bash
-npm run rspec
+# Find the device ID of the debugging device
+adb devices
+
+# Build the extension's JavaScript bundles
+npm run build
+
+# Distribute it to the Mobile device
+npx web-ext run --source-dir ./extension/ -t firefox-android --android-device=<ADB_DEBUGGING_DEVICE_ID>
 ```
 
-Or, if you'd like to run these tests with a debugger directive, use:
+#### iOS
+
+_iOS is not currently supported._
+
+## Testing
+
+_dripfeed_ is maintained by one person, so manual testing isn't feasible.
+
+To that end, automated testing is crucial.
+
+By keeping our test suite healthy, we can more easily remediate bugs and
+implement new features.
+
+### Unit testing
+
+We use the [`jest`][jest] framework for our unit tests.
+
+Unit tests can be run with:
 
 ```bash
-./bin/bundle exec rdbg -- ./bin/bundle exec rspec
+npm run test:unit
 ```
 
-If you'd like to run the Sinatra server so that you can view your fixtures:
+#### Debugging
+
+This project is maintained using Codium/VSCode, so our debugging recommendation
+is to use the integrated _JavaScript Debug Terminal_.
+
+Read more about it [here][js-debug].
+
+### End-to-end testing
+
+We use [`rspec`][rspec] running against a [`sinatra`][sinatra] webserver to
+provide our end-to-end tests.
+
+End-to-end tests can be run with:
+
+```bash
+npm run test:e2e
+```
+
+The `sinatra` webserver can also be run stand-alone, allowing you to interact
+with the HTML Mocks that your tests will use:
 
 ```bash
 npm run sinatra
 ```
 
-And then:
+#### Debugging
+
+This project uses [`ruby/debug`][ruby-debug] for debugging the end-to-end tests.
+
+Assuming you've popped a `debugger` statement in a test spec, this debugger
+can be called with:
 
 ```bash
-open http://localhost:4567/${ROUTE_NAME}
+npm run debug:e2e
 ```
 
-Alternatively, you can also run Sinatra in debug mode with `npm run debug:sinatra`
+Or, if you want to debug the [`sinatra`][sinatra] webserver rather than a
+test spec, run:
 
-#### Creating New Site Mocks
+```bash
+npm run debug:sinatra
+```
 
-If you'd like to create atomic removal tests for a new page or website:
+Read more about `ruby/debug` [here][ruby-debug].
 
-- Head to the page.
-- Download the pages HTML content. This could be done with `curl`, too.
-- Save the content in a meaningful location within `view/`.
-- Change the file extension from `.html` to `.erb`.
-- Add a route in `sinatra.rb`.
-- Add a script tag to the HTML document's `<head>` to load the desired JavaScript
-  module. I.e., `<script type="module" src="/reddit/index.js"></script>`.
+#### Philosophy
 
-With the HTML fixture set up, go ahead and add new tests under `spec/features/*`.
+By its nature, _dripfeed_ is an extension that modifies remote websites that
+_we do not control_.
 
-### Building
+This lack of control makes it hard to have meaningful end-to-end tests.
 
-The extension ZIP can be built with:
+While by no means perfect, we've found some success by reproducing these
+remote websites locally, by:
+
+- Taking snapshots of their HTML (HTML Mocks).
+- Serving this HTML from a local web server.
+- Writing tests against this local version.
+
+This also plays nicely with CI/CD, as it removes the need for any remote
+dependencies.
+
+There are drawbacks too:
+
+- There is significant overhead to testing new pages or sites.
+- The HTML Mocks can easily go out of date.
+- Updating Mocks is a tedious and manual process.
+
+Some of these drawbacks will be alleviated over time.
+
+Why did we do it this way?
+
+- It allows us to easily load the extension into a headless, non-privileged browser.
+- Traditional mocking libraries, like `web-mock`, would be cumbersome.
+
+#### Implementation
+
+The end-to-end tests are:
+
+- Written in `ruby`.
+- Use the [`rspec`][rspec] test framework.
+- Leverage the [`capybara`][capybara] `rspec` extension.
+- Run against a local [`sinatra`][sinatra] webserver.
+
+A good place to start when writing new tests is:
+
+- The pre-existing Reddit home page spec: `tests/e2e/reddit/signed_in/homepage_spec.rb`
+- The Reddit helper specs: `tests/e2e/reddit/helpers.rb`
+
+If adding a new page or HTML Mock, you'll need to:
+
+- Download the HTML of the new page.
+- Change the file type from HTML to `.erb`
+- Move the file under `views/`. For example, a new Reddit mock would go under: `views/reddit/signed_out/new_mock.erb`
+- Add a JavaScript module import tag to the Mock file; i.e., a Reddit Mock would get: `<script type="module" src="/reddit/index.js"></script>`
+- Update the routing `sinatra` uses in `sinatra.rb` so the new Mock can be served.
+
+Once in-place, it's a good idea to check that the Mock is being served correctly
+by running the `sinatra` webserver in standalone mode:
+
+```bash
+npm run sinatra
+
+open http://localhost:4567/<mock_route_name>
+```
+
+## Dependency Updates
+
+There are a number of dependencies used by this project that need
+semi-frequent updates.
+
+The safe updates can be done by running:
+
+```bash
+npm run update:all
+
+npm run style
+
+npm run unit
+npm run e2e
+
+git add .
+git commit -m "chore: updates safe dependencies"
+```
+
+If you'd prefer to update dependencies per ecosystem instead, this can be
+done with:
+
+- `npm run update:python`
+- `npm run update:ruby`
+- `npm run update:js`
+
+Please note that, in the case of JavaScript/TypeScript dependencies, only
+'safe' updates will be made by default. Major version changes will still
+require oversight.
+
+## Releasing
+
+At the time of writing, _dripfeed_ is manually released to the Mozilla Addon-on
+Marketplace (AMO).
+
+Building the assets for release can be done like so:
 
 ```bash
 npm run build
 ```
 
-### Updating
+This will create two output files under `./build`:
 
-We can update the project's NPM and RubyGems dependencies by:
+- `dripfeed-<VERSION_NUMBER>.zip` - This is the extension that will be published.
+- `source.tar.gz` - This is the source code, which Mozilla requires for review.
 
-```bash
-# Update JavaScript dependencies
-npm audit fix
-
-# Update Ruby dependencies
-bundle update
-
-# Stage the updates and commit
-git add .
-git commit -m "chore: updates safe dependencies"
-```
-
-These steps don't account for cases whereby we need to perform an unsafe major
-version migration.
-
-### Technologies
-
-This project uses:
-
-- [`eslint`][eslint] for JavaScript code quality enforcement.
-- [`jest`][jest] for unit testing.
-- [`prettier`][prettier] for JavaScript formatting.
-- [`web-ext`][web-ext] for extension testing.
-- [`yamllint`][yamllint] for YAML linting.
-- [`mise`][mise] to manage Ruby installations.
-- [`rubocop`][rubocop] to enforce Ruby best-practice.
-- [`sinatra`][sinatra] for serving test fixtures.
-- [`rspec`][rspec] and [`capybara`][capybara] for atomic integration tests.
-- [`semgrep`][semgrep] for security scans.
+Be sure to increment the version number in `package.json`!
 
 <!-- Links -->
 
 [node]: https://nodejs.org/en/download
-[web-ext]: https://github.com/mozilla/web-ext
 [prettier]: https://prettier.io/
 [jest]: https://jestjs.io/docs/getting-started
 [eslint]: https://eslint.org/
@@ -164,3 +352,7 @@ This project uses:
 [rspec]: https://rspec.info/
 [capybara]: https://github.com/teamcapybara/capybara?tab=readme-ov-file#capybara
 [semgrep]: https://github.com/semgrep/semgrep
+[amo]: https://addons.mozilla.org/en-US/firefox/addon/dripfeed/
+[moz-mob]: https://extensionworkshop.com/documentation/develop/developing-extensions-for-firefox-for-android/
+[js-debug]: https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_javascript-debug-terminal
+[ruby-debug]: https://github.com/ruby/debug
