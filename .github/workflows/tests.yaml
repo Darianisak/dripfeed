@@ -16,7 +16,7 @@ jobs:
       pull-requests: "write"
       checks: "write"
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
 
       - name: Install NPM dependencies
         run: npm ci
@@ -34,7 +34,7 @@ jobs:
   rspec:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
 
       - uses: ruby/setup-ruby@v1
         with:
