@@ -72,6 +72,9 @@ pip3 install -r requirements.txt
 
 # Install the hotreload process manager
 brew install hivemind
+
+# Creating a secrets file
+cp .env.sample .env
 ```
 
 Otherwise, read-on for the detailed set up instructions.
@@ -132,6 +135,14 @@ This can be installed with:
 homebrew install hivemind
 ```
 
+#### Secrets
+
+At the time of writing, secrets are purely for Mobile device IDs:
+
+```bash
+cp .env.sample .env
+```
+
 ### Code Style
 
 This project uses a variety of formatters and linters to maintain
@@ -151,7 +162,7 @@ npm run style
 
 These linters and formatters are enforced by CI/CD.
 
-### Browsers
+### Desktop Browsers
 
 This project supports browser hot reloads via `webpack --watch`, `hivemind`, and
 Mozilla's `web-ext` tool.
@@ -160,10 +171,10 @@ You can spin up a browser that will reload the extension in response to any code
 changes with:
 
 ```bash
-npm run dev
+npm run dev:desktop
 ```
 
-### Mobile
+### Mobile Browsers
 
 As this extension ships to mobile, it's important that we test it
 during development.
@@ -177,16 +188,17 @@ our extension to a debugging enabled mobile device.
 
 #### Android
 
+Using `adb devices`, find your devices ID and add it to your `.env` file,
+under the `MOBILE_DEVICE_ID` key.
+
+Once that's done, you're ready to use hot reloading with Android:
+
 ```bash
-# Find the device ID of the debugging device
-adb devices
-
-# Build the extension's JavaScript bundles
-npm run build
-
-# Distribute it to the Mobile device
-npx web-ext run --source-dir ./extension/ -t firefox-android --android-device=<ADB_DEBUGGING_DEVICE_ID>
+npm run dev:android
 ```
+
+You'll need to manually open `about:debugging` in your Development desktops
+Firefox to access the Mobile debugger, however.
 
 #### iOS
 
