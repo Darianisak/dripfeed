@@ -55,7 +55,7 @@ to work on the project.
 
 ### Quick Start
 
-If you already have `nodejs`, `python`, and `ruby` (via `mise`) installed,
+If you already have `nodejs`, `python`, `homebrew`, and `ruby` (via `mise`) installed,
 you can bootstrap the entire environment with:
 
 ```bash
@@ -69,6 +69,9 @@ pip3 install -r requirements.txt
 
 # Install Ruby dependencies
 ./bin/bundle install
+
+# Install the hotreload process manager
+brew install hivemind
 ```
 
 Otherwise, read-on for the detailed set up instructions.
@@ -80,6 +83,7 @@ the core dependencies installed and setup:
 
 - [`nodejs`][node]
 - [`python`][venv]
+- [`hivemind`][hivemind]
 - `ruby`, managed with [`mise`][mise]
 
 #### JavaScript/TypeScript Setup
@@ -117,6 +121,17 @@ The project's Ruby dependencies can then be installed with:
 ./bin/bundle install
 ```
 
+#### Hivemind
+
+To support real time development via browser hot reloading, we use the
+`hivemind` Procfile manager.
+
+This can be installed with:
+
+```bash
+homebrew install hivemind
+```
+
 ### Code Style
 
 This project uses a variety of formatters and linters to maintain
@@ -135,6 +150,18 @@ npm run style
 ```
 
 These linters and formatters are enforced by CI/CD.
+
+### Browsers
+
+This project supports browser hot reloads via `webpack --watch`, `hivemind`, and
+Mozilla's `web-ext` tool.
+
+You can spin up a browser that will reload the extension in response to any code
+changes with:
+
+```bash
+npm run dev
+```
 
 ### Mobile
 
@@ -356,3 +383,4 @@ Be sure to increment the version number in `package.json`!
 [moz-mob]: https://extensionworkshop.com/documentation/develop/developing-extensions-for-firefox-for-android/
 [js-debug]: https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_javascript-debug-terminal
 [ruby-debug]: https://github.com/ruby/debug
+[hivemind]: https://github.com/DarthSim/hivemind

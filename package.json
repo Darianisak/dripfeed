@@ -28,12 +28,13 @@
     "sinatra": "./bin/bundle exec ruby sinatra.rb",
     "debug:sinatra": "./bin/bundle exec rdbg -- ./bin/bundle exec ruby sinatra.rb",
     "debug:e2e": "./bin/bundle exec rdbg -- ./bin/bundle exec rspec",
-    "watch": "npx webpack --mode development --watch",
+    "watch": "npx webpack --mode production --watch",
     "webpack": "npx webpack --mode production",
     "update:all": "npm run update:js ; npm run update:python ; npm run update:ruby",
     "update:python": "sed -i '' -E 's/[=><~!]=.*//' requirements.txt && source ./pydeps/bin/activate && python3 -m pip install --upgrade --requirement requirements.txt && pip3 freeze > requirements.txt",
     "update:js": "npm audit fix",
-    "update:ruby": "./bin/bundle update"
+    "update:ruby": "./bin/bundle update",
+    "dev": "hivemind"
   },
   "dependencies": {
     "webpack": "^5.105.4",
