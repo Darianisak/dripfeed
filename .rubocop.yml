@@ -25,3 +25,15 @@ plugins:
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: double_quotes
+
+# Because our RSpec tests are under `tests/` rather than `spec/`, we get hit
+# with some COPs that we otherwise wouldn't be. So, update the excludes to match.
+#
+# https://stackoverflow.com/questions/40934345/rubocop-25-line-block-size-and-rspec-tests
+#
+Metrics/BlockLength:
+  Exclude:
+    - "Rakefile"
+    - "**/*.rake"
+    - "spec/**/*.rb"
+    - "tests/e2e/**/*.rb"
