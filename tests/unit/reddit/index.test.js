@@ -216,7 +216,7 @@ describe(".routing", () => {
         .mockImplementation(() => []);
       mutatorSpy = jest.spyOn(mutate, "operate").mockImplementation(() => {});
       routing();
-      expect(mutatorSpy).toHaveBeenCalledTimes(1);
+      expect(mutatorSpy).toHaveBeenCalledTimes(2);
       pathnameSpy.mockRestore();
     });
   });

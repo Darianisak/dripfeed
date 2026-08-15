@@ -23,6 +23,20 @@ namespace "/r" do
   get "/popular" do
     erb :"#{signed_in? ? 'reddit/signed_in/popular' : 'reddit/signed_out/popular'}"
   end
+
+  namespace "/mobile-cta" do
+    get "/dismissable" do
+      erb :"reddit/mobile/dismissable_cta"
+    end
+
+    get "/full-page-blocking" do
+      erb :"reddit/mobile/full_page_cta"
+    end
+
+    get "/half-page-blocking" do
+      erb :"reddit/mobile/half_page_cta"
+    end
+  end
 end
 
 get "/" do

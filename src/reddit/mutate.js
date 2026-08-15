@@ -5,6 +5,10 @@ export const Targets = {
   RIGHT_SIDEBAR: 1,
   MAIN_CONTENT: 2,
   SIGN_UP_BANNER: 3,
+  MOBILE_APP_NON_BLOCKING_CTA: 4,
+  MOBILE_APP_FULL_PAGE_CTA: 5,
+  MOBILE_APP_HALF_PAGE_CTA: 6,
+  MOBILE_SCROLL_BLOCKING: 7,
 };
 
 export const Pages = {
@@ -18,6 +22,12 @@ export const Pages = {
   USER: [Targets.LEFT_SIDEBAR, Targets.SIGN_UP_BANNER],
   SEARCH: [Targets.LEFT_SIDEBAR, Targets.SIGN_UP_BANNER, Targets.RIGHT_SIDEBAR],
   POPULAR: [Targets.MAIN_CONTENT],
+  ALL: [
+    Targets.MOBILE_APP_NON_BLOCKING_CTA,
+    Targets.MOBILE_APP_FULL_PAGE_CTA,
+    Targets.MOBILE_APP_HALF_PAGE_CTA,
+    Targets.MOBILE_SCROLL_BLOCKING,
+  ],
 };
 
 export function nodeRemovalProxy(...args) {
@@ -62,6 +72,25 @@ export function operate(pageTargets, removeCallback = nodeRemovalProxy) {
 
       case Targets.MAIN_CONTENT:
         removeCallback("subgrid-container", "left-sidebar-container");
+        break;
+
+      case Targets.MOBILE_APP_NON_BLOCKING_CTA:
+        removeCallback("xpromo-bottom-sheet");
+        break;
+
+      case Targets.MOBILE_APP_FULL_PAGE_CTA:
+        removeCallback(
+          "configured-xpromo-mweb3x_feeds_blocking_xpromo_lo_fullscreen",
+        );
+        break;
+
+      case Targets.MOBILE_APP_HALF_PAGE_CTA:
+        removeCallback("configured-xpromo-mweb3x_mid_funnel_blocking_v1_30s");
+        break;
+
+      case Targets.MOBILE_SCROLL_BLOCKING:
+        document.body.classList.remove("rpl-scroll-lock");
+        document.body.style.overflow = null;
         break;
 
       default:
