@@ -49,6 +49,9 @@ function routing(getType = getSubPathType) {
 
   const subpathType = getType();
 
+  // Some mutations should apply everywhere, particularly for mobile.
+  mutate.operate(mutate.Pages.ALL);
+
   switch (subpathType) {
     case Subpath.HOME:
       mutate.operate(mutate.Pages.HOME);

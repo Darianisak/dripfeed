@@ -28,6 +28,22 @@ describe("_Targets", () => {
     test("ensures 'SIGN_UP_BANNER' has the expected value", () => {
       expect(mutate.Targets.SIGN_UP_BANNER).toBe(3);
     });
+
+    test("ensures 'MOBILE_APP_NON_BLOCKING_CTA' has the expected value", () => {
+      expect(mutate.Targets.MOBILE_APP_NON_BLOCKING_CTA).toBe(4);
+    });
+
+    test("ensures 'MOBILE_APP_FULL_PAGE_CTA' has the expected value", () => {
+      expect(mutate.Targets.MOBILE_APP_FULL_PAGE_CTA).toBe(5);
+    });
+
+    test("ensures 'MOBILE_APP_HALF_PAGE_CTA' has the expected value", () => {
+      expect(mutate.Targets.MOBILE_APP_HALF_PAGE_CTA).toBe(6);
+    });
+
+    test("ensures 'MOBILE_SCROLL_BLOCKING' has the expected value", () => {
+      expect(mutate.Targets.MOBILE_SCROLL_BLOCKING).toBe(7);
+    });
   });
 });
 
@@ -70,6 +86,15 @@ describe("_Pages", () => {
 
     test("ensures 'POPULAR' has the expected array", () => {
       expect(mutate.Pages.POPULAR).toEqual([mutate.Targets.MAIN_CONTENT]);
+    });
+
+    test("ensures 'ALL' has the expected array", () => {
+      expect(mutate.Pages.ALL).toEqual([
+        mutate.Targets.MOBILE_APP_NON_BLOCKING_CTA,
+        mutate.Targets.MOBILE_APP_FULL_PAGE_CTA,
+        mutate.Targets.MOBILE_APP_HALF_PAGE_CTA,
+        mutate.Targets.MOBILE_SCROLL_BLOCKING,
+      ]);
     });
   });
 });
@@ -162,6 +187,49 @@ describe(".operate", () => {
         targets = [mutate.Targets.SIGN_UP_BANNER];
         mutate.operate(targets, removeProxySpy);
         expect(removeProxySpy).toHaveBeenCalledWith("left-sidebar-container");
+      });
+
+      test("ensures 'MOBILE_APP_NON_BLOCKING_CTA' calls as expected", () => {
+        removeProxySpy = jest.fn();
+        targets = [mutate.Targets.MOBILE_APP_NON_BLOCKING_CTA];
+        mutate.operate(targets, removeProxySpy);
+        expect(removeProxySpy).toHaveBeenCalledWith("xpromo-bottom-sheet");
+      });
+
+      test("ensures 'MOBILE_APP_FULL_PAGE_CTA' calls as expected", () => {
+        removeProxySpy = jest.fn();
+        targets = [mutate.Targets.MOBILE_APP_FULL_PAGE_CTA];
+        mutate.operate(targets, removeProxySpy);
+        expect(removeProxySpy).toHaveBeenCalledWith(
+          "configured-xpromo-mweb3x_feeds_blocking_xpromo_lo_fullscreen",
+        );
+      });
+
+      test("ensures 'MOBILE_APP_HALF_PAGE_CTA' calls as expected", () => {
+        removeProxySpy = jest.fn();
+        targets = [mutate.Targets.MOBILE_APP_HALF_PAGE_CTA];
+        mutate.operate(targets, removeProxySpy);
+        expect(removeProxySpy).toHaveBeenCalledWith(
+          "configured-xpromo-mweb3x_mid_funnel_blocking_v1_30s",
+        );
+      });
+
+      describe("'MOBILE_SCROLL_BLOCKING'", () => {
+        test("ensures classList is amended as expected", () => {
+          const classRemovalSpy = jest.spyOn(document.body.classList, "remove");
+          targets = [mutate.Targets.MOBILE_SCROLL_BLOCKING];
+          mutate.operate(targets, removeProxySpy);
+          expect(classRemovalSpy).toHaveBeenCalledWith("rpl-scroll-lock");
+          classRemovalSpy.mockRestore();
+        });
+
+        test("ensures style is updated as expected", () => {
+          document.body.style.overflow = "hidden";
+          expect(document.body.style.overflow).toBe("hidden");
+          targets = [mutate.Targets.MOBILE_SCROLL_BLOCKING];
+          mutate.operate(targets, removeProxySpy);
+          expect(document.body.style.overflow).toBe("");
+        });
       });
     });
 
