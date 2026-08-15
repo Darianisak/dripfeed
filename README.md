@@ -241,6 +241,13 @@ End-to-end tests can be run with:
 npm run test:e2e
 ```
 
+Or if you'd like to run the e2e in an actual browser, which is particularly
+helpful for debugging, you can run:
+
+```bash
+SHOWME=1 npm run test:e2e
+```
+
 The `sinatra` webserver can also be run stand-alone, allowing you to interact
 with the HTML Mocks that your tests will use:
 

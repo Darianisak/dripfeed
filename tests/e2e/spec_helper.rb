@@ -14,7 +14,7 @@ Capybara.server_host = "127.0.0.1"
 Capybara.server_port = 9887 # Capybara will use this port to run your app for tests
 Capybara.app_host = "http://#{Capybara.server_host}:#{Capybara.server_port}"
 
-Capybara.default_driver = :selenium_headless
+Capybara.default_driver = ENV.key?("SHOWME") ? :selenium : :selenium_headless
 
 RSpec.configure do |config|
   config.include Capybara::DSL
