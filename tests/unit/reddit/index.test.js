@@ -1,9 +1,26 @@
 "use strict";
 
-import { describe, test, jest, expect, afterEach } from "@jest/globals";
+import {
+  describe,
+  test,
+  jest,
+  expect,
+  beforeEach,
+  afterEach,
+} from "@jest/globals";
 import { getSubPathType, routing, Subpath } from "../../../src/reddit/index.js";
 import * as helpers from "../../../src/helpers/pathHelper.js";
 import * as mutate from "../../../src/reddit/mutate.js";
+
+let consoleSpy;
+
+beforeEach(() => {
+  consoleSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+});
+
+afterEach(() => {
+  consoleSpy.mockRestore();
+});
 
 describe(".getSubPathType", () => {
   let pathnameSpy;
@@ -268,11 +285,7 @@ describe(".routing", () => {
   describe("with unsupported SubPathTypes", () => {
     test("ensures unsupported pathnames return as expected", () => {
       typeSpy = jest.fn().mockReturnValue(Subpath.UNSUPPORTED);
-      const consoleSpy = jest
-        .spyOn(console, "warn")
-        .mockImplementation(() => {});
       expect(routing(typeSpy)).toBe(127);
-      consoleSpy.mockRestore();
     });
 
     test("ensures unexpected SubPathTypes raise TypeError", () => {

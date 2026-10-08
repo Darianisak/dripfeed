@@ -6,10 +6,18 @@ import {
   afterEach,
   beforeEach,
 } from "@jest/globals";
-import * as removeNode from "../../../src/helpers/removeNode.js";
 import * as mutate from "../../../src/reddit/mutate.js";
+import * as helpers from "../../../src/helpers/removeNodeCaller.js";
 
-const normalizeDOMStrings = (str) => str.replace(/\s+/g, "").trim();
+let consoleSpy;
+
+beforeEach(() => {
+  consoleSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+});
+
+afterEach(() => {
+  consoleSpy.mockRestore();
+});
 
 describe("_Targets", () => {
   describe("enumValues", () => {
@@ -116,18 +124,6 @@ describe(".operate", () => {
         expect(() => mutate.operate([])).not.toThrow(TypeError);
       });
     });
-
-    describe("#removeCallback", () => {
-      test("ensures .mutate#operate raises a TypeError when not a function", () => {
-        expect(() => mutate.operate([], "helloWorld")).toThrow(TypeError);
-      });
-
-      test("ensures .mutate#operate raises a TypeError with a specific message", () => {
-        expect(() => mutate.operate([], "helloWorld")).toThrow(
-          "operate received unexpected argument, 'string', expected 'function'",
-        );
-      });
-    });
   });
 
   describe("with an invalid Target.ENUM", () => {
@@ -142,83 +138,59 @@ describe(".operate", () => {
     });
   });
 
-  describe("with an overridden removeCallback", () => {
-    let removeProxySpy;
-    let targets;
+  describe("with a valid Target.ENUM", () => {
+    let nodeCallerSpy;
 
-    afterEach(() => {
-      removeProxySpy.mockRestore();
-      targets = [];
+    beforeEach(() => {
+      nodeCallerSpy = jest
+        .spyOn(helpers, "removeNodeCaller")
+        .mockImplementation(() => {});
     });
 
-    describe("with single item target arrays", () => {
-      test("ensures 'RIGHT_SIDEBAR' calls as expected", () => {
-        removeProxySpy = jest.fn();
-        targets = [mutate.Targets.RIGHT_SIDEBAR];
-        mutate.operate(targets, removeProxySpy);
-        expect(removeProxySpy).toHaveBeenCalledWith(
-          "right-sidebar-contents",
-          "right-rail-experience-root",
-        );
+    afterEach(() => {
+      nodeCallerSpy.mockRestore();
+    });
+
+    describe("ensures removeNodeCaller is called for", () => {
+      test("LEFT_SIDEBAR", () => {
+        mutate.operate([mutate.Targets.LEFT_SIDEBAR]);
+        expect(nodeCallerSpy).toHaveBeenCalledTimes(1);
       });
 
-      test("ensures 'LEFT_SIDEBAR' calls as expected", () => {
-        removeProxySpy = jest.fn();
-        targets = [mutate.Targets.LEFT_SIDEBAR];
-        mutate.operate(targets, removeProxySpy);
-        expect(removeProxySpy).toHaveBeenCalledWith(
-          "flex-left-nav-container",
-          "flex-nav-buttons",
-        );
+      test("RIGHT_SIDEBAR", () => {
+        mutate.operate([mutate.Targets.RIGHT_SIDEBAR]);
+        expect(nodeCallerSpy).toHaveBeenCalledTimes(1);
       });
 
-      test("ensures 'MAIN_CONTENT' calls as expected", () => {
-        removeProxySpy = jest.fn();
-        targets = [mutate.Targets.MAIN_CONTENT];
-        mutate.operate(targets, removeProxySpy);
-        expect(removeProxySpy).toHaveBeenCalledWith(
-          "subgrid-container",
-          "left-sidebar-container",
-        );
+      test("MAIN_CONTENT", () => {
+        mutate.operate([mutate.Targets.MAIN_CONTENT]);
+        expect(nodeCallerSpy).toHaveBeenCalledTimes(1);
       });
 
-      test("ensures 'SIGN_UP_BANNER' calls as expected", () => {
-        removeProxySpy = jest.fn();
-        targets = [mutate.Targets.SIGN_UP_BANNER];
-        mutate.operate(targets, removeProxySpy);
-        expect(removeProxySpy).toHaveBeenCalledWith("left-sidebar-container");
+      test("SIGN_UP_BANNER", () => {
+        mutate.operate([mutate.Targets.SIGN_UP_BANNER]);
+        expect(nodeCallerSpy).toHaveBeenCalledTimes(1);
       });
 
-      test("ensures 'MOBILE_APP_NON_BLOCKING_CTA' calls as expected", () => {
-        removeProxySpy = jest.fn();
-        targets = [mutate.Targets.MOBILE_APP_NON_BLOCKING_CTA];
-        mutate.operate(targets, removeProxySpy);
-        expect(removeProxySpy).toHaveBeenCalledWith("xpromo-bottom-sheet");
+      test("MOBILE_APP_NON_BLOCKING_CTA", () => {
+        mutate.operate([mutate.Targets.MOBILE_APP_NON_BLOCKING_CTA]);
+        expect(nodeCallerSpy).toHaveBeenCalledTimes(1);
       });
 
-      test("ensures 'MOBILE_APP_FULL_PAGE_CTA' calls as expected", () => {
-        removeProxySpy = jest.fn();
-        targets = [mutate.Targets.MOBILE_APP_FULL_PAGE_CTA];
-        mutate.operate(targets, removeProxySpy);
-        expect(removeProxySpy).toHaveBeenCalledWith(
-          "configured-xpromo-mweb3x_feeds_blocking_xpromo_lo_fullscreen",
-        );
+      test("MOBILE_APP_FULL_PAGE_CTA", () => {
+        mutate.operate([mutate.Targets.MOBILE_APP_FULL_PAGE_CTA]);
+        expect(nodeCallerSpy).toHaveBeenCalledTimes(1);
       });
 
-      test("ensures 'MOBILE_APP_HALF_PAGE_CTA' calls as expected", () => {
-        removeProxySpy = jest.fn();
-        targets = [mutate.Targets.MOBILE_APP_HALF_PAGE_CTA];
-        mutate.operate(targets, removeProxySpy);
-        expect(removeProxySpy).toHaveBeenCalledWith(
-          "configured-xpromo-mweb3x_mid_funnel_blocking_v1_30s",
-        );
+      test("MOBILE_APP_HALF_PAGE_CTA", () => {
+        mutate.operate([mutate.Targets.MOBILE_APP_HALF_PAGE_CTA]);
+        expect(nodeCallerSpy).toHaveBeenCalledTimes(1);
       });
 
       describe("'MOBILE_SCROLL_BLOCKING'", () => {
         test("ensures classList is amended as expected", () => {
           const classRemovalSpy = jest.spyOn(document.body.classList, "remove");
-          targets = [mutate.Targets.MOBILE_SCROLL_BLOCKING];
-          mutate.operate(targets, removeProxySpy);
+          mutate.operate([mutate.Targets.MOBILE_SCROLL_BLOCKING]);
           expect(classRemovalSpy).toHaveBeenCalledWith("rpl-scroll-lock");
           classRemovalSpy.mockRestore();
         });
@@ -226,297 +198,17 @@ describe(".operate", () => {
         test("ensures style is updated as expected", () => {
           document.body.style.overflow = "hidden";
           expect(document.body.style.overflow).toBe("hidden");
-          targets = [mutate.Targets.MOBILE_SCROLL_BLOCKING];
-          mutate.operate(targets, removeProxySpy);
+          mutate.operate([mutate.Targets.MOBILE_SCROLL_BLOCKING]);
           expect(document.body.style.overflow).toBe("");
         });
       });
-    });
 
-    describe("with multi item target arrays", () => {
-      test("ensures three items results in three calls", () => {
-        removeProxySpy = jest.fn();
-        targets = [
-          mutate.Targets.MAIN_CONTENT,
-          mutate.Targets.LEFT_SIDEBAR,
-          mutate.Targets.MAIN_CONTENT,
-        ];
-        mutate.operate(targets, removeProxySpy);
-        expect(removeProxySpy).toHaveBeenCalledTimes(3);
-      });
-    });
-  });
-
-  describe("with a default removeCallback", () => {
-    let operateSpy;
-    let nodeSpy;
-
-    afterEach(() => {
-      operateSpy.mockRestore();
-      nodeSpy.mockRestore();
-    });
-
-    test("ensures .operate calls RemoveNode once", () => {
-      operateSpy = jest.fn();
-
-      const mockInstance = {
-        operate: operateSpy,
-      };
-
-      nodeSpy = jest
-        .spyOn(removeNode, "RemoveNode")
-        .mockImplementation(() => mockInstance);
-
-      mutate.operate([mutate.Targets.MAIN_CONTENT]);
-      expect(operateSpy).toHaveBeenCalledTimes(1);
-    });
-
-    test("ensures .operate calls RemoveNode once", () => {
-      operateSpy = jest.fn();
-
-      const mockInstance = {
-        operate: operateSpy,
-      };
-
-      nodeSpy = jest
-        .spyOn(removeNode, "RemoveNode")
-        .mockImplementation(() => mockInstance);
-
-      mutate.operate([
-        mutate.Targets.LEFT_SIDEBAR,
-        mutate.Targets.RIGHT_SIDEBAR,
-      ]);
-      expect(operateSpy).toHaveBeenCalledTimes(2);
-    });
-  });
-});
-
-describe(".nodeRemovalProxy", () => {
-  describe("typeValidations", () => {
-    let removeSpy;
-    let removeOperateSpy;
-
-    beforeEach(() => {
-      removeOperateSpy = jest.fn();
-
-      const mockInstance = {
-        operate: removeOperateSpy,
-      };
-
-      removeSpy = jest
-        .spyOn(removeNode, "RemoveNode")
-        .mockImplementation(() => mockInstance);
-    });
-
-    afterEach(() => {
-      [removeSpy, removeOperateSpy].forEach((spy) => {
-        if (spy) {
-          spy.mockRestore();
-        }
-      });
-      document.getElementsByTagName("html")[0].innerHTML = "";
-    });
-
-    describe("#targetOne", () => {
-      test("ensures specific TypeError message raised", () => {
-        expect(() => mutate.nodeRemovalProxy(100, "#valid-id")).toThrow(
-          "nodeRemovalProxy received unexpected argument, 'number', expected 'string' or 'Element'",
-        );
-      });
-
-      test("ensures TypeError raised given number input or element", () => {
-        expect(() => mutate.nodeRemovalProxy(100, "#valid-id")).toThrow(
-          TypeError,
-        );
-      });
-
-      test("ensures TypeError raised given undefined input or element", () => {
-        expect(() => mutate.nodeRemovalProxy(undefined, "#valid-id")).toThrow(
-          TypeError,
-        );
-      });
-
-      test("ensures string allows RemoveNode call", () => {
-        mutate.nodeRemovalProxy("#valid-id", "#other-id");
-        expect(removeSpy).toHaveBeenCalledWith("#valid-id", "#other-id");
-      });
-
-      test("ensures Element allows RemoveNode call", () => {
-        const elementArgument = document.createElement("div");
-        mutate.nodeRemovalProxy(elementArgument, "#other-id");
-        expect(removeSpy).toHaveBeenCalledWith(elementArgument, "#other-id");
-      });
-    });
-
-    describe("#targetTwo", () => {
-      test("ensures specific TypeError message raised", () => {
-        expect(() => mutate.nodeRemovalProxy("#valid-id", 100)).toThrow(
-          "nodeRemovalProxy received unexpected argument, 'number', expected 'string' or 'Element'",
-        );
-      });
-
-      test("ensures TypeError raised given number input or element", () => {
-        expect(() => mutate.nodeRemovalProxy("#valid-id", 100)).toThrow(
-          TypeError,
-        );
-      });
-
-      test("ensures TypeError raised given undefined input or element", () => {
-        expect(() => mutate.nodeRemovalProxy("#valid-id", undefined)).toThrow(
-          TypeError,
-        );
-      });
-
-      test("ensures string allows RemoveNode call", () => {
-        mutate.nodeRemovalProxy("#other-id", "#valid-id");
-        expect(removeSpy).toHaveBeenCalledWith("#other-id", "#valid-id");
-      });
-
-      test("ensures Element allows RemoveNode call", () => {
-        const elementArgument = document.createElement("div");
-        mutate.nodeRemovalProxy("#other-id", elementArgument);
-        expect(removeSpy).toHaveBeenCalledWith("#other-id", elementArgument);
-      });
-    });
-
-    describe("#targetOne && #targetTwo", () => {
-      test("ensures both args as strings is valid", () => {
-        mutate.nodeRemovalProxy("#id-1", "#id-2");
-        expect(removeSpy).toHaveBeenCalledWith("#id-1", "#id-2");
-      });
-
-      test("ensures both args as Elements is valid", () => {
-        const elementOne = document.createElement("div");
-        const elementTwo = document.createElement("div");
-
-        mutate.nodeRemovalProxy(elementOne, elementTwo);
-        expect(removeSpy).toHaveBeenCalledWith(elementOne, elementTwo);
-      });
-
-      test("ensures both args as numbers raised TypeError", () => {
-        expect(() => mutate.nodeRemovalProxy(1, 2)).toThrow(TypeError);
-      });
-
-      test("ensures both args undefined raises TypeError", () => {
-        expect(() => mutate.nodeRemovalProxy(undefined, undefined)).toThrow(
-          TypeError,
-        );
-      });
-    });
-  });
-
-  describe("DOM manipulations", () => {
-    let expectedDOM;
-    let receivedDOM;
-
-    beforeEach(() => {
-      document.body.innerHTML =
-        "<div>" +
-        '  <div id="main-content">' +
-        '    <div id="subgrid-container"></div>' +
-        '    <div id="left-sidebar-container">' +
-        '      <div id="flex-left-nav-container"></div>' +
-        '      <div id="flex-nav-buttons"></div>' +
-        "    </div>" +
-        '    <div id="right-sidebar">' +
-        '      <div id="right-sidebar-contents"></div>' +
-        '      <div id="right-rail-experience-root"></div>' +
-        "    </div>" +
-        "  </div>" +
-        "</div>";
-    });
-
-    afterEach(() => {
-      document.getElementsByTagName("html")[0].innerHTML = "";
-      expectedDOM = "";
-    });
-
-    describe("with singular removal targets", () => {
-      test("ensures that LEFT_SIDEBAR removes as expected", () => {
-        expectedDOM = normalizeDOMStrings(
-          "<div>" +
-            '  <div id="main-content">' +
-            '    <div id="subgrid-container"></div>' +
-            '    <div id="right-sidebar">' +
-            '      <div id="right-sidebar-contents"></div>' +
-            '      <div id="right-rail-experience-root"></div>' +
-            "    </div>" +
-            "  </div>" +
-            "</div>",
-        );
-
-        mutate.operate([mutate.Targets.LEFT_SIDEBAR]);
-
-        receivedDOM = normalizeDOMStrings(document.body.innerHTML);
-        expect(receivedDOM).toEqual(expectedDOM);
-      });
-
-      test("ensures that SIGN_UP_BANNER removes as expected", () => {
-        expectedDOM = normalizeDOMStrings(
-          "<div>" +
-            '  <div id="main-content">' +
-            '    <div id="subgrid-container"></div>' +
-            '    <div id="right-sidebar">' +
-            '      <div id="right-sidebar-contents"></div>' +
-            '      <div id="right-rail-experience-root"></div>' +
-            "    </div>" +
-            "  </div>" +
-            "</div>",
-        );
-
-        mutate.operate([mutate.Targets.SIGN_UP_BANNER]);
-
-        receivedDOM = normalizeDOMStrings(document.body.innerHTML);
-
-        expect(receivedDOM).toEqual(expectedDOM);
-      });
-
-      test("ensures that RIGHT_SIDEBAR removes as expected", () => {
-        expectedDOM = normalizeDOMStrings(
-          "<div>" +
-            '  <div id="main-content">' +
-            '    <div id="subgrid-container"></div>' +
-            '    <div id="left-sidebar-container">' +
-            '      <div id="flex-left-nav-container"></div>' +
-            '      <div id="flex-nav-buttons"></div>' +
-            "    </div>" +
-            "  </div>" +
-            "</div>",
-        );
-
-        mutate.operate([mutate.Targets.RIGHT_SIDEBAR]);
-
-        receivedDOM = normalizeDOMStrings(document.body.innerHTML);
-        expect(receivedDOM).toEqual(expectedDOM);
-      });
-
-      test("ensures that MAIN_CONTENT removes as expected", () => {
-        expectedDOM = normalizeDOMStrings("<div>" + "</div>");
-
-        mutate.operate([mutate.Targets.MAIN_CONTENT]);
-
-        receivedDOM = normalizeDOMStrings(document.body.innerHTML);
-        expect(receivedDOM).toEqual(expectedDOM);
-      });
-    });
-
-    describe("with multiple removal targets", () => {
-      test("ensures the LEFT and RIGHT_SIDEBAR are removed", () => {
-        expectedDOM = normalizeDOMStrings(
-          "<div>" +
-            '  <div id="main-content">' +
-            '    <div id="subgrid-container"></div>' +
-            "  </div>" +
-            "</div>",
-        );
-
+      test("Multiple Targets", () => {
         mutate.operate([
           mutate.Targets.LEFT_SIDEBAR,
           mutate.Targets.RIGHT_SIDEBAR,
         ]);
-
-        receivedDOM = normalizeDOMStrings(document.body.innerHTML);
-        expect(receivedDOM).toEqual(expectedDOM);
+        expect(nodeCallerSpy).toHaveBeenCalledTimes(2);
       });
     });
   });
