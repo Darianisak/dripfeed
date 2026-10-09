@@ -1,16 +1,8 @@
 "use strict";
 
-import * as removeNode from "../../../src/helpers/removeNode.js";
 import * as mutate from "../../../src/instagram/mutate.js";
 
-import {
-  describe,
-  test,
-  jest,
-  expect,
-  afterEach,
-  beforeEach,
-} from "@jest/globals";
+import { describe, test, expect } from "@jest/globals";
 
 describe("_Targets", () => {
   describe("enumValues", () => {
