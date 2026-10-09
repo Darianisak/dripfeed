@@ -1,6 +1,6 @@
 "use strict";
 
-import { getPathnameFragments } from "../helpers/pathHelper.js";
+import * as helpers from "../helpers/pathHelper.js";
 import * as mutate from "./mutate.js";
 
 const Subpath = {
@@ -13,14 +13,8 @@ const Subpath = {
   POPULAR: 5,
 };
 
-function getSubPathType(pathname = getPathnameFragments) {
-  if (typeof pathname !== "function") {
-    throw new TypeError(
-      `getSubPathType received unexpected argument, '${typeof pathname}', expected 'function'`,
-    );
-  }
-
-  const subpathArray = pathname();
+function getSubPathType() {
+  const subpathArray = helpers.getPathnameFragments();
 
   if (subpathArray[0] === "r") {
     if (subpathArray[1] == "popular") {
