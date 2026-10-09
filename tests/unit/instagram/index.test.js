@@ -45,14 +45,6 @@ describe(".getSubPathType", () => {
   });
 
   describe("with valid subpaths", () => {
-    let pathnameSpy;
-
-    afterEach(() => {
-      if (pathnameSpy) {
-        pathnameSpy.mockRestore();
-      }
-    });
-
     describe("with the homepage", () => {
       beforeEach(() => {
         pathnameSpy = jest
@@ -67,14 +59,6 @@ describe(".getSubPathType", () => {
   });
 
   describe("with invalid subpaths", () => {
-    let pathnameSpy;
-
-    afterEach(() => {
-      if (pathnameSpy) {
-        pathnameSpy.mockRestore();
-      }
-    });
-
     describe("with an invalid route", () => {
       beforeEach(() => {
         pathnameSpy = jest
