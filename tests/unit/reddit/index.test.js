@@ -214,107 +214,117 @@ describe(".getSubPathType", () => {
 });
 
 describe(".routing", () => {
-  let typeSpy;
+  let pathnameSpy;
   let mutatorSpy;
 
   afterEach(() => {
-    [typeSpy, mutatorSpy].forEach((spy) => {
+    [pathnameSpy, mutatorSpy].forEach((spy) => {
       if (spy) {
         spy.mockRestore();
       }
     });
   });
 
-  describe("typeValidations", () => {
-    test("ensures .routing#getType raises a TypeError when not a function", () => {
-      expect(() => routing("helloWorld")).toThrow(TypeError);
+  describe("with a valid subpath", () => {
+    beforeEach(() => {
+      mutatorSpy = jest.spyOn(mutate, "operate").mockImplementation(() => {});
     });
 
-    test("ensures .routing#getType raises a TypeError with a specific message", () => {
-      expect(() => routing("helloWorld")).toThrow(
-        "routing received unexpected argument, 'string', expected 'function'",
-      );
+    describe("with the homepage", () => {
+      beforeEach(() => {
+        pathnameSpy = jest
+          .spyOn(helpers, "getPathnameFragments")
+          .mockImplementation(() => [""]);
+        routing();
+      });
+
+      test("returns HOME", () => {
+        expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.HOME);
+      });
+    });
+
+    describe("with a subreddit", () => {
+      beforeEach(() => {
+        pathnameSpy = jest
+          .spyOn(helpers, "getPathnameFragments")
+          .mockImplementation(() => ["r", "subreddit"]);
+        routing();
+      });
+
+      test("returns SUBREDDIT", () => {
+        expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.SUBREDDIT);
+      });
+    });
+
+    describe("with a post", () => {
+      beforeEach(() => {
+        pathnameSpy = jest
+          .spyOn(helpers, "getPathnameFragments")
+          .mockImplementation(() => ["r", "subreddit", "comments"]);
+        routing();
+      });
+
+      test("returns POST", () => {
+        expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.POST);
+      });
+    });
+
+    describe("with a user profile", () => {
+      beforeEach(() => {
+        pathnameSpy = jest
+          .spyOn(helpers, "getPathnameFragments")
+          .mockImplementation(() => ["user"]);
+        routing();
+      });
+
+      test("returns USER", () => {
+        expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.USER);
+      });
+    });
+
+    describe("with a search request", () => {
+      beforeEach(() => {
+        pathnameSpy = jest
+          .spyOn(helpers, "getPathnameFragments")
+          .mockImplementation(() => ["search"]);
+        routing();
+      });
+
+      test("returns SEARCH", () => {
+        expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.SEARCH);
+      });
+    });
+
+    describe("with r/popular", () => {
+      beforeEach(() => {
+        pathnameSpy = jest
+          .spyOn(helpers, "getPathnameFragments")
+          .mockImplementation(() => ["r", "popular"]);
+        routing();
+      });
+
+      test("returns POPULAR", () => {
+        expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.POPULAR);
+      });
     });
   });
 
-  describe("with the default type callback", () => {
-    test("ensures the default callback results in a mutator execution", () => {
-      const pathnameSpy = jest
-        .spyOn(helpers, "getPathnameFragments")
-        .mockImplementation(() => []);
-      mutatorSpy = jest.spyOn(mutate, "operate").mockImplementation(() => {});
-      routing();
-      expect(mutatorSpy).toHaveBeenCalledTimes(2);
-      pathnameSpy.mockRestore();
-    });
-  });
-
-  describe("with supported SubPathTypes", () => {
-    test("ensures HOME subpath calls operate with expected args", () => {
-      mutatorSpy = jest.spyOn(mutate, "operate").mockImplementation(() => {});
-      typeSpy = jest.fn().mockReturnValue(Subpath.HOME);
-      routing(typeSpy);
-      expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.HOME);
-    });
-
-    test("ensures SUBREDDIT subpath calls operate with expected args", () => {
-      mutatorSpy = jest.spyOn(mutate, "operate").mockImplementation(() => {});
-      typeSpy = jest.fn().mockReturnValue(Subpath.SUBREDDIT);
-      routing(typeSpy);
-      expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.SUBREDDIT);
-    });
-
-    test("ensures POST subpath calls operate with expected args", () => {
-      mutatorSpy = jest.spyOn(mutate, "operate").mockImplementation(() => {});
-      typeSpy = jest.fn().mockReturnValue(Subpath.POST);
-      routing(typeSpy);
-      expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.POST);
-    });
-
-    test("ensures USER subpath calls operate with expected args", () => {
-      mutatorSpy = jest.spyOn(mutate, "operate").mockImplementation(() => {});
-      typeSpy = jest.fn().mockReturnValue(Subpath.USER);
-      routing(typeSpy);
-      expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.USER);
-    });
-
-    test("ensures SEARCH subpath calls operate with expected args", () => {
-      mutatorSpy = jest.spyOn(mutate, "operate").mockImplementation(() => {});
-      typeSpy = jest.fn().mockReturnValue(Subpath.SEARCH);
-      routing(typeSpy);
-      expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.SEARCH);
-    });
-
-    test("ensures POPULAR subpath calls operate with expected args", () => {
-      mutatorSpy = jest.spyOn(mutate, "operate").mockImplementation(() => {});
-      typeSpy = jest.fn().mockReturnValue(Subpath.POPULAR);
-      routing(typeSpy);
-      expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.POPULAR);
-    });
-  });
-
-  describe("with unsupported SubPathTypes", () => {
-    test("ensures unsupported pathnames return as expected", () => {
-      typeSpy = jest
+  describe("with an unsupported subpath", () => {
+    beforeEach(() => {
+      pathnameSpy = jest
         .spyOn(helpers, "getPathnameFragments")
         .mockImplementation(() => Subpath.UNSUPPORTED);
-      expect(routing(typeSpy)).toBe(127);
     });
 
-    test("ensures unexpected SubPathTypes raise TypeError", () => {
-      typeSpy = jest
-        .spyOn(helpers, "getPathnameFragments")
-        .mockImplementation(() => "helloWorld");
-      expect(() => routing(typeSpy)).toThrow(TypeError);
-    });
-
-    test("ensures unexpected SubPathTypes raise correct error message", () => {
-      typeSpy = jest
-        .spyOn(helpers, "getPathnameFragments")
-        .mockImplementation(() => "helloWorld");
-      expect(() => routing(typeSpy)).toThrow(
-        "Unexpected subpathType encountered, 'helloWorld'",
+    test("calls console.warn as expected", () => {
+      routing();
+      expect(consoleSpy).toHaveBeenCalledWith(
+        `${document.location.pathname} is not yet supported`,
       );
+    });
+
+    test("ensures unsupported pathnames return as expected", () => {
+      expect(routing()).toBe(127);
     });
   });
 });
