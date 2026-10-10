@@ -14,6 +14,7 @@ import {
   Subpath,
 } from "../../../src/instagram/index.js";
 import * as helpers from "../../../src/helpers/pathHelper.js";
+import * as mutate from "../../../src/instagram/mutate.js";
 
 let consoleSpy;
 
@@ -74,35 +75,53 @@ describe(".getSubPathType", () => {
 });
 
 describe(".routing", () => {
-  let typeSpy;
+  let pathnameSpy;
   let mutatorSpy;
 
   afterEach(() => {
-    [typeSpy, mutatorSpy].forEach((spy) => {
+    [pathnameSpy, mutatorSpy].forEach((spy) => {
       if (spy) {
         spy.mockRestore();
       }
     });
   });
 
-  describe("typeValidations", () => {
-    describe("#getType", () => {
-      describe("with a string argument", () => {
-        test("raises TypeError", () => {
-          expect(() => routing("helloWorld")).toThrow(TypeError);
-        });
+  describe("with a valid subpath", () => {
+    beforeEach(() => {
+      mutatorSpy = jest.spyOn(mutate, "operate").mockImplementation(() => {});
+    });
 
-        test("raises with message", () => {
-          expect(() => routing("helloWorld")).toThrow(
-            "routing received unexpected argument, 'string', expected 'function'",
-          );
-        });
+    describe("with the homepage", () => {
+      beforeEach(() => {
+        pathnameSpy = jest
+          .spyOn(helpers, "getPathnameFragments")
+          .mockImplementation(() => [""]);
+
+        routing();
       });
 
-      describe("with the default argument", () => {
-        test("does not raise TypeError", () => {
-          expect(() => routing()).not.toThrow(TypeError);
-        });
+      test("calls .operate as expected", () => {
+        expect(mutatorSpy).toHaveBeenCalledWith(mutate.Pages.HOME);
+      });
+    });
+
+    describe("with an unsupported subpath", () => {
+      // Unsuported, as opposed to invalid.
+      beforeEach(() => {
+        pathnameSpy = jest
+          .spyOn(helpers, "getPathnameFragments")
+          .mockImplementation(() => Subpath.UNSUPPORTED);
+      });
+
+      test("calls console.warn as expected", () => {
+        routing();
+        expect(consoleSpy).toHaveBeenCalledWith(
+          `${document.location.pathname} is not yet supported`,
+        );
+      });
+
+      test("returns 127", () => {
+        expect(routing()).toEqual(127);
       });
     });
   });

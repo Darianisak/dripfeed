@@ -1,4 +1,7 @@
+"use strict";
+
 import * as helpers from "../helpers/pathHelper.js";
+import * as mutate from "./mutate.js";
 
 const Subpath = {
   UNSUPPORTED: -1,
@@ -15,11 +18,22 @@ function getSubPathType() {
   }
 }
 
-function routing(getType = getSubPathType) {
-  if (typeof getType !== "function") {
-    throw new TypeError(
-      `routing received unexpected argument, '${typeof getType}', expected 'function'`,
-    );
+function routing() {
+  const subpathType = getSubPathType();
+
+  switch (subpathType) {
+    case Subpath.HOME:
+      mutate.operate(mutate.Pages.HOME);
+      break;
+
+    case Subpath.UNSUPPORTED:
+      console.warn(`${document.location.pathname} is not yet supported`);
+      return 127;
+
+    default:
+      throw new TypeError(
+        `Unexpected subpathType encountered, '${subpathType}'`,
+      );
   }
 }
 

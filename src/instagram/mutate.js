@@ -17,3 +17,5 @@ export const Pages = {
     Targets.PAGE_SUGGESTIONS,
   ],
 };
+
+export function operate() {}
