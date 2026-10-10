@@ -34,14 +34,8 @@ function getSubPathType() {
   }
 }
 
-function routing(getType = getSubPathType) {
-  if (typeof getType !== "function") {
-    throw new TypeError(
-      `routing received unexpected argument, '${typeof getType}', expected 'function'`,
-    );
-  }
-
-  const subpathType = getType();
+function routing() {
+  const subpathType = getSubPathType();
 
   // Some mutations should apply everywhere, particularly for mobile.
   mutate.operate(mutate.Pages.ALL);
