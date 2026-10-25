@@ -17,6 +17,12 @@ namespace "/instagram" do
       erb :"instagram/web/homepage"
     end
   end
+
+  namespace "/mobile" do
+    get "/homepage" do
+      erb :"instagram/mobile/homepage"
+    end
+  end
 end
 
 namespace "/r" do

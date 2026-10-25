@@ -61,7 +61,12 @@ class RemoveNode {
       return 1;
     }
 
-    const element = document.getElementById(this.nodeSelector);
+    let element = document.getElementById(this.nodeSelector);
+
+    if (element === null) {
+      const xpathLookup = document.querySelectorAll(this.nodeSelector);
+      element = xpathLookup.length > 0 ? xpathLookup[0] : null;
+    }
 
     if (!element) {
       console.warn(`removeNode#operateNode called but Element was not found`);

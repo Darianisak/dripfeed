@@ -9,6 +9,7 @@ import {
   afterEach,
 } from "@jest/globals";
 import {
+  sanitisedSubPathArray,
   getSubPathType,
   routing,
   Subpath,
@@ -24,6 +25,39 @@ beforeEach(() => {
 
 afterEach(() => {
   consoleSpy.mockRestore();
+});
+
+describe(".sanitisedSubPathArray", () => {
+  let pathnameSpy;
+
+  afterEach(() => {
+    if (pathnameSpy) {
+      pathnameSpy.mockRestore();
+    }
+  });
+
+  describe("when running locally", () => {
+    test("removes sinatras routing", () => {
+      pathnameSpy = jest
+        .spyOn(helpers, "getPathnameFragments")
+        .mockImplementation(() => ["instagram", "web", "homepage", "?hello"]);
+      expect(sanitisedSubPathArray(true)).toEqual(["", "?hello"]);
+    });
+  });
+
+  describe("when running remotely", () => {
+    test("does not modify the path", () => {
+      pathnameSpy = jest
+        .spyOn(helpers, "getPathnameFragments")
+        .mockImplementation(() => ["instagram", "web", "homepage", "?hello"]);
+      expect(sanitisedSubPathArray(false)).toEqual([
+        "instagram",
+        "web",
+        "homepage",
+        "?hello",
+      ]);
+    });
+  });
 });
 
 describe(".getSubPathType", () => {
@@ -64,7 +98,7 @@ describe(".getSubPathType", () => {
       beforeEach(() => {
         pathnameSpy = jest
           .spyOn(helpers, "getPathnameFragments")
-          .mockImplementation(() => ["hello"]);
+          .mockImplementation(() => ["reels", "unsupported"]);
       });
 
       test("returns UNSUPPORTED", () => {

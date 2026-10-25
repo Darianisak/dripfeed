@@ -11,6 +11,7 @@ import {
 
 import { extensionRouting } from "../../../src/helpers/domainRouting.js";
 import * as reddit from "../../../src/reddit/index.js";
+import * as instagram from "../../../src/instagram/index.js";
 import * as helpers from "../../../src/helpers/pathHelper.js";
 
 describe(".extensionRouting", () => {
@@ -31,6 +32,26 @@ describe(".extensionRouting", () => {
   });
 
   describe("with supported domains", () => {
+    describe("'instagram.com'", () => {
+      beforeEach(() => {
+        domainSpy = jest
+          .spyOn(helpers, "getDomain")
+          .mockImplementation(() => "www.instagram.com");
+
+        siteSpy = jest.spyOn(instagram, "routing").mockImplementation(() => {});
+
+        extensionRouting();
+      });
+
+      test("Calls the correct route", () => {
+        expect(siteSpy).toHaveBeenCalledTimes(1);
+      });
+
+      test("Provides the expected args to the route", () => {
+        expect(siteSpy).toHaveBeenCalledWith();
+      });
+    });
+
     describe("'www.reddit.com'", () => {
       beforeEach(() => {
         domainSpy = jest
