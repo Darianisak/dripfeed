@@ -8,10 +8,23 @@ const Subpath = {
   HOME: 0,
 };
 
-function getSubPathType() {
-  const subpathArray = helpers.getPathnameFragments();
+function sanitisedSubPathArray(
+  runningLocally = Boolean(document.location.port),
+) {
+  let subpath = helpers.getPathnameFragments();
 
-  if (subpathArray[0] === "") {
+  if (runningLocally) {
+    // Takes something like ["instagram", "web", "homepage", "query1", "query2", "..."]
+    // And returns ["", "query1", "query2", "..."]
+    subpath = [""].concat(subpath.slice(3));
+  }
+  return subpath;
+}
+
+function getSubPathType() {
+  const subpathArray = sanitisedSubPathArray();
+
+  if (subpathArray.length <= 1) {
     return Subpath.HOME;
   } else {
     return Subpath.UNSUPPORTED;
@@ -37,4 +50,5 @@ function routing() {
   }
 }
 
-export { routing, getSubPathType, Subpath };
+export { sanitisedSubPathArray, routing, getSubPathType, Subpath };
+window.Routing = routing;

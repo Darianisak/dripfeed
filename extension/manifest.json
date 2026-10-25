@@ -20,7 +20,7 @@
 
   "content_scripts": [
     {
-      "matches": ["*://www.reddit.com/*"],
+      "matches": ["*://www.reddit.com/*", "*://www.instagram.com/*"],
       "js": ["main.js"],
       "run_at": "document_start"
     }
