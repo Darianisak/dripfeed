@@ -1,8 +1,8 @@
 attrs==26.1.0
 boltons==21.0.0
 bracex==2.6
-certifi==2026.7.22
-charset-normalizer==3.5.1
+certifi==2026.10.23
+charset-normalizer==3.5.2
 click==8.1.8
 click-option-group==0.5.9
 colorama==0.4.6
@@ -12,7 +12,7 @@ exceptiongroup==1.2.2
 face==26.0.0
 glom==22.1.0
 googleapis-common-protos==1.75.0
-idna==3.18
+idna==3.20
 importlib_metadata==8.7.1
 jsonschema==4.25.1
 jsonschema-specifications==2025.9.1
@@ -31,7 +31,7 @@ packaging==26.3
 pathspec==1.1.1
 peewee==3.19.0
 protobuf==6.33.6
-Pygments==2.20.0
+Pygments==2.21.0
 PyYAML==6.0.3
 referencing==0.36.2
 requests==2.32.5
@@ -44,6 +44,6 @@ tomli==2.0.2
 typing_extensions==4.16.0
 urllib3==2.6.3
 wcmatch==8.5.2
-wrapt==2.3.0
+wrapt==2.5.1
 yamllint==1.37.1
 zipp==3.23.1
