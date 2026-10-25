@@ -20,7 +20,6 @@ export function operate(pageTargets) {
   pageTargets.forEach((target) => {
     switch (target) {
       case Targets.DRAWER_REELS:
-        console.log(`calling removal`);
         removeNodeCaller("a[href='/reels/']");
         break;
 
