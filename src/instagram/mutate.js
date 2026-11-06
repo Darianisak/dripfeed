@@ -11,6 +11,21 @@ export const Pages = {
   HOME: [Targets.DRAWER_REELS, Targets.FEED_VIDEOS],
 };
 
+function removeVideos() {
+  const feedArticles = Array.from(document.querySelectorAll("article[data-interactable='|click|']"));
+  // TODO - I think this works but is currently hiding everything BUT videos.
+  let videoNode = feedArticles.find((article) => 
+    article.querySelector("div[aria-label='Video player']") !== null
+  )
+
+  if (videoNode) {
+    // videoNode.remove();
+    videoNode.classList.add("hidden")
+    videoNode.hidden = true;
+    console.log(`hid video`)
+  }
+}
+
 export function operate(pageTargets) {
   if (!(pageTargets instanceof Array)) {
     throw new TypeError(
@@ -25,14 +40,7 @@ export function operate(pageTargets) {
         break;
 
       case Targets.FEED_VIDEOS:
-        // TODO: We'll add an early exit from classList
-        document.querySelectorAll("article[data-interactable='|click|']").forEach(
-          (article) => {
-            article.querySelector("div[aria-label='Video player']")
-          }
-        )
-        document.querySelectorAll("article").forEach((article) => {  ? article.remove() : '' })
-
+        removeVideos();
         break;
 
       default:

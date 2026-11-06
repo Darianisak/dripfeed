@@ -18,7 +18,7 @@
     "test:e2e": "./bin/bundle exec rspec",
     "firefox": "npx web-ext run --source-dir ./extension/",
     "android": "source .env && npx web-ext run --source-dir ./extension/ -t firefox-android --android-device=${MOBILE_DEVICE_ID}",
-    "build": "rm -f ./build/** && npm run webpack && npx web-ext build --source-dir ./extension/ --artifacts-dir ./build && npm run source",
+    "build": "rm -rf ./build/** && npm run webpack && npx web-ext build --source-dir ./extension/ --artifacts-dir ./build && npm run source",
     "source": "export DEST='./build/source' ; rm -rf ${DEST} && mkdir ${DEST} && cp README.md ${DEST} && cp package-lock.json ${DEST} && cp package.json ${DEST} && cp webpack.config.js ${DEST} && cp -r ./src ${DEST} && tar -czf ./build/source.tar.gz ${DEST} && rm -rf ${DEST}",
     "style": "npm run format ; npm run lint ; npm run yaml ; npm run rubocop ; npm run semgrep",
     "format": "prettier --check --config ./.prettierrc --write .",
